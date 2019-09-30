@@ -1,0 +1,14 @@
+setup.py
+aquariumqt/__init__.py
+aquariumqt/__main__.py
+aquariumqt/app.py
+aquariumqt/dummyGPIO.py
+aquariumqt/form.py
+aquariumqt/t_sensor.py
+aquariumqt/test_schedule.py
+aquariumqt.egg-info/PKG-INFO
+aquariumqt.egg-info/SOURCES.txt
+aquariumqt.egg-info/dependency_links.txt
+aquariumqt.egg-info/entry_points.txt
+aquariumqt.egg-info/requires.txt
+aquariumqt.egg-info/top_level.txt
