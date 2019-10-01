@@ -3,6 +3,7 @@ aquariumqt/__init__.py
 aquariumqt/app.py
 aquariumqt/data.py
 aquariumqt/database.py
+aquariumqt/dummyGPIO.py
 aquariumqt/form.py
 aquariumqt.egg-info/PKG-INFO
 aquariumqt.egg-info/SOURCES.txt
