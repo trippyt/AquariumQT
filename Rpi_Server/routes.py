@@ -28,4 +28,4 @@ async def temp():
         await websocket.send(str(temp))
 
 if __name__ == '__main__':
-    app.run()
+    app.run("0.0.0.0")
