@@ -182,7 +182,7 @@ class App(object):
 
         self.client = QtWebSockets.QWebSocket("", QtWebSockets.QWebSocketProtocol.Version13, None)
         self.client.error.connect(self.on_error)
-        self.client.open(QUrl("ws://192.168.171.130:5000/temp"))
+        self.client.open(QUrl("ws://192.168.1.35:5000/temp"))
         self.client.pong.connect(self.ws_receive)
         self.client.textMessageReceived.connect(self.ws_receive)
 
@@ -626,7 +626,7 @@ class App(object):
         return
 
     def ws_receive(self, text):
-        self.form.room_degrees_c_display.display(text)
+        self.form.tank_degrees_c_display.display(text)
 
     def on_error(self, error_code):
         return
