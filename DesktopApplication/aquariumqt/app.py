@@ -626,7 +626,7 @@ class App(object):
         return
 
     def ws_receive(self, text):
-        self.form.room_degrees_c_display.display(text)
+        self.form.tank_degrees_c_display.display(text)
 
     def on_error(self, error_code):
         return
