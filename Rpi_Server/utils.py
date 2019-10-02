@@ -27,4 +27,4 @@ async def temp():
     # So we would have to make sure that we don't do read_temp more than once every 2 seconds
     # t = random.randint(1, 40)
     #return temp_c, temp_f
-    return temp_c
+    return round(temp_c, 2)
