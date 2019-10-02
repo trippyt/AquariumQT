@@ -491,6 +491,12 @@ class App(object):
         GPIO.output(27, 0)
         print("Secondary Deactivated")
 
+    def send_request(self, pump_type):
+        url = f"http://127.0.0.1:5000?time={time}?pump_type={pump_type}" # gonna change that later of course
+        request = QtNetwork.QNetworkRequest(QUrl(url))
+        self.nam.post(request)
+
+'''
     def co2_calibration(self):
         self.co2_calibration_started = not self.co2_calibration_started
         if self.co2_calibration_started:
@@ -513,7 +519,7 @@ class App(object):
                 self.form.co2_calibration_perml_display.value() * self.form.c02_ml_outLcd.value(), 2)
                                                       )
 
-            self.save()
+            self.save()'''
 
     def fertz_calibration(self):
         self.fertz_calibration_started = not self.fertz_calibration_started

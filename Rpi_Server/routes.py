@@ -18,6 +18,15 @@ async def run_pump():
     await utils.do_pump(pump_type, time)
     return "Complete"
 
+@app.route('/calibration', methods='POST')
+async def calibrate_pump():
+    pump_type = request.args.get('type')
+    if not (pump_type == 'water' or 'co2' or 'fertilizer'):
+        return "Incorrect pump value"
+
+    await utils.do_calibration_pump(pump_type)
+    return "Complete"
+
 
 @app.websocket('/temp')
 async def temp():
@@ -26,6 +35,7 @@ async def temp():
         print(temp)
         sleep(2)
         await websocket.send(str(temp))
+
 
 if __name__ == '__main__':
     app.run("0.0.0.0")
