@@ -12,7 +12,6 @@ GPIO.setwarnings(False)
 GPIO.setup(17, GPIO.OUT)
 GPIO.setup(27, GPIO.OUT)
 
-prev_time = ''
 calibration_started = False
 
 
@@ -24,10 +23,12 @@ async def do_pump(pump_type: str, seconds: int):
     elif pump_type == 'fertilizer':
         return
 
-async def do_calibration_pump(pump_type: str):
+
+async def do_calibration(pump_type: str):
+    global calibration_started
     calibration_started = not calibration_started
     if pump_type == 'co2':
-        print('co2 pump ran')
+        GPIO.output()
     elif pump_type == 'water':
         return
     elif pump_type == 'fertilizer':

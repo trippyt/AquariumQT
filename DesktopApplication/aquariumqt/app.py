@@ -141,7 +141,7 @@ class App(object):
         self.form.saveDoses_pushButton.clicked.connect(self.save)
 
         self.form.feed_pushButton.clicked.connect(self.feed_test)
-        self.form.C02CalibrationButton.clicked.connect(self.co2_calibration)
+        self.form.C02CalibrationButton.clicked.connect(self.send_calibration_request)
         self.form.c02_pushButton.clicked.connect(self.co2_manual_dose)
         self.form.FertzCalibrationButton.clicked.connect(self.fertz_calibration)
         self.form.TapSafeCalibrationButton.clicked.connect(self.conditioner_calibration)
@@ -491,8 +491,9 @@ class App(object):
         GPIO.output(27, 0)
         print("Secondary Deactivated")
 
-    def send_request(self, pump_type):
-        url = f"http://127.0.0.1:5000?time={time}?pump_type={pump_type}" # gonna change that later of course
+    def send_calibration_request(self, pump_type):
+        url = f"http://127.0.0.1:5000/do_calibration?pump_type=%7Bpump_type%7D" # gonna change that later of course
+        print("calibration request")
         request = QtNetwork.QNetworkRequest(QUrl(url))
         self.nam.post(request)
 
