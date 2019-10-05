@@ -19,7 +19,7 @@ async def do_pump(pump_type: str, seconds: int):
     if pump_type == 'co2':
         print("Running co2")
         GPIO.output(17, 1)
-    elif pump_type == 'water':
+    elif pump_type == 'conditioner':
         return
     elif pump_type == 'fertilizer':
         print("Running fertz")
@@ -35,6 +35,6 @@ async def temp():
     return
     temp_c, temp_f = t_sensor.read_temp()
     # So we would have to make sure that we don't do read_temp more than once every 2 seconds
-     t = random.randint(1, 40)
+    # t = random.randint(1, 40)
     return temp_c, temp_f
     return round(temp_c, 2)

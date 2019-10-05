@@ -12,7 +12,7 @@ async def run_pump():
     if not time:
         time = 10
     print(pump_type)
-    if pump_type == ('water' or 'co2' or 'fertilizer'):
+    if pump_type == 'conditioner' or 'co2' or 'fertilizer':
         await utils.do_pump(pump_type, time)
         return f"Enabling {pump_type} pump."
     else:
