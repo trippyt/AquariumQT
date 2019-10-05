@@ -9,42 +9,25 @@ except:
     import dummyGPIO as GPIO
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
-GPIO.setup(17, GPIO.OUT)
-GPIO.setup(27, GPIO.OUT)
+GPIO.setup(17, GPIO.OUT) # Co2 Pump
+GPIO.setup(27, GPIO.OUT) # Fertilizer Pump
 
 calibration_started = False
 
 
 async def do_pump(pump_type: str, seconds: int):
     if pump_type == 'co2':
-        print('co2 pump ran')
-    elif pump_type == 'water':
-        return
-    elif pump_type == 'fertilizer':
-        return
-
-
-async def do_calibration(pump_type: str):
-    global calibration_started
-    calibration_started = not calibration_started
-    if pump_type == 'co2':
-        GPIO.output()
-    elif pump_type == 'water':
-        return
-    elif pump_type == 'fertilizer':
-        return
-
-    if calibration_started:
-        prev_time = time.time()
+        print("Running co2")
         GPIO.output(17, 1)
-        #self.log.info("Co2                      Calibration started.")
-    else:
-        elapsed_time = time.time() - prev_time
-        #self.form.co2_dosing_lcd.setProperty('value', round(co2_elapsed_time, 2))
-        GPIO.output(17, 0)
-        #self.log.info(f"Co2                      Calibration stopped.
-        return elapsed_time
-
+    elif pump_type == 'water':
+        return
+    elif pump_type == 'fertilizer':
+        print("Running fertz")
+        GPIO.output(27, 1)
+    time.sleep(time)
+    GPIO.output(17, 0)
+    GPIO.output(27, 0)
+    return
 
 
 

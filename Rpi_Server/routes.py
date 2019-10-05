@@ -4,28 +4,21 @@ from time import sleep
 app = Quart(__name__)
 
 
-@app.route('/runPump', methods='POST')
+@app.route('/runPump', methods='GET')
 async def run_pump():
     pump_type = request.args.get('type')
     time = request.args.get('time')
-    if not (pump_type == 'water' or 'co2' or 'fertilizer'):
-        return "Incorrect pump value"
-    try:
-        time = int(time)
-    except ValueError:
-        return "Invalid time value"
+    if not time:
+        time = 10
+    if pump_type == 'water' or 'co2' or 'fertilizer':
+        await utils.do_pump(pump_type, time)
+        return f"Enabling {pump_type} pump."
 
-    await utils.do_pump(pump_type, time)
-    return "Complete"
 
-@app.route('/calibration', methods='POST')
-async def calibrate_pump():
-    pump_type = request.args.get('type')
-    if not (pump_type == 'water' or 'co2' or 'fertilizer'):
-        return "Incorrect pump value"
 
-    await utils.do_calibration_pump(pump_type)
-    return "Complete"
+@app.route('/stopPump', methods='POST')
+async def stop_pump():
+    return
 
 
 @app.websocket('/temp')
