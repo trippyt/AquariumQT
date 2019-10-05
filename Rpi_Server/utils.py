@@ -24,10 +24,11 @@ async def do_pump(pump_type: str, seconds: int):
     elif pump_type == 'fertilizer':
         print("Running fertz")
         GPIO.output(27, 1)
-    asyncio.sleep(seconds)
+    await asyncio.sleep(seconds)
     GPIO.output(17, 0)
     GPIO.output(27, 0)
     return
+
 
 async def stop_pump(pump_type: str):
     if pump_type == 'co2':
