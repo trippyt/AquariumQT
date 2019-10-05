@@ -2,7 +2,7 @@ import asyncio
 import time
 import random
 
-#import t_sensor
+import t_sensor
 try:
     import RPi.GPIO as GPIO
 except:
@@ -24,7 +24,7 @@ async def do_pump(pump_type: str, seconds: int):
     elif pump_type == 'fertilizer':
         print("Running fertz")
         GPIO.output(27, 1)
-    time.sleep(seconds)
+    asyncio.sleep(seconds)
     GPIO.output(17, 0)
     GPIO.output(27, 0)
     return
@@ -33,8 +33,8 @@ async def do_pump(pump_type: str, seconds: int):
 
 async def temp():
     return
-    #temp_c, temp_f = t_sensor.read_temp()
+    temp_c, temp_f = t_sensor.read_temp()
     # So we would have to make sure that we don't do read_temp more than once every 2 seconds
-    # t = random.randint(1, 40)
-    #return temp_c, temp_f
-    #return round(temp_c, 2)
+     t = random.randint(1, 40)
+    return temp_c, temp_f
+    return round(temp_c, 2)
