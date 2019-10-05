@@ -4,10 +4,11 @@ from time import sleep
 app = Quart(__name__)
 
 
-@app.route('/runPump', methods='GET')
+@app.route('/runPump', methods=['GET', 'POST'])
 async def run_pump():
     pump_type = request.args.get('type')
     time = request.args.get('time')
+    print(time)
     if not time:
         time = 10
     if pump_type == 'water' or 'co2' or 'fertilizer':
