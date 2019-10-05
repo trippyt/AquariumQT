@@ -12,17 +12,22 @@ async def run_pump():
     if not time:
         time = 10
     print(pump_type)
-    if pump_type == 'conditioner' or 'co2' or 'fertilizer':
+    if pump_type in ['conditioner', 'co2', 'fertilizer']:
         await utils.do_pump(pump_type, time)
         return f"Enabling {pump_type} pump."
     else:
         return "Invalid pump specified"
 
 
-
-@app.route('/stopPump', methods='POST')
+@app.route('/stopPump', methods=['GET', 'POST'])
 async def stop_pump():
-    return
+    pump_type = request.args.get('type')
+    print(pump_type)
+    if pump_type in ['conditioner', 'co2', 'fertilizer']:
+        await utils.stop_pump(pump_type)
+        return f"Disabling {pump_type} pump."
+    else:
+        return "Invalid pump specified"
 
 
 @app.websocket('/temp')

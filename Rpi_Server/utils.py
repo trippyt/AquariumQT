@@ -29,6 +29,18 @@ async def do_pump(pump_type: str, seconds: int):
     GPIO.output(27, 0)
     return
 
+async def stop_pump(pump_type: str):
+    if pump_type == 'co2':
+        print("Stopping co2")
+        GPIO.output(17, 0)
+    elif pump_type == 'conditioner':
+        return
+    elif pump_type == 'fertilizer':
+        print("Stopping fertz")
+        GPIO.output(27, 0)
+    return
+
+
 
 
 async def temp():
