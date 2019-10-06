@@ -45,7 +45,6 @@ async def stop_pump(pump_type: str):
 
 
 async def temp():
-    return
     temp_c, temp_f = t_sensor.read_temp()
     # So we would have to make sure that we don't do read_temp more than once every 2 seconds
     # t = random.randint(1, 40)
