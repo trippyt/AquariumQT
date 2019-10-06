@@ -492,10 +492,14 @@ class App(object):
         print("Secondary Deactivated")
 
     def send_calibration_request(self, pump_type):
-        self.pump_on = False
         if self.pump_on:
             url = f"http://192.168.1.35:5000/runPump?type=co2"
-            print("calibration request")
+            print("starting calibration request")
+            request = QtNetwork.QNetworkRequest(QUrl(url))
+            self.nam.post(request)
+        else:
+            url = f"http://192.168.1.35:5000/stopPump?type=co2"
+            print("finishing calibration request")
             request = QtNetwork.QNetworkRequest(QUrl(url))
             self.nam.post(request)
 
