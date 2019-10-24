@@ -3,8 +3,7 @@ import utils
 from time import sleep
 app = Quart(__name__)
 
-
-@app.route('/runPump', methods=['GET', 'POST'])
+@app.route('/calibrationModeOn', methods=['GET', 'POST'])
 async def run_pump():
     pump_type = request.args.get('type')
     time = request.args.get('time')
@@ -18,8 +17,7 @@ async def run_pump():
     else:
         return "Invalid pump specified"
 
-
-@app.route('/stopPump', methods=['GET', 'POST'])
+@app.route('/calibrationModeOff', methods=['GET', 'POST'])
 async def stop_pump():
     pump_type = request.args.get('type')
     print(pump_type)
@@ -28,6 +26,31 @@ async def stop_pump():
         return f"Disabling {pump_type} pump."
     else:
         return "Invalid pump specified"
+
+#@app.route('/runPump', methods=['GET', 'POST'])
+#async def run_pump():
+#    pump_type = request.args.get('type')
+#    time = request.args.get('time')
+#    print(time)
+#    if not time:
+#        time = 10
+#    print(pump_type)
+#    if pump_type in ['conditioner', 'co2', 'fertilizer']:
+#        await utils.do_pump(pump_type, time)
+#        return f"Enabling {pump_type} pump."
+#    else:
+#        return "Invalid pump specified"
+
+
+#@app.route('/stopPump', methods=['GET', 'POST'])
+#async def stop_pump():
+#    pump_type = request.args.get('type')
+#    print(pump_type)
+#    if pump_type in ['conditioner', 'co2', 'fertilizer']:
+#        await utils.stop_pump(pump_type)
+#        return f"Disabling {pump_type} pump."
+#    else:
+#        return "Invalid pump specified"
 
 
 @app.websocket('/temp')

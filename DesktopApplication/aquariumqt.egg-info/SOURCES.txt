@@ -5,6 +5,7 @@ aquariumqt/data.py
 aquariumqt/database.py
 aquariumqt/dummyGPIO.py
 aquariumqt/form.py
+aquariumqt/test.py
 aquariumqt.egg-info/PKG-INFO
 aquariumqt.egg-info/SOURCES.txt
 aquariumqt.egg-info/dependency_links.txt

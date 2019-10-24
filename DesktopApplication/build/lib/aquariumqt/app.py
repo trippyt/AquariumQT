@@ -40,6 +40,7 @@ class App(object):
         self.conditioner_prev_time = ''
         self.nam = QtNetwork.QNetworkAccessManager()
         self.timers = []
+        self.pump_on = None
 
         self.conversion_values = {
             "tank_size": {},
@@ -96,7 +97,7 @@ class App(object):
         self.form = Ui_Form()
         self.window.setCentralWidget(self.central)
         self.form.setupUi(self.central)
-        self.app.setStyle("fusion")
+        #self.app.setStyle("fusion")
 
         self.hour_btns = [
             self.form.hours_0,
@@ -141,7 +142,7 @@ class App(object):
         self.form.saveDoses_pushButton.clicked.connect(self.save)
 
         self.form.feed_pushButton.clicked.connect(self.feed_test)
-        self.form.C02CalibrationButton.clicked.connect(self.send_calibration_request)
+        self.form.C02CalibrationButton.clicked.connect(lambda: self.send_calibration_request("co2"))
         self.form.c02_pushButton.clicked.connect(self.co2_manual_dose)
         self.form.FertzCalibrationButton.clicked.connect(self.fertz_calibration)
         self.form.TapSafeCalibrationButton.clicked.connect(self.conditioner_calibration)
@@ -492,14 +493,20 @@ class App(object):
         print("Secondary Deactivated")
 
     def send_calibration_request(self, pump_type):
-        url = f"http://192.168.1.35:5000/calibration?pump_type={pump_type}" # gonna change that later of course
-        print("calibration request")
-        request = QtNetwork.QNetworkRequest(QUrl(url))
-        self.nam.post(request)
+        self.pump_on = not self.pump_on
+        if not self.pump_on:
+            url = f"http://192.168.1.35:5000/runPump?type={pump_type}"
+            print("starting calibration request")
+            request = QtNetwork.QNetworkRequest(QUrl(url))
+            self.nam.get(request)
+        else:
+            url = f"http://192.168.1.35:5000/stopPump?type={pump_type}"
+            print("finishing calibration request")
+            request = QtNetwork.QNetworkRequest(QUrl(url))
+            self.nam.get(request)
 
-'''
     def co2_calibration(self):
-    print("old calibration function")
+        print("old calibration function")
         self.co2_calibration_started = not self.co2_calibration_started
         if self.co2_calibration_started:
             self.co2_prev_time = time.time()
@@ -521,7 +528,7 @@ class App(object):
                 self.form.co2_calibration_perml_display.value() * self.form.c02_ml_outLcd.value(), 2)
                                                       )
 
-            self.save()'''
+            self.save()
 
     def fertz_calibration(self):
         self.fertz_calibration_started = not self.fertz_calibration_started
