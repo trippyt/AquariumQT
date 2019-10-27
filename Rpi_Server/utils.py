@@ -80,6 +80,8 @@ async def do_calibration(pump_type: str):
                 sleep(0.0001)
 
         if standby == False:
+            button_state = GPIO.input(Button)
+            print(f"Button State:{button_state}")
             print("Calibration Mode")
             if button_state == 1:
                 if pump_type == 'co2':
@@ -101,18 +103,16 @@ async def do_calibration(pump_type: str):
                 elif pump_type == 'fertilizer':
                     print("Running fertilizer")
                     GPIO.output(Fertilizer_pump, 1)
-                await
                 GPIO.output(pump_type, 0)
 
         while led_on == True:
-            button_state = GPIO.input(Button)
-            print(f"Button State:{button_state}")
+
             if button_state == 0:
 
-            elif button_state == 1:
-                GPIO.output(led_pin, 1)
-            else:
-                GPIO.output(led_pin, 0)
+                elif button_state == 1:
+                    GPIO.output(led_pin, 1)
+                else:
+                    GPIO.output(led_pin, 0)
 
     # If keyboard Interrupt (CTRL-C) is pressed
     except KeyboardInterrupt:
