@@ -105,15 +105,6 @@ async def do_calibration(pump_type: str):
                     GPIO.output(Fertilizer_pump, 1)
                 GPIO.output(pump_type, 0)
 
-        while led_on == True:
-
-            if button_state == 0:
-
-                elif button_state == 1:
-                    GPIO.output(led_pin, 1)
-                else:
-                    GPIO.output(led_pin, 0)
-
     # If keyboard Interrupt (CTRL-C) is pressed
     except KeyboardInterrupt:
         pass  # Go to next line
