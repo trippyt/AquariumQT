@@ -57,7 +57,7 @@ async def stop_pump():
 async def temp():
     while True:
         temp = await utils.temp()
-        print(temp)
+        #print(temp)
         sleep(2)
         await websocket.send(str(temp))
 
