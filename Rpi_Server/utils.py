@@ -61,9 +61,10 @@ async def stop_pump(pump_type: str):
 # from this point the led is off and the button will be inactive again just like in the beginning
 
 async def do_calibration(pump_type: str):
-    standby = True
+    button_state = GPIO.input(Button)
+    Calibration = False
     try:
-        if standby:
+        if Calibration:
             for x in range(100):  # This Loop will run 100; times 0 to 100
                 pwm.ChangeDutyCycle(x)  # Change duty cycle
                 sleep(0.01)  # Delay of 10mS
@@ -71,16 +72,6 @@ async def do_calibration(pump_type: str):
                 pwm.ChangeDutyCycle(x)
                 sleep(0.01)
 
-        elif standby == False:
-            for x in range(100):  # This Loop will run 100; times 0 to 100
-                pwm.ChangeDutyCycle(x)  # Change duty cycle
-                sleep(0.0001)  # Delay of 10mS
-            for x in range(100, 0, -1):  # Loop will run 100 times; 100 to 0
-                pwm.ChangeDutyCycle(x)
-                sleep(0.0001)
-
-        if standby == False:
-            button_state = GPIO.input(Button)
             print(f"Button State:{button_state}")
             print("Calibration Mode")
             if button_state == 1:
@@ -104,6 +95,14 @@ async def do_calibration(pump_type: str):
                     print("Running fertilizer")
                     GPIO.output(Fertilizer_pump, 1)
                 GPIO.output(pump_type, 0)
+
+        elif Calibration == False:
+            for x in range(100):  # This Loop will run 100; times 0 to 100
+                pwm.ChangeDutyCycle(x)  # Change duty cycle
+                sleep(0.0001)  # Delay of 10mS
+            for x in range(100, 0, -1):  # Loop will run 100 times; 100 to 0
+                pwm.ChangeDutyCycle(x)
+                sleep(0.0001)
 
     # If keyboard Interrupt (CTRL-C) is pressed
     except KeyboardInterrupt:
