@@ -100,7 +100,7 @@ async def do_calibration(pump_type: str):
                 elif pump_type == 'fertilizer':
                     print("Running fertilizer")
                     GPIO.output(Fertilizer_pump, 1)
-                GPIO.output(pump_type, 0)
+                GPIO.output(Co2_pump, 0)
 
         while calibration == False:
             for x in range(100):  # This Loop will run 100; times 0 to 100
