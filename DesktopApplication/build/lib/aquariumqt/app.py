@@ -35,7 +35,6 @@ class App(object):
         self.light_control = None
         self.schedule = None
         self.completed = ''
-        self.co2_prev_time = ''
         self.fertz_prev_time = ''
         self.conditioner_prev_time = ''
         self.nam = QtNetwork.QNetworkAccessManager()
@@ -516,31 +515,6 @@ class App(object):
 #            print("finishing calibration request")
 #            request = QtNetwork.QNetworkRequest(QUrl(url))
 #            self.nam.get(request)
-
-    def co2_calibration(self):
-        print("old calibration function")
-        self.co2_calibration_started = not self.co2_calibration_started
-        if self.co2_calibration_started:
-            self.co2_prev_time = time.time()
-            GPIO.output(17, 1)
-            self.log.info("Co2                      Calibration started.")
-        else:
-            co2_elapsed_time = time.time() - self.co2_prev_time
-            self.form.co2_dosing_lcd.setProperty('value', round(co2_elapsed_time, 2))
-            GPIO.output(17, 0)
-            self.log.info(f"Co2                      Calibration stopped.                      - {co2_elapsed_time:.2f} Seconds -")
-            self.calibration_data["Co2 Calibration Data"].update(
-                {
-                    "Time": round(co2_elapsed_time, 2)
-                }
-            )
-            seconds = co2_elapsed_time / 10
-            self.form.co2_calibration_perml_display.setProperty('value', seconds)
-            self.form.co2_seconds_display.setProperty('value', round(
-                self.form.co2_calibration_perml_display.value() * self.form.c02_ml_outLcd.value(), 2)
-                                                      )
-
-            self.save()
 
     def fertz_calibration(self):
         self.fertz_calibration_started = not self.fertz_calibration_started
