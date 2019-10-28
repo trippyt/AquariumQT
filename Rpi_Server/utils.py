@@ -64,7 +64,9 @@ async def stop_pump(pump_type: str):
 async def do_calibration(pump_type: str):
     button_state = GPIO.input(Button)
     calibration = not False
-    co2_calibration_started = False
+
+    global co2_calibration_started
+    global co2_prev_time
     try:
         while calibration:
             for x in range(100):  # This Loop will run 100; times 0 to 100
@@ -82,7 +84,7 @@ async def do_calibration(pump_type: str):
                     GPIO.output(Co2_pump, 1)
                     co2_calibration_started = not co2_calibration_started
                     if co2_calibration_started:
-                        self.co2_prev_time = time.time()
+                        co2_prev_time = time.time()
                         GPIO.output(17, 1)
                         print("Co2                      Calibration started.")
                     else:
