@@ -63,9 +63,9 @@ async def stop_pump(pump_type: str):
 
 async def do_calibration(pump_type: str):
     button_state = GPIO.input(Button)
-    Calibration = False
+    calibration = not False
     try:
-        if Calibration:
+        if calibration:
             for x in range(100):  # This Loop will run 100; times 0 to 100
                 pwm.ChangeDutyCycle(x)  # Change duty cycle
                 sleep(0.01)  # Delay of 10mS
@@ -98,7 +98,7 @@ async def do_calibration(pump_type: str):
                     GPIO.output(Fertilizer_pump, 1)
                 GPIO.output(pump_type, 0)
 
-        elif Calibration == False:
+        elif calibration == False:
             for x in range(100):  # This Loop will run 100; times 0 to 100
                 pwm.ChangeDutyCycle(x)  # Change duty cycle
                 sleep(0.0001)  # Delay of 10mS
