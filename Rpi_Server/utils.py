@@ -77,9 +77,10 @@ async def do_calibration(pump_type: str):
                 pwm.ChangeDutyCycle(x)
                 sleep(0.01)
 
+
             print(f"Button State:{button_state}")
             print("Calibration Mode")
-            if button_state == 1:
+            if button_state == 0:
                 if pump_type == 'co2':
                     print("Running co2")
                     GPIO.output(Co2_pump, 1)
@@ -102,7 +103,7 @@ async def do_calibration(pump_type: str):
                     GPIO.output(Fertilizer_pump, 1)
                 GPIO.output(Co2_pump, 0)
 
-        while calibration == False:
+        while calibration == 1:
             for x in range(100):  # This Loop will run 100; times 0 to 100
                 pwm.ChangeDutyCycle(x)  # Change duty cycle
                 sleep(0.0001)  # Delay of 10mS
