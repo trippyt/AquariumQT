@@ -40,7 +40,7 @@ class App(object):
         self.conditioner_prev_time = ''
         self.nam = QtNetwork.QNetworkAccessManager()
         self.timers = []
-        self.calibration_mode_on = False
+        self.calibration_mode_on = True
 
         self.conversion_values = {
             "tank_size": {},
