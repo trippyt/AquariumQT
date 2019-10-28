@@ -65,7 +65,7 @@ async def do_calibration(pump_type: str):
     button_state = GPIO.input(Button)
     calibration = not False
     try:
-        if calibration:
+        while calibration:
             for x in range(100):  # This Loop will run 100; times 0 to 100
                 pwm.ChangeDutyCycle(x)  # Change duty cycle
                 sleep(0.01)  # Delay of 10mS
