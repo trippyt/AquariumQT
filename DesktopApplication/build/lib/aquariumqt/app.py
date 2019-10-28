@@ -40,7 +40,7 @@ class App(object):
         self.conditioner_prev_time = ''
         self.nam = QtNetwork.QNetworkAccessManager()
         self.timers = []
-        self.pump_on = None
+        self.calibration_mode_on = False
 
         self.conversion_values = {
             "tank_size": {},
@@ -493,17 +493,29 @@ class App(object):
         print("Secondary Deactivated")
 
     def send_calibration_request(self, pump_type):
-        self.pump_on = not self.pump_on
-        if not self.pump_on:
-            url = f"http://192.168.1.35:5000/runPump?type={pump_type}"
-            print("starting calibration request")
+        self.calibration_mode_on = not self.calibration_mode_on
+        if not self.calibration_mode_on:
+            url = f"http://192.168.1.35:5000/calibrationModeOn?type={pump_type}"
+            print("Entering Calibration Mode")
             request = QtNetwork.QNetworkRequest(QUrl(url))
             self.nam.get(request)
         else:
-            url = f"http://192.168.1.35:5000/stopPump?type={pump_type}"
-            print("finishing calibration request")
+            url = f"http://192.168.1.35:5000/calibrationModeOff?type={pump_type}"
+            print("Exiting Calibration Mode")
             request = QtNetwork.QNetworkRequest(QUrl(url))
             self.nam.get(request)
+#    def send_calibration_request(self, pump_type):
+#        self.pump_on = not self.pump_on
+#        if not self.pump_on:
+#            url = f"http://192.168.1.35:5000/runPump?type={pump_type}"
+#            print("starting calibration request")
+#            request = QtNetwork.QNetworkRequest(QUrl(url))
+#            self.nam.get(request)
+#        else:
+#            url = f"http://192.168.1.35:5000/stopPump?type={pump_type}"
+#            print("finishing calibration request")
+#            request = QtNetwork.QNetworkRequest(QUrl(url))
+#            self.nam.get(request)
 
     def co2_calibration(self):
         print("old calibration function")

@@ -94,6 +94,7 @@ async def do_calibration(pump_type: str):
                 elif pump_type == 'fertilizer':
                     print("Running fertilizer")
                     GPIO.output(Fertilizer_pump, 1)
+                print(f"{pump_type}, )
                 GPIO.output(pump_type, 0)
 
         elif Calibration == False:

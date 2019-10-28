@@ -496,12 +496,12 @@ class App(object):
         self.calibration_mode_on = not self.calibration_mode_on
         if not self.calibration_mode_on:
             url = f"http://192.168.1.35:5000/calibrationModeOn?type={pump_type}"
-            print("starting calibration request")
+            print("Entering Calibration Mode")
             request = QtNetwork.QNetworkRequest(QUrl(url))
             self.nam.get(request)
         else:
             url = f"http://192.168.1.35:5000/calibrationModeOff?type={pump_type}"
-            print("finishing calibration request")
+            print("Exiting Calibration Mode")
             request = QtNetwork.QNetworkRequest(QUrl(url))
             self.nam.get(request)
 #    def send_calibration_request(self, pump_type):
