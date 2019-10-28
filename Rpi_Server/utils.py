@@ -21,7 +21,6 @@ pwm = GPIO.PWM(led_pin, 100)  # Created a PWM object
 pwm.start(0)  # Started PWM at 0% duty cycle
 #flag = 0
 
-calibration_started = False
 
 led_on = True
 
