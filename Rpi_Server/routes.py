@@ -4,7 +4,7 @@ from time import sleep
 app = Quart(__name__)
 
 @app.route('/calibrationModeOn', methods=['GET', 'POST'])
-async def run_pump():
+async def run_calibration():
     pump_type = request.args.get('type')
     print(pump_type)
     if pump_type in ['conditioner', 'co2', 'fertilizer']:
@@ -14,7 +14,7 @@ async def run_pump():
         return "Invalid pump specified"
 
 @app.route('/calibrationModeOff', methods=['GET', 'POST'])
-async def stop_pump():
+async def stop_calibration():
     pump_type = request.args.get('type')
     print(pump_type)
     if pump_type in ['conditioner', 'co2', 'fertilizer']:

@@ -51,13 +51,14 @@ async def stop_pump(pump_type: str):
         GPIO.output(Fertilizer_pump, 0)
     return
 
-# client gui button pressed
+# if button is pressed at anytime before the gui calibration button it will do nothing
+# client gui calibration button pressed (enters calibration mode)
 # sends calibration request with the dosage type to the server
 # server then starts pulsing the led, and waits for the physical button to be pushed
 # if the clients gui button gets pressed then cancel and turn off led
 # if the physical button is pushed then start the timer and pump and make the led flash quickly
 # once the user has measured 10ml press the physical button again the pump and timer stop and the led turns off
-# server then saves the elapsed time for that dose calibration, and sends it to the gui to display
+# server then saves the elapsed time for that dose calibration, and sends it to the gui to display (exits calibration mode)
 # from this point the led is off and the button will be inactive again just like in the beginning
 
 async def do_calibration(pump_type: str):
