@@ -6,13 +6,9 @@ app = Quart(__name__)
 @app.route('/calibrationModeOn', methods=['GET', 'POST'])
 async def run_pump():
     pump_type = request.args.get('type')
-    time = request.args.get('time')
-    print(time)
-    if not time:
-        time = 10
     print(pump_type)
     if pump_type in ['conditioner', 'co2', 'fertilizer']:
-        await utils.do_pump(pump_type, time)
+        await utils.do_calibration(pump_type)
         return f"Enabling {pump_type} pump."
     else:
         return "Invalid pump specified"
