@@ -27,7 +27,8 @@ co2_calibration_started = False
 led_on = True
 
 async def led_pulse():
-    while global calibration == 1:
+    global calibration
+    while calibration == 1 :
         for x in range(100):  # This Loop will run 100; times 0 to 100
             pwm.ChangeDutyCycle(x)  # Change duty cycle
             sleep(0.01)  # Delay of 10mS
@@ -36,7 +37,8 @@ async def led_pulse():
             sleep(0.01)
 
 async def led_flash():
-    while global calibration == 0:
+    global calibration
+    while calibration == 0:
         for x in range(100):  # This Loop will run 100; times 0 to 100
             pwm.ChangeDutyCycle(x)  # Change duty cycle
             sleep(0.0001)  # Delay of 10mS
