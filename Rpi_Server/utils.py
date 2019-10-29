@@ -118,7 +118,7 @@ async def led_pulse():
             pwm.ChangeDutyCycle(x)
             sleep(0.01)
         calibration = GPIO.input(Button)
-
+        pass
 
 async def led_flash():
     global calibration
