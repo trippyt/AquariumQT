@@ -103,7 +103,7 @@ async def do_calibration(pump_type: str):
                 print("Running fertilizer")
                 GPIO.output(Fertilizer_pump, 1)
             GPIO.output(Co2_pump, 0)
-        #while calibration == 0:
+        while calibration == 0:
             for x in range(100):  # This Loop will run 100; times 0 to 100
                 pwm.ChangeDutyCycle(x)  # Change duty cycle
                 sleep(0.0001)  # Delay of 10mS
