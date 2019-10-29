@@ -64,23 +64,24 @@ async def stop_pump(pump_type: str):
 
 async def do_calibration(pump_type: str):
     button_state = GPIO.input(Button)
-    #calibration = not False
+    calibration = button_state
+    calibration = not False
 
     global co2_calibration_started
     global co2_prev_time
     try:
         print("Calibration Mode")
-        while button_state == 1:
+        while calibration == 1:
             for x in range(100):  # This Loop will run 100; times 0 to 100
                 pwm.ChangeDutyCycle(x)  # Change duty cycle
                 sleep(0.01)  # Delay of 10mS
             for x in range(100, 0, -1):  # Loop will run 100 times; 100 to 0
                 pwm.ChangeDutyCycle(x)
                 sleep(0.01)
-            print(f"Button State:{button_state}")
-            button_state = GPIO.input(Button)
+            print(f"Button State:{calibration}")
+            calibration = GPIO.input(Button)
 
-        if button_state == 0:
+        if calibration == 0:
             if pump_type == 'co2':
                 print("Running co2")
                 GPIO.output(Co2_pump, 1)
@@ -102,14 +103,14 @@ async def do_calibration(pump_type: str):
                 print("Running fertilizer")
                 GPIO.output(Fertilizer_pump, 1)
             GPIO.output(Co2_pump, 0)
-        while button_state == 0:
+        while calibration == 0:
             for x in range(100):  # This Loop will run 100; times 0 to 100
                 pwm.ChangeDutyCycle(x)  # Change duty cycle
                 sleep(0.0001)  # Delay of 10mS
             for x in range(100, 0, -1):  # Loop will run 100 times; 100 to 0
                 pwm.ChangeDutyCycle(x)
                 sleep(0.0001)
-                button_state = GPIO.input(Button)
+                calibration = GPIO.input(Button)
 
     # If keyboard Interrupt (CTRL-C) is pressed
     except KeyboardInterrupt:
