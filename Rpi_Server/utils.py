@@ -104,7 +104,6 @@ def co2_cal_stop():
     cal_time = end - start
     print(cal_time)
     return cal_time
-routes.stop_calibration()
 
 def do_calibration(pump_type: str):
     led_pulse(PULSE)
