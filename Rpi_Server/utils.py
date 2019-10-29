@@ -96,7 +96,7 @@ async def do_calibration(pump_type: str):
     try:
         print("Calibration Mode")
         print(f"Button State:{calibration}")
-        if calibration == 1:
+        if not calibration == 1:
             await led_pulse()
 
             calibration = GPIO.input(Button)
