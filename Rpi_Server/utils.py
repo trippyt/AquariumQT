@@ -96,7 +96,6 @@ def btn_pressed():
         sleep(0.1)
 
 def co2_cal_stop():
-    cal_time = None
     print("Stopping co2")
     print("Co2                      Calibration finished.")
     stop_led_pulse()
@@ -113,6 +112,7 @@ def do_calibration(pump_type: str):
         print("Running co2")
         print("Co2                      Calibration started.")
         led_pulse(FLASH)
+        global start
         start = time.time()
         GPIO.output(Co2_pump, 1)
         btn_pressed()
