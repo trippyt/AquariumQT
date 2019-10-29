@@ -103,25 +103,25 @@ def do_calibration(pump_type: str):
     button = GPIO.input(Button)
     while not button == 1:
         sleep(0.01)
-        if pump_type == 'co2':
-            if not co2_calibration_started:
-                # start calibration
-                co2_previous_time = time.time()
-                print("Running co2")
-                GPIO.output(Co2_pump, 1)
-                # set GPIO to turn on pump here
-                co2_calibration_started = True
-                print("Co2                      Calibration started.")
-            else:
-                # end calibration
-                cal_time = time.time() - co2_previous_time
-                co2_calibration_started = False
-                print(round(cal_time, 2))
-                GPIO.output(17, 0)
-                # set GPIO to turn off pump here
-                print("Co2                      Calibration finished.")
+    if pump_type == 'co2':
+        if not co2_calibration_started:
+            # start calibration
+            co2_previous_time = time.time()
+            print("Running co2")
+            GPIO.output(Co2_pump, 1)
+            # set GPIO to turn on pump here
+            co2_calibration_started = True
+            print("Co2                      Calibration started.")
+        else:
+            # end calibration
+            cal_time = time.time() - co2_previous_time
+            co2_calibration_started = False
+            print(round(cal_time, 2))
+            GPIO.output(17, 0)
+            # set GPIO to turn off pump here
+            print("Co2                      Calibration finished.")
 
-            return cal_time
+        return cal_time
 
 
 
