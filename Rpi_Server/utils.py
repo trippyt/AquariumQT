@@ -92,7 +92,7 @@ def stop_led_pulse():
     global led_pulse_loop
     led_pulse_loop = False
 
-def btn_pressed():
+#def btn_pressed():
 
 
 def do_calibration(pump_type: str):
