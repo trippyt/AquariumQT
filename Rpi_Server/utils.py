@@ -3,7 +3,7 @@ from time import sleep
 import time
 import random
 import threading
-
+import routes
 import t_sensor
 try:
     import RPi.GPIO as GPIO
@@ -104,6 +104,7 @@ def co2_cal_stop():
     cal_time = end - start
     print(cal_time)
     return cal_time
+routes.stop_calibration()
 
 def do_calibration(pump_type: str):
     led_pulse(PULSE)
