@@ -101,7 +101,7 @@ def do_calibration(pump_type: str):
     cal_time = None
     led_pulse(PULSE)
     button = GPIO.input(Button)
-    while not button == 1:
+    while not button == 0:
         if pump_type == 'co2':
             if not co2_calibration_started:
                 # start calibration
