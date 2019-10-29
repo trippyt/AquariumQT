@@ -35,6 +35,8 @@ async def led_pulse():
         for x in range(100, 0, -1):  # Loop will run 100 times; 100 to 0
             pwm.ChangeDutyCycle(x)
             sleep(0.01)
+        calibration = GPIO.input(Button)
+
 
 async def led_flash():
     global calibration
@@ -45,6 +47,8 @@ async def led_flash():
         for x in range(100, 0, -1):  # Loop will run 100 times; 100 to 0
             pwm.ChangeDutyCycle(x)
             sleep(0.0001)
+        calibration = GPIO.input(Button)
+
 
 async def do_pump(pump_type: str, seconds: int):
     if pump_type == 'co2':
