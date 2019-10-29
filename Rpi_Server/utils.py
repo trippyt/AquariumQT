@@ -26,30 +26,6 @@ co2_calibration_started = False
 
 led_on = True
 
-async def led_pulse():
-    global calibration
-    while calibration == 1 :
-        for x in range(100):  # This Loop will run 100; times 0 to 100
-            pwm.ChangeDutyCycle(x)  # Change duty cycle
-            sleep(0.01)  # Delay of 10mS
-        for x in range(100, 0, -1):  # Loop will run 100 times; 100 to 0
-            pwm.ChangeDutyCycle(x)
-            sleep(0.01)
-        calibration = GPIO.input(Button)
-
-
-async def led_flash():
-    global calibration
-    while calibration == 0:
-        for x in range(100):  # This Loop will run 100; times 0 to 100
-            pwm.ChangeDutyCycle(x)  # Change duty cycle
-            sleep(0.0001)  # Delay of 10mS
-        for x in range(100, 0, -1):  # Loop will run 100 times; 100 to 0
-            pwm.ChangeDutyCycle(x)
-            sleep(0.0001)
-        calibration = GPIO.input(Button)
-
-
 async def do_pump(pump_type: str, seconds: int):
     if pump_type == 'co2':
         print("Running co2")
@@ -139,6 +115,29 @@ async def do_calibration(pump_type: str):
     except KeyboardInterrupt:
         pass  # Go to next line
     pwm.stop()  # Stop the PWM
+
+async def led_pulse():
+    global calibration
+    while calibration == 1 :
+        for x in range(100):  # This Loop will run 100; times 0 to 100
+            pwm.ChangeDutyCycle(x)  # Change duty cycle
+            sleep(0.01)  # Delay of 10mS
+        for x in range(100, 0, -1):  # Loop will run 100 times; 100 to 0
+            pwm.ChangeDutyCycle(x)
+            sleep(0.01)
+        calibration = GPIO.input(Button)
+
+
+async def led_flash():
+    global calibration
+    while calibration == 0:
+        for x in range(100):  # This Loop will run 100; times 0 to 100
+            pwm.ChangeDutyCycle(x)  # Change duty cycle
+            sleep(0.0001)  # Delay of 10mS
+        for x in range(100, 0, -1):  # Loop will run 100 times; 100 to 0
+            pwm.ChangeDutyCycle(x)
+            sleep(0.0001)
+        #calibration = GPIO.input(Button)
 
 
 async def temp():
