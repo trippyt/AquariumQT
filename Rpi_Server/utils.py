@@ -70,7 +70,7 @@ async def do_calibration(pump_type: str):
     global co2_prev_time
     try:
         print("Calibration Mode")
-        if button_state == 0:
+        while button_state == 0:
             for x in range(100):  # This Loop will run 100; times 0 to 100
                 pwm.ChangeDutyCycle(x)  # Change duty cycle
                 await sleep(0.01)  # Delay of 10mS
@@ -80,7 +80,7 @@ async def do_calibration(pump_type: str):
             print(f"Button State:{button_state}")
             button_state = GPIO.input(Button)
 
-        if button_state == 1:
+        while button_state == 1:
             if pump_type == 'co2':
                 print("Running co2")
                 GPIO.output(Co2_pump, 1)
