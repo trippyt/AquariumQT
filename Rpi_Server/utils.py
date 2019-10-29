@@ -23,11 +23,11 @@ pwm = GPIO.PWM(led_pin, 100)  # Created a PWM object
 pwm.start(0)  # Started PWM at 0% duty cycle
 #flag = 0
 
-co2_calibration_started = False
-
 FLASH = 0
 PULSE = 1
 led_pulse_loop = True
+co2_calibration_started = False
+co2_previous_time = None
 
 async def do_pump(pump_type: str, seconds: int):
     if pump_type == 'co2':
@@ -92,85 +92,78 @@ def stop_led_pulse():
     global led_pulse_loop
     led_pulse_loop = False
 
+def btn_pressed():
 
-##### example usage
-
-# -- calibration mode starts here --
-led_pulse(PULSE)
-# ... wait for button press
-do_calibration()
-# ... whatever else needs to happen
-stop_led_pulse()
 
 def do_calibration(pump_type: str):
-    calibration = GPIO.input(Button)
     global co2_calibration_started
-    global co2_prev_time
-    calibration = not False
-
-    try:
-        print(f"{pump_type} Calibration Mode")
-        print(f"Button State:{calibration}")
-        if  calibration == 1:
-            option.led_pulse()
-        elif calibration == 0:
-            print(f"Button State:{calibration}")
-            if pump_type == 'co2':
+    global co2_previous_time
+    cal_time = None
+    led_pulse(PULSE)
+    button = GPIO.input(Button)
+    while not button == 1:
+        if pump_type == 'co2':
+            if not co2_calibration_started:
+                # start calibration
+                co2_previous_time = time.time()
                 print("Running co2")
                 GPIO.output(Co2_pump, 1)
-                co2_calibration_started = not co2_calibration_started
-                if co2_calibration_started:
-                    await led_flash()
-                    co2_prev_time = time.time()
-                    GPIO.output(17, 1)
-                    print("Co2                      Calibration started.")
-                    calibration = GPIO.input(Button)
+                # set GPIO to turn on pump here
+                co2_calibration_started = True
+                print("Co2                      Calibration started.")
+            else:
+                # end calibration
+                cal_time = time.time() - co2_previous_time
+                co2_calibration_started = False
+                print(round(cal_time, 2))
+                GPIO.output(17, 0)
+                # set GPIO to turn off pump here
+                print("Co2                      Calibration finished.")
 
-                else:
-                    co2_elapsed_time = time.time() - co2_prev_time
-                    #print(f"{pump_type}{co2_elapsed_time}:2.")
-                    print(round(co2_elapsed_time, 2))
-                    GPIO.output(17, 0)
-                    print("Co2                      Calibration finished.")
-                    calibration = GPIO.input(Button)
+            return cal_time
 
 
-            elif pump_type == 'conditioner':
-                print("Running conditioner")
-            elif pump_type == 'fertilizer':
-                print("Running fertilizer")
-                GPIO.output(Fertilizer_pump, 1)
-            GPIO.output(Co2_pump, 0)
 
-    # If keyboard Interrupt (CTRL-C) is pressed
-    except KeyboardInterrupt:
-        pass  # Go to next line
-    led_stop()
+#    try:
+#        print(f"{pump_type} Calibration Mode")
+#        print(f"Button State:{calibration}")
+#        if  calibration == 1:
+#            led_pulse(PULSE)
+#        elif calibration == 0:
+#            print(f"Button State:{calibration}")
+#            if pump_type == 'co2':
+#                print("Running co2")
+#                GPIO.output(Co2_pump, 1)
+#                co2_calibration_started = not co2_calibration_started
+#                if co2_calibration_started:
+#                    led_pulse(FLASH)
+#                    co2_prev_time = time.time()
+#                    GPIO.output(17, 1)
+#                    print("Co2                      Calibration started.")
+#                    calibration = GPIO.input(Button)
+#
+#                else:
+#                    co2_elapsed_time = time.time() - co2_prev_time
+#                    #print(f"{pump_type}{co2_elapsed_time}:2.")
+#                    print(round(co2_elapsed_time, 2))
+#                    GPIO.output(17, 0)
+#                    print("Co2                      Calibration finished.")
+#                    calibration = GPIO.input(Button)
+#
+#
+#            elif pump_type == 'conditioner':
+#                print("Running conditioner")
+#            elif pump_type == 'fertilizer':
+#                print("Running fertilizer")
+#                GPIO.output(Fertilizer_pump, 1)
+#            GPIO.output(Co2_pump, 0)
+#
+#    # If keyboard Interrupt (CTRL-C) is pressed
+#    except KeyboardInterrupt:
+#        pass  # Go to next line
+#    pwm.stop()
 
-async def led_pulse():
-    global calibration
-    while calibration == 1 :
-        for x in range(100):  # This Loop will run 100; times 0 to 100
-            pwm.ChangeDutyCycle(x)  # Change duty cycle
-            sleep(0.01)  # Delay of 10mS
-        for x in range(100, 0, -1):  # Loop will run 100 times; 100 to 0
-            pwm.ChangeDutyCycle(x)
-            sleep(0.01)
-        calibration = GPIO.input(Button)
 
-async def led_flash():
-    global calibration
-    while calibration == 0:
-        for x in range(100):  # This Loop will run 100; times 0 to 100
-            pwm.ChangeDutyCycle(x)  # Change duty cycle
-            sleep(0.0001)  # Delay of 10mS
-        for x in range(100, 0, -1):  # Loop will run 100 times; 100 to 0
-            pwm.ChangeDutyCycle(x)
-            sleep(0.0001)
-        calibration = GPIO.input(Button)
-
-async def led_stop():
-    pwm.stop()
 
 async def temp():
     temp_c, temp_f = t_sensor.read_temp()
