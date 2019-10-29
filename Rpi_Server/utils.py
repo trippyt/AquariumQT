@@ -22,12 +22,9 @@ GPIO.setup(led_pin, GPIO.OUT)  # Notification LED pin
 pwm = GPIO.PWM(led_pin, 100)  # Created a PWM object
 pwm.start(0)  # Started PWM at 0% duty cycle
 #flag = 0
-
 FLASH = 0
 PULSE = 1
 led_pulse_loop = True
-co2_calibration_started = False
-co2_previous_time = None
 
 async def do_pump(pump_type: str, seconds: int):
     if pump_type == 'co2':
@@ -98,8 +95,18 @@ def btn_pressed():
     while not GPIO.input(Button):
         sleep(0.1)
 
-def do_calibration(pump_type: str):
+def co2_cal_stop():
     cal_time = None
+    print("Stopping co2")
+    print("Co2                      Calibration finished.")
+    stop_led_pulse()
+    end = time.time()
+    GPIO.output(Co2_pump, 0)
+    cal_time = end - start
+    print(cal_time)
+    return cal_time
+
+def do_calibration(pump_type: str):
     led_pulse(PULSE)
     btn_pressed()
     if pump_type == 'co2':
@@ -109,14 +116,7 @@ def do_calibration(pump_type: str):
         start = time.time()
         GPIO.output(Co2_pump, 1)
         btn_pressed()
-        print("Stopping co2")
-        print("Co2                      Calibration finished.")
-        stop_led_pulse()
-        end = time.time()
-        GPIO.output(Co2_pump, 0)
-        elapsed_time = end - start
-        print(elapsed_time)
-        return elapsed_time
+        co2_cal_stop()
 
 #    try:
 #        print(f"{pump_type} Calibration Mode")
