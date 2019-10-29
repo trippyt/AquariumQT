@@ -26,7 +26,7 @@ co2_calibration_started = False
 
 led_on = True
 
-async def led_pulse(self):
+async def led_pulse():
     while True:
         for x in range(100):  # This Loop will run 100; times 0 to 100
             pwm.ChangeDutyCycle(x)  # Change duty cycle
@@ -35,7 +35,7 @@ async def led_pulse(self):
             pwm.ChangeDutyCycle(x)
             sleep(0.01)
 
-async def led_flash(self):
+async def led_flash():
     while True:
         for x in range(100):  # This Loop will run 100; times 0 to 100
             pwm.ChangeDutyCycle(x)  # Change duty cycle
@@ -89,7 +89,7 @@ async def do_calibration(pump_type: str):
         print("Calibration Mode")
         print(f"Button State:{calibration}")
         if calibration == 1:
-            self.led_pulse()
+            led_pulse()
 
             calibration = GPIO.input(Button)
 
@@ -100,7 +100,7 @@ async def do_calibration(pump_type: str):
                 GPIO.output(Co2_pump, 1)
                 co2_calibration_started = not co2_calibration_started
                 if co2_calibration_started:
-                    self.led_flash()
+                    led_flash()
                     co2_prev_time = time.time()
                     GPIO.output(17, 1)
                     print("Co2                      Calibration started.")
