@@ -72,10 +72,10 @@ async def do_calibration(pump_type: str):
         while button_state == 0:
             for x in range(100):  # This Loop will run 100; times 0 to 100
                 pwm.ChangeDutyCycle(x)  # Change duty cycle
-                sleep(0.01)  # Delay of 10mS
+                async sleep(0.01)  # Delay of 10mS
             for x in range(100, 0, -1):  # Loop will run 100 times; 100 to 0
                 pwm.ChangeDutyCycle(x)
-                sleep(0.01)
+                async sleep(0.01)
 
 
             print(f"Button State:{button_state}")
