@@ -92,22 +92,23 @@ def stop_led_pulse():
     global led_pulse_loop
     led_pulse_loop = False
 
-#def btn_pressed():
-
+def btn_pressed():
+    while GPIO.input(Button):
+        sleep(0.1)
+    while not GPIO.input(Button):
+        sleep(0.1)
 
 def do_calibration(pump_type: str):
     cal_time = None
     led_pulse(PULSE)
-    while GPIO.input(Button):
-        sleep(0.1)
+    btn_pressed()
     if pump_type == 'co2':
         print("Running co2")
         print("Co2                      Calibration started.")
         led_pulse(FLASH)
         start = time.time()
         GPIO.output(Co2_pump, 1)
-        while GPIO.input(Button):
-            sleep(0.1)
+        btn_pressed()
         print("Stopping co2")
         print("Co2                      Calibration finished.")
         stop_led_pulse()
