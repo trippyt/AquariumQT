@@ -80,7 +80,7 @@ async def do_calibration(pump_type: str):
             print(f"Button State:{calibration}")
             calibration = GPIO.input(Button)
 
-        while calibration == 0:
+        if calibration == 0:
             print(f"Button State:{calibration}")
             if pump_type == 'co2':
                 print("Running co2")
