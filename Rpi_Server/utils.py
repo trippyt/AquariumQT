@@ -104,12 +104,16 @@ async def do_calibration(pump_type: str):
                     co2_prev_time = time.time()
                     GPIO.output(17, 1)
                     print("Co2                      Calibration started.")
+                    calibration = GPIO.input(Button)
+
                 else:
                     co2_elapsed_time = time.time() - co2_prev_time
                     #print(f"{pump_type}{co2_elapsed_time}:2.")
                     print(round(co2_elapsed_time, 2))
                     GPIO.output(17, 0)
                     print("Co2                      Calibration finished.")
+                    calibration = GPIO.input(Button)
+
 
             elif pump_type == 'conditioner':
                 print("Running conditioner")
