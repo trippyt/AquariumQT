@@ -26,6 +26,24 @@ co2_calibration_started = False
 
 led_on = True
 
+async def led_pulse(self):
+    while True:
+        for x in range(100):  # This Loop will run 100; times 0 to 100
+            pwm.ChangeDutyCycle(x)  # Change duty cycle
+            sleep(0.01)  # Delay of 10mS
+        for x in range(100, 0, -1):  # Loop will run 100 times; 100 to 0
+            pwm.ChangeDutyCycle(x)
+            sleep(0.01)
+
+async def led_flash(self):
+    while True:
+        for x in range(100):  # This Loop will run 100; times 0 to 100
+            pwm.ChangeDutyCycle(x)  # Change duty cycle
+            sleep(0.0001)  # Delay of 10mS
+        for x in range(100, 0, -1):  # Loop will run 100 times; 100 to 0
+            pwm.ChangeDutyCycle(x)
+            sleep(0.0001)
+
 async def do_pump(pump_type: str, seconds: int):
     if pump_type == 'co2':
         print("Running co2")
@@ -71,22 +89,18 @@ async def do_calibration(pump_type: str):
     try:
         print("Calibration Mode")
         while calibration == 1:
-            for x in range(100):  # This Loop will run 100; times 0 to 100
-                pwm.ChangeDutyCycle(x)  # Change duty cycle
-                sleep(0.01)  # Delay of 10mS
-            for x in range(100, 0, -1):  # Loop will run 100 times; 100 to 0
-                pwm.ChangeDutyCycle(x)
-                sleep(0.01)
             print(f"Button State:{calibration}")
             calibration = GPIO.input(Button)
 
         if calibration == 0:
+            self.led_pulse()
             print(f"Button State:{calibration}")
             if pump_type == 'co2':
                 print("Running co2")
                 GPIO.output(Co2_pump, 1)
                 co2_calibration_started = not co2_calibration_started
                 if co2_calibration_started:
+                    self.led_flash()
                     co2_prev_time = time.time()
                     GPIO.output(17, 1)
                     print("Co2                      Calibration started.")
@@ -116,26 +130,6 @@ async def do_calibration(pump_type: str):
     except KeyboardInterrupt:
         pass  # Go to next line
     pwm.stop()  # Stop the PWM
-
-async def led_pulse(self):
-    while True:
-        for x in range(100):  # This Loop will run 100; times 0 to 100
-            pwm.ChangeDutyCycle(x)  # Change duty cycle
-            sleep(0.01)  # Delay of 10mS
-        for x in range(100, 0, -1):  # Loop will run 100 times; 100 to 0
-            pwm.ChangeDutyCycle(x)
-            sleep(0.01)
-
-async def led_flash(self):
-    while True:
-        for x in range(50, 100, +1):  # This Loop will run 100; times 0 to 100
-            pwm.ChangeDutyCycle(x)  # Change duty cycle
-            sleep(0.01)  # Delay of 10mS
-        for x in range(100, 0, -1):  # Loop will run 100 times; 100 to 0
-            pwm.ChangeDutyCycle(x)
-            sleep(0.01)
-
-
 
 
 async def temp():
