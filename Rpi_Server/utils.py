@@ -63,8 +63,7 @@ async def stop_pump(pump_type: str):
 # from this point the led is off and the button will be inactive again just like in the beginning
 
 async def do_calibration(pump_type: str):
-    button_state = GPIO.input(Button)
-    calibration = button_state
+    calibration = GPIO.input(Button)
     calibration = not False
 
     global co2_calibration_started
