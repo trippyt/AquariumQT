@@ -69,7 +69,7 @@ async def do_calibration(pump_type: str):
     global co2_calibration_started
     global co2_prev_time
     try:
-        while calibration:
+        while button_state == 0:
             for x in range(100):  # This Loop will run 100; times 0 to 100
                 pwm.ChangeDutyCycle(x)  # Change duty cycle
                 sleep(0.01)  # Delay of 10mS
@@ -80,28 +80,28 @@ async def do_calibration(pump_type: str):
 
             print(f"Button State:{button_state}")
             print("Calibration Mode")
-            if button_state == 0:
-                if pump_type == 'co2':
-                    print("Running co2")
-                    GPIO.output(Co2_pump, 1)
-                    co2_calibration_started = not co2_calibration_started
-                    if co2_calibration_started:
-                        co2_prev_time = time.time()
-                        GPIO.output(17, 1)
-                        print("Co2                      Calibration started.")
-                    else:
-                        co2_elapsed_time = time.time() - co2_prev_time
-                        #print(f"{pump_type}{co2_elapsed_time}:2.")
-                        print(round(co2_elapsed_time, 2))
-                        GPIO.output(17, 0)
-                        print("Co2                      Calibration finished.")
+        if button_state == 1:
+            if pump_type == 'co2':
+                print("Running co2")
+                GPIO.output(Co2_pump, 1)
+                co2_calibration_started = not co2_calibration_started
+                if co2_calibration_started:
+                    co2_prev_time = time.time()
+                    GPIO.output(17, 1)
+                    print("Co2                      Calibration started.")
+                else:
+                    co2_elapsed_time = time.time() - co2_prev_time
+                    #print(f"{pump_type}{co2_elapsed_time}:2.")
+                    print(round(co2_elapsed_time, 2))
+                    GPIO.output(17, 0)
+                    print("Co2                      Calibration finished.")
 
-                elif pump_type == 'conditioner':
-                    print("Running conditioner")
-                elif pump_type == 'fertilizer':
-                    print("Running fertilizer")
-                    GPIO.output(Fertilizer_pump, 1)
-                GPIO.output(Co2_pump, 0)
+            elif pump_type == 'conditioner':
+                print("Running conditioner")
+            elif pump_type == 'fertilizer':
+                print("Running fertilizer")
+                GPIO.output(Fertilizer_pump, 1)
+            GPIO.output(Co2_pump, 0)
 
         while calibration == 1:
             for x in range(100):  # This Loop will run 100; times 0 to 100
