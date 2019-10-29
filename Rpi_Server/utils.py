@@ -89,7 +89,7 @@ async def do_calibration(pump_type: str):
         print("Calibration Mode")
         print(f"Button State:{calibration}")
         if calibration == 1:
-            led_pulse()
+            await led_pulse()
 
             calibration = GPIO.input(Button)
 
@@ -100,7 +100,7 @@ async def do_calibration(pump_type: str):
                 GPIO.output(Co2_pump, 1)
                 co2_calibration_started = not co2_calibration_started
                 if co2_calibration_started:
-                    led_flash()
+                    await led_flash()
                     co2_prev_time = time.time()
                     GPIO.output(17, 1)
                     print("Co2                      Calibration started.")
