@@ -2,6 +2,7 @@ import asyncio
 from time import sleep
 import time
 import random
+import threading
 
 import t_sensor
 try:
@@ -24,7 +25,9 @@ pwm.start(0)  # Started PWM at 0% duty cycle
 
 co2_calibration_started = False
 
-led_on = True
+FLASH = 0
+PULSE = 1
+led_pulse_loop = True
 
 async def do_pump(pump_type: str, seconds: int):
     if pump_type == 'co2':
@@ -61,9 +64,45 @@ async def stop_pump(pump_type: str):
 # once the user has measured 10ml press the physical button again the pump and timer stop and the led turns off
 # server then saves the elapsed time for that dose calibration, and sends it to the gui to display (exits calibration mode)
 # from this point the led is off and the button will be inactive again just like in the beginning
+def led_pulse_worker(option):
+    '''worker function for led pulse thread'''
+    global led_pulse_loop
+    if option == FLASH:
+        sleep_time = 0.0001
+    else: # PULSE
+        sleep_time = 0.01
 
-async def do_calibration(pump_type: str):
-    global calibration
+    while led_pulse_loop:
+        for x in range(100):  # This Loop will run 100; times 0 to 100
+            pwm.ChangeDutyCycle(x)  # Change duty cycle
+            sleep(sleep_time)  # Delay of 10mS
+        for x in range(100, 0, -1):  # Loop will run 100 times; 100 to 0
+            pwm.ChangeDutyCycle(x)
+            sleep(sleep_time)
+
+    pwm.ChangeDutyCycle(0)
+    # once signal to stop is received, reset flag to True
+    led_pulse_loop = True
+
+def led_pulse(option):
+    pulse_thread = threading.Thread(target=led_pulse_worker, args=(option,))
+    pulse_thread.start()
+
+def stop_led_pulse():
+    global led_pulse_loop
+    led_pulse_loop = False
+
+
+##### example usage
+
+# -- calibration mode starts here --
+led_pulse(PULSE)
+# ... wait for button press
+do_calibration()
+# ... whatever else needs to happen
+stop_led_pulse()
+
+def do_calibration(pump_type: str):
     calibration = GPIO.input(Button)
     global co2_calibration_started
     global co2_prev_time
@@ -73,7 +112,7 @@ async def do_calibration(pump_type: str):
         print(f"{pump_type} Calibration Mode")
         print(f"Button State:{calibration}")
         if  calibration == 1:
-            await led_pulse()
+            option.led_pulse()
         elif calibration == 0:
             print(f"Button State:{calibration}")
             if pump_type == 'co2':
@@ -106,7 +145,7 @@ async def do_calibration(pump_type: str):
     # If keyboard Interrupt (CTRL-C) is pressed
     except KeyboardInterrupt:
         pass  # Go to next line
-    pwm.stop()  # Stop the PWM
+    led_stop()
 
 async def led_pulse():
     global calibration
@@ -118,7 +157,6 @@ async def led_pulse():
             pwm.ChangeDutyCycle(x)
             sleep(0.01)
         calibration = GPIO.input(Button)
-        return
 
 async def led_flash():
     global calibration
@@ -130,8 +168,9 @@ async def led_flash():
             pwm.ChangeDutyCycle(x)
             sleep(0.0001)
         calibration = GPIO.input(Button)
-        return
 
+async def led_stop():
+    pwm.stop()
 
 async def temp():
     temp_c, temp_f = t_sensor.read_temp()
