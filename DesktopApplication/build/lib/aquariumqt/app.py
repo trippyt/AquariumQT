@@ -141,7 +141,7 @@ class App(object):
         self.form.saveDoses_pushButton.clicked.connect(self.save)
 
         self.form.feed_pushButton.clicked.connect(self.feed_test)
-        self.form.C02CalibrationButton.clicked.connect(lambda: self.send_calibration_request("co2"))
+        self.form.C02CalibrationButton.clicked.connect(lambda: self.enter_calibration_mode("co2"))
         self.form.c02_pushButton.clicked.connect(self.co2_manual_dose)
         self.form.FertzCalibrationButton.clicked.connect(self.fertz_calibration)
         self.form.TapSafeCalibrationButton.clicked.connect(self.conditioner_calibration)
@@ -491,7 +491,7 @@ class App(object):
         GPIO.output(27, 0)
         print("Secondary Deactivated")
 
-    def send_calibration_request(self, pump_type):
+    def enter_calibration_mode(self, pump_type):
         self.calibration_mode_on = not self.calibration_mode_on
         if not self.calibration_mode_on:
             url = f"http://192.168.1.35:5000/calibrationModeOn?type={pump_type}"
@@ -499,10 +499,13 @@ class App(object):
             request = QtNetwork.QNetworkRequest(QUrl(url))
             self.nam.get(request)
         else:
-            url = f"http://192.168.1.35:5000/calibrationModeOff?type={pump_type}"
-            print("Exiting Calibration Mode")
-            request = QtNetwork.QNetworkRequest(QUrl(url))
-            self.nam.get(request)
+            self.exit_calibration_mode(pump_type)
+
+    def exit_calibration_mode(self, pump_type):
+        url = f"http://192.168.1.35:5000/calibrationModeOff?type={pump_type}"
+        print("Exiting Calibration Mode")
+        request = QtNetwork.QNetworkRequest(QUrl(url))
+        self.nam.get(request)
 #    def send_calibration_request(self, pump_type):
 #        self.pump_on = not self.pump_on
 #        if not self.pump_on:

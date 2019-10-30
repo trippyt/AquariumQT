@@ -105,6 +105,7 @@ def btn_pressed():
 def stop_cal():
     global cal_stop_signal
     cal_stop_signal = True
+    stop_led_pulse()
 
 def start_calibration(pump_type: str):
     try:
