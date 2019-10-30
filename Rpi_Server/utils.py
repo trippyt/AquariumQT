@@ -117,7 +117,7 @@ def start_calibration(pump_type: str):
         start = time.time()
         GPIO.output(Co2_pump, 1)
         btn_pressed()
-        stop_calibration()
+        stop_calibration('co2')
 
 #    try:
 #        print(f"{pump_type} Calibration Mode")
