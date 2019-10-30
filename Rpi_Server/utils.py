@@ -125,7 +125,7 @@ def start_calibration(pump_type: str):
             stop_led_pulse()
             end = time.time()
             GPIO.output(Co2_pump, 0)
-            cal_time = end - start
+            cal_time = round(end - start, 2)
             print(cal_time)
             return cal_time
     except ThreadKilled:
