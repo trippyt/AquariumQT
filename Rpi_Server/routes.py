@@ -9,7 +9,7 @@ async def run_calibration():
     pump_type = request.args.get('type')
     print(pump_type)
     if pump_type in ['conditioner', 'co2', 'fertilizer']:
-        cal_thread = threading.Thread(target=utils.start_calibration, args=(pump_type,)
+        cal_thread = threading.Thread(target=utils.start_calibration, args=(pump_type,))
         cal_thread.start()
         return f"Calibrating {pump_type} pump."
     else:
