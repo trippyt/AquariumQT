@@ -26,6 +26,9 @@ FLASH = 0
 PULSE = 1
 led_pulse_loop = True
 
+class ThreadKilled (Exception):
+   pass
+
 async def do_pump(pump_type: str, seconds: int):
     if pump_type == 'co2':
         print("Running co2")
@@ -92,32 +95,41 @@ def stop_led_pulse():
 def btn_pressed():
     while GPIO.input(Button):
         sleep(0.1)
+        if cal_stop_signal:
+            raise ThreadKilled()
     while not GPIO.input(Button):
         sleep(0.1)
+        if cal_stop_signal:
+            raise ThreadKilled()
 
-def stop_calibration(pump_type: str):
-    if pump_type == 'co2':
-        print("Stopping co2")
-        print("Co2                      Calibration finished.")
-        stop_led_pulse()
-        end = time.time()
-        GPIO.output(Co2_pump, 0)
-        cal_time = end - start
-        print(cal_time)
-        return cal_time
+def stop_cal():
+    global cal_stop_signal
+    cal_stop_signal = True
 
 def start_calibration(pump_type: str):
-    led_pulse(PULSE)
-    btn_pressed()
-    if pump_type == 'co2':
-        print("Running co2")
-        print("Co2                      Calibration started.")
-        led_pulse(FLASH)
-        global start
-        start = time.time()
-        GPIO.output(Co2_pump, 1)
+    try:
+        global cal_stop_signal
+        cal_stop_signal = False
+        led_pulse(PULSE)
         btn_pressed()
-        stop_calibration('co2')
+        if pump_type == 'co2':
+            print("Running co2")
+            print("Co2                      Calibration started.")
+            led_pulse(FLASH)
+            start = time.time()
+            GPIO.output(Co2_pump, 1)
+            btn_pressed()
+            print("Stopping co2")
+            print("Co2                      Calibration finished.")
+            stop_led_pulse()
+            end = time.time()
+            GPIO.output(Co2_pump, 0)
+            cal_time = end - start
+            print(cal_time)
+            return cal_time
+    except ThreadKilled:
+        print('calibration was cancelled!')
+
 
 #    try:
 #        print(f"{pump_type} Calibration Mode")

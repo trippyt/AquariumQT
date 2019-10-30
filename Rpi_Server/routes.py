@@ -1,5 +1,6 @@
 from quart import Quart, request, websocket
 import utils
+import threading
 from time import sleep
 app = Quart(__name__)
 
@@ -8,7 +9,8 @@ async def run_calibration():
     pump_type = request.args.get('type')
     print(pump_type)
     if pump_type in ['conditioner', 'co2', 'fertilizer']:
-        utils.start_calibration(pump_type)
+        cal_thread = threading.Thread(target=utils.start_calibration, args=(pump_type,)
+        cal_thread.start()
         return f"Calibrating {pump_type} pump."
     else:
         return "Invalid pump specified"
@@ -18,7 +20,7 @@ async def stop_calibration():
     pump_type = request.args.get('type')
     print(pump_type)
     if pump_type in ['conditioner', 'co2', 'fertilizer']:
-        utils.stop_calibration(pump_type)
+        utils.stop_cal()
         return f"Finished Calibrating {pump_type} pump."
     else:
         return "Invalid pump specified"
