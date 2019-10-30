@@ -95,7 +95,7 @@ def btn_pressed():
     while not GPIO.input(Button):
         sleep(0.1)
 
-def stop_calibration():
+def stop_calibration(pump_type: str):
     if pump_type == 'co2':
         print("Stopping co2")
         print("Co2                      Calibration finished.")
