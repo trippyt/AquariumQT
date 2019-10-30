@@ -8,8 +8,8 @@ async def run_calibration():
     pump_type = request.args.get('type')
     print(pump_type)
     if pump_type in ['conditioner', 'co2', 'fertilizer']:
-        utils.do_calibration(pump_type)
-        return f"Calibrating {pump_type} pump."
+        utils.start_calibration(pump_type)
+        return f"Calibrating {pump_type} pump {cal_time}."
     else:
         return "Invalid pump specified"
 
@@ -18,7 +18,7 @@ async def stop_calibration():
     pump_type = request.args.get('type')
     print(pump_type)
     if pump_type in ['conditioner', 'co2', 'fertilizer']:
-        utils.co2_cal_stop()
+        utils.stop_calibration(pump_type)
         return f"Finished Calibrating {pump_type} pump."
     else:
         return "Invalid pump specified"
