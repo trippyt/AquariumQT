@@ -9,7 +9,7 @@ async def run_calibration():
     print(pump_type)
     if pump_type in ['conditioner', 'co2', 'fertilizer']:
         utils.start_calibration(pump_type)
-        return f"Calibrating {pump_type} pump {cal_time}."
+        return f"Calibrating {pump_type} pump."
     else:
         return "Invalid pump specified"
 
