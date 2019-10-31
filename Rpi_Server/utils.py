@@ -41,7 +41,7 @@ def load():
                 temperature_data = data["Temperature Data"]
             except KeyError:
                 print("No Temperature Data To Load")
-            return jsonify(utils.load())
+
 
 temperature_data = {
     "Temperature Data": {},
