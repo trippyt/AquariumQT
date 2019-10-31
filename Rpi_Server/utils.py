@@ -33,6 +33,11 @@ class ThreadKilled (Exception):
    pass
 
 
+temperature_data = {
+    "Temperature Data": {},
+}
+
+
 def save():
     data = {
         "Conversion Data": conversion_data,

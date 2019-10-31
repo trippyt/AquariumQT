@@ -329,7 +329,7 @@ class App(object):
         print(f"Sending Alert Changes to Network")
         print(f"High Temperature: {ht}")
         print(f"Low Temperature: {lt}")
-        url = f"http:192.168.1.35:5000/setTemperatureAlert?ht={ht}&lt={lt}"
+        url = f"http://192.168.1.35:5000/setTemperatureAlert?ht={ht}&lt={lt}"
         request = QtNetwork.QNetworkRequest(QUrl(url))
         self.nam.get(request)
 
