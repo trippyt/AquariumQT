@@ -261,6 +261,7 @@ class App(object):
                 print("Loading Temperature Data")
             else:
                 print("No Temperature Data To Load")
+            self.load_server()
 
     def co2_perml(self):
         time = self.calibration_data["Co2 Calibration Data"]["Time"] / 10
