@@ -6,6 +6,7 @@ import threading
 import routes
 import t_sensor
 import json
+import os
 try:
     import RPi.GPIO as GPIO
 except:
