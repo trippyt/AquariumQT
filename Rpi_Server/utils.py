@@ -37,10 +37,8 @@ def load():
     if os.path.isfile('data.txt'):
         with open('data.txt', 'r') as json_file:
             data = json.loads(json_file.read())
-            try:
-                temperature_data = data["Temperature Data"]
-            except KeyError:
-                print("No Temperature Data To Load")
+            temperature_data = data["Temperature Data"]
+
 
 
 temperature_data = {
@@ -92,9 +90,6 @@ def save():
     with open('data.txt', 'w') as json_file:
         json_file.write(json.dumps(data, indent=4))
     print("Settings Updated")
-
-
-
 
 def alert_data(ht: int, lt: int):
         print("New Alert Set")

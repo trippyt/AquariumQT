@@ -173,6 +173,7 @@ class App(object):
         self.log = logging.getLogger('AquariumQT')
         self.log.handlers = [InfoHandler(self.form.textBrowser)]
         self.load()
+        self.load_server()
         self.start_timers()
 
         self.update_timer()
@@ -191,17 +192,18 @@ class App(object):
             "Conversion Data": self.conversion_data,
             "Schedule Data": self.schedule_data,
             "Calibration Data": self.calibration_data,
-            "Temperature Data": self.temperature_data,
+            #"Temperature Data": self.temperature_data,
             "Light Hour Data": self.light_hour_data
         }
         with open('data.txt', 'w') as json_file:
             json_file.write(json.dumps(data, indent=4))
         self.log.info("Settings Updated")
 
-    def load(self):
+    def load_server(self):
         url = f"http://192.168.1.35:5000/getTemperatureAlert"
         request = QtNetwork.QNetworkRequest(QUrl(url))
-        self.nam.get(request)
+        resp = self.nam.get(request)
+        data = resp.json()
 
     def load(self):
         if os.path.isfile('data.txt'):

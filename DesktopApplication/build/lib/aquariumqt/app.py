@@ -199,6 +199,11 @@ class App(object):
         self.log.info("Settings Updated")
 
     def load(self):
+        url = f"http://192.168.1.35:5000/getTemperatureAlert"
+        request = QtNetwork.QNetworkRequest(QUrl(url))
+        self.nam.get(request)
+
+    def load(self):
         if os.path.isfile('data.txt'):
             with open('data.txt', 'r') as json_file:
                 data = json.loads(json_file.read())
