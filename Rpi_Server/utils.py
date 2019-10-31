@@ -193,6 +193,12 @@ def start_calibration(pump_type: str):
             GPIO.output(Co2_pump, 0)
             cal_time = round(end - start, 2)
             print(cal_time)
+            calibration_data["Co2 Calibration Data"].update(
+                {
+                    "Time": round(cal_time, 2)
+                }
+            )
+            save()
     except ThreadKilled:
         print('calibration was cancelled!')
         stop_led_pulse()
