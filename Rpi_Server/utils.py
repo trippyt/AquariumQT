@@ -75,6 +75,7 @@ def load():
         with open('data.txt', 'r') as json_file:
             data = json.loads(json_file.read())
             temperature_data = data["Temperature Data"]
+            return temperature_data
 
 def save():
     data = {
