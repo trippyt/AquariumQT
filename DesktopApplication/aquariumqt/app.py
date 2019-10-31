@@ -203,7 +203,7 @@ class App(object):
         url = f"http://192.168.1.35:5000/getTemperatureAlert"
         request = QtNetwork.QNetworkRequest(QUrl(url))
         resp = self.nam.get(request)
-        data = resp.json()
+        data = resp.readAll()
 
     def load(self):
         if os.path.isfile('data.txt'):
