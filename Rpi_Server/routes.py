@@ -6,12 +6,17 @@ from time import sleep
 app = Quart(__name__)
 
 @app.route('/setTemperatureAlert', methods=['GET', 'POST'])
-async def temperature_alert():
+async def set_temperature_alert():
     print("Receiving Alert Data")
     ht = request.args.get('ht')
     lt = request.args.get('lt')
     utils.alert_data(ht, lt)
     return f"Temperature Alerts H:{ht} L:{lt}"
+
+@app.route('/getTemperatureAlert', methods=['GET'])
+async def get_temperature_alert():
+    print("Sending Data")
+    utils.load()
 
 @app.route('/calibrationModeOn', methods=['GET', 'POST'])
 async def run_calibration():
