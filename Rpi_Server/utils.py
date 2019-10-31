@@ -80,7 +80,7 @@ def save():
     }
     with open('data.txt', 'w') as json_file:
         json_file.write(json.dumps(data, indent=4))
-    log.info("Settings Updated")
+    print("Settings Updated")
 
 
 def load():
