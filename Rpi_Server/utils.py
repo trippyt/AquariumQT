@@ -36,7 +36,47 @@ class ThreadKilled (Exception):
 temperature_data = {
     "Temperature Data": {},
 }
+conversion_values = {
+            "tank_size": {},
+            "co2_amount": {},
+            "co2_to_water": {},
+            "fertz_amount": {},
+            "fertz_to_water": {},
+            "conditioner_amount": {},
+            "conditioner_to_water": {},
+            "co2_dosage": {},
+            "fertz_dosage": {},
+            "conditioner_dosage": {},
+        }
+conversion_data = {
+            "Tank Size": {},
+            "Co2 Ratio": {},
+            "Fertilizer Ratio": {},
+            "Water Conditioner Ratio": {},
+        }
+schedule_data = {
+            "Co2 Schedule Data": {},
+            "Fertilizer Schedule Data": {},
+            "Tap Schedule Data": {},
+            "Water Cycle Schedule Data": {}
+        }
+calibration_data = {
+            "Co2 Calibration Data": {},
+            "Fertilizer Calibration Data": {},
+            "Water Conditioner Calibration Data": {},
+        }
 
+light_hour_data = {
+            "Mode Hours": {},
+        }
+
+        # Simple mapping for the combobox
+light_type_map = {
+            'default': 'off',
+            0: 'day',
+            1: 'night',
+            2: 'off',
+        }
 
 def save():
     data = {
