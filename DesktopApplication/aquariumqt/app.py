@@ -204,6 +204,7 @@ class App(object):
         request = QtNetwork.QNetworkRequest(QUrl(url))
         resp = self.nam.get(request)
         data = resp.readAll()
+        print(data)
 
     def load(self):
         if os.path.isfile('data.txt'):
