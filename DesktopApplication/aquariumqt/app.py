@@ -173,7 +173,6 @@ class App(object):
         self.log = logging.getLogger('AquariumQT')
         self.log.handlers = [InfoHandler(self.form.textBrowser)]
         self.load()
-        self.load_server()
         self.start_timers()
 
         self.update_timer()

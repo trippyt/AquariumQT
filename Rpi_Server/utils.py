@@ -74,6 +74,7 @@ def load():
     if os.path.isfile('data.txt'):
         with open('data.txt', 'r') as json_file:
             data = json.loads(json_file.read())
+            print(data)
             return data
 
 def save():
