@@ -88,14 +88,14 @@ def load():
         with open('data.txt', 'r') as json_file:
             data = json.loads(json_file.read())
 
-def alert_data(ht: str, lt: str):
+def alert_data(ht: int, lt: int):
         print("New Alert Set")
         print(f"High Temperature: {ht}")
         print(f"Low Temperature: {lt}")
         temperature_data.update(
             {
-                "High Temp": {ht},
-                "Low Temp": {lt}
+                "High Temp": ht,
+                "Low Temp": lt
             }
         )
         save()
