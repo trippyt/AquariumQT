@@ -10,7 +10,8 @@ async def temperature_alert():
     print("Receiving Alert Data")
     ht = request.args.get('ht')
     lt = request.args.get('lt')
-    await utils.alert_data(ht, lt)
+    utils.alert_data(ht, lt)
+    return f"Temperature Alerts H:{ht} L:{lt}"
 
 @app.route('/calibrationModeOn', methods=['GET', 'POST'])
 async def run_calibration():
