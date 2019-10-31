@@ -32,6 +32,14 @@ cal_time = None
 class ThreadKilled (Exception):
    pass
 
+def load():
+    if os.path.isfile('data.txt'):
+        with open('data.txt', 'r') as json_file:
+            data = json.loads(json_file.read())
+            try:
+                temperature_data = data["Temperature Data"]
+            except KeyError:
+                print("No Temperature Data To Load")
 
 temperature_data = {
     "Temperature Data": {},
@@ -69,6 +77,7 @@ calibration_data = {
 light_hour_data = {
             "Mode Hours": {},
         }
+load()
 
 def save():
     data = {
@@ -83,10 +92,7 @@ def save():
     print("Settings Updated")
 
 
-def load():
-    if os.path.isfile('data.txt'):
-        with open('data.txt', 'r') as json_file:
-            data = json.loads(json_file.read())
+
 
 def alert_data(ht: int, lt: int):
         print("New Alert Set")
