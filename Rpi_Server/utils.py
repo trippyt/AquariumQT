@@ -51,7 +51,7 @@ def load():
         with open('data.txt', 'r') as json_file:
             data = json.loads(json_file.read())
 
-def alert_data():
+def alert_data(ht: int, lt: int):
         print("New Alert Set")
         temperature_data.update(
             {
