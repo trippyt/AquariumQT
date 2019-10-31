@@ -5,7 +5,7 @@ import threading
 from time import sleep
 app = Quart(__name__)
 
-@app.route('/setTemperatureAlert', methods=['GET, POST'])
+@app.route('/setTemperatureAlert', methods=['GET', 'POST'])
 async def temperature_alert():
     print("Receiving Alert Data")
     ht = request.args.get('ht')
