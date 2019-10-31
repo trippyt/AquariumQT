@@ -1,8 +1,15 @@
 from quart import Quart, request, websocket
+from quart.json import jsonify
 import utils
 import threading
 from time import sleep
 app = Quart(__name__)
+
+@app.route('/setTemperatureAlert', methods=['GET'])
+async def temperature_alert():
+    ht = request.args.get('ht')
+    lt = request.args.get('lt')
+    utils.temperatureData()
 
 @app.route('/calibrationModeOn', methods=['GET', 'POST'])
 async def run_calibration():
@@ -19,11 +26,16 @@ async def run_calibration():
 async def stop_calibration():
     pump_type = request.args.get('type')
     print(pump_type)
+    resp = {}
     if pump_type in ['conditioner', 'co2', 'fertilizer']:
         utils.stop_cal()
-        return f"Finished Calibrating {pump_type} pump."
+        if utils.cal_time:
+            resp['cal_time'] = utils.cal_time
+        else:
+            resp['error'] = 'Calibration was cancelled'
     else:
-        return "Invalid pump specified"
+        resp['error'] = 'Invalid pump type'
+    return jsonify(resp)
 
 #@app.route('/runPump', methods=['GET', 'POST'])
 #async def run_pump():

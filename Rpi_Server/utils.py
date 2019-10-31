@@ -5,6 +5,7 @@ import random
 import threading
 import routes
 import t_sensor
+import json
 try:
     import RPi.GPIO as GPIO
 except:
@@ -25,9 +26,40 @@ pwm.start(0)  # Started PWM at 0% duty cycle
 FLASH = 0
 PULSE = 1
 led_pulse_loop = True
+cal_stop_signal = False
+cal_time = None
 
 class ThreadKilled (Exception):
    pass
+
+
+def save():
+    data = {
+        "Conversion Data": conversion_data,
+        "Schedule Data": schedule_data,
+        "Calibration Data": calibration_data,
+        "Temperature Data": temperature_data,
+        "Light Hour Data": light_hour_data
+    }
+    with open('data.txt', 'w') as json_file:
+        json_file.write(json.dumps(data, indent=4))
+    log.info("Settings Updated")
+
+
+def load():
+    if os.path.isfile('data.txt'):
+        with open('data.txt', 'r') as json_file:
+            data = json.loads(json_file.read())
+
+def temperatureData():
+        print("New Alert Set")
+        temperature_data.update(
+            {
+                "High Temp": {ht},
+                "Low Temp": {lt}
+            }
+        )
+        save()
 
 async def do_pump(pump_type: str, seconds: int):
     if pump_type == 'co2':
@@ -43,7 +75,6 @@ async def do_pump(pump_type: str, seconds: int):
     GPIO.output(Fertilizer_pump, 0)
     return
 
-
 async def stop_pump(pump_type: str):
     if pump_type == 'co2':
         print("Stopping co2")
@@ -55,15 +86,6 @@ async def stop_pump(pump_type: str):
         GPIO.output(Fertilizer_pump, 0)
     return
 
-# if button is pressed at anytime before the gui calibration button it will do nothing
-# client gui calibration button pressed (enters calibration mode)
-# sends calibration request with the dosage type to the server
-# server then starts pulsing the led, and waits for the physical button to be pushed
-# if the clients gui button gets pressed then cancel and turn off led
-# if the physical button is pushed then start the timer and pump and make the led flash quickly
-# once the user has measured 10ml press the physical button again the pump and timer stop and the led turns off
-# server then saves the elapsed time for that dose calibration, and sends it to the gui to display (exits calibration mode)
-# from this point the led is off and the button will be inactive again just like in the beginning
 def led_pulse_worker(option):
     '''worker function for led pulse thread'''
     global led_pulse_loop
@@ -110,6 +132,8 @@ def stop_cal():
 def start_calibration(pump_type: str):
     try:
         global cal_stop_signal
+        global cal_time
+        cal_time = None
         cal_stop_signal = False
         led_pulse(PULSE)
         btn_pressed()
@@ -127,51 +151,9 @@ def start_calibration(pump_type: str):
             GPIO.output(Co2_pump, 0)
             cal_time = round(end - start, 2)
             print(cal_time)
-            return cal_time
     except ThreadKilled:
         print('calibration was cancelled!')
-
-
-#    try:
-#        print(f"{pump_type} Calibration Mode")
-#        print(f"Button State:{calibration}")
-#        if  calibration == 1:
-#            led_pulse(PULSE)
-#        elif calibration == 0:
-#            print(f"Button State:{calibration}")
-#            if pump_type == 'co2':
-#                print("Running co2")
-#                GPIO.output(Co2_pump, 1)
-#                co2_calibration_started = not co2_calibration_started
-#                if co2_calibration_started:
-#                    led_pulse(FLASH)
-#                    co2_prev_time = time.time()
-#                    GPIO.output(17, 1)
-#                    print("Co2                      Calibration started.")
-#                    calibration = GPIO.input(Button)
-#
-#                else:
-#                    co2_elapsed_time = time.time() - co2_prev_time
-#                    #print(f"{pump_type}{co2_elapsed_time}:2.")
-#                    print(round(co2_elapsed_time, 2))
-#                    GPIO.output(17, 0)
-#                    print("Co2                      Calibration finished.")
-#                    calibration = GPIO.input(Button)
-#
-#
-#            elif pump_type == 'conditioner':
-#                print("Running conditioner")
-#            elif pump_type == 'fertilizer':
-#                print("Running fertilizer")
-#                GPIO.output(Fertilizer_pump, 1)
-#            GPIO.output(Co2_pump, 0)
-#
-#    # If keyboard Interrupt (CTRL-C) is pressed
-#    except KeyboardInterrupt:
-#        pass  # Go to next line
-#    pwm.stop()
-
-
+        stop_led_pulse()
 
 async def temp():
     temp_c, temp_f = t_sensor.read_temp()
@@ -179,3 +161,14 @@ async def temp():
     # t = random.randint(1, 40)
     #return temp_c, temp_f
     return round(temp_c, 2)
+
+
+# if button is pressed at anytime before the gui calibration button it will do nothing
+# client gui calibration button pressed (enters calibration mode)
+# sends calibration request with the dosage type to the server
+# server then starts pulsing the led, and waits for the physical button to be pushed
+# if the clients gui button gets pressed then cancel and turn off led
+# if the physical button is pushed then start the timer and pump and make the led flash quickly
+# once the user has measured 10ml press the physical button again the pump and timer stop and the led turns off
+# server then saves the elapsed time for that dose calibration, and sends it to the gui to display (exits calibration mode)
+# from this point the led is off and the button will be inactive again just like in the beginning

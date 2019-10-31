@@ -225,7 +225,7 @@ class App(object):
                 self.form.TapSafe_DoubleSpinBox.setValue(self.conversion_data["Water Conditioner Ratio"]["Conditioner Amount"])
                 self.form.TapSafetoWater_DoubleSpinBox.setValue(self.conversion_data["Water Conditioner Ratio"]["Conditioner to Water"])
                 print("Loading Ratio Data")
-            except:
+            except KeyError:
                 print("No Ratio Data To Load")
 
             self.form.TankSize_DoubleSpinBox.blockSignals(False)
@@ -326,6 +326,12 @@ class App(object):
     def set_temp_alert(self):
         ht = self.form.ht_alert_edit.value()
         lt = self.form.lt_alert_edit.value()
+        url = f"http:192.168.1.35:5000/setTemperatureAlert?ht={ht}&lt={lt}"
+        request = QtNetwork.QNetworkRequest(QUrl(url))
+        self.nam.get(request)
+        self.log.info(f"High Temperature Alert Set For:{ht}")
+        self.log.info(f"Low Temperature Alert Set For:{lt}")
+
         self.temperature_data.update(
             {
                 "High Temp": self.form.ht_alert_edit.value(),
