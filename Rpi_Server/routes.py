@@ -5,11 +5,11 @@ import threading
 from time import sleep
 app = Quart(__name__)
 
-@app.route('/setTemperatureAlert', methods=['GET'])
+@app.route('/setTemperatureAlert', methods=['GET, POST'])
 async def temperature_alert():
     ht = request.args.get('ht')
     lt = request.args.get('lt')
-    utils.temperatureData()
+    utils.alert_data()
 
 @app.route('/calibrationModeOn', methods=['GET', 'POST'])
 async def run_calibration():

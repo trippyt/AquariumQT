@@ -326,21 +326,25 @@ class App(object):
     def set_temp_alert(self):
         ht = self.form.ht_alert_edit.value()
         lt = self.form.lt_alert_edit.value()
+        print(f"Sending Alert Changes to Network")
+        print(f"High Temperature: {ht}")
+        print(f"Low Temperature: {lt}")
         url = f"http:192.168.1.35:5000/setTemperatureAlert?ht={ht}&lt={lt}"
         request = QtNetwork.QNetworkRequest(QUrl(url))
         self.nam.get(request)
-        self.log.info(f"High Temperature Alert Set For:{ht}")
-        self.log.info(f"Low Temperature Alert Set For:{lt}")
 
-        self.temperature_data.update(
-            {
-                "High Temp": self.form.ht_alert_edit.value(),
-                "Low Temp": self.form.lt_alert_edit.value()
-            }
-        )
-        self.log.info(f"High Temperature Alert Set For:{ht}")
-        self.log.info(f"Low Temperature Alert Set For:{lt}")
-        self.save()
+        #self.log.info(f"High Temperature Alert Set For:{ht}")
+        #self.log.info(f"Low Temperature Alert Set For:{lt}")
+
+        #self.temperature_data.update(
+        #    {
+        #        "High Temp": self.form.ht_alert_edit.value(),
+        #        "Low Temp": self.form.lt_alert_edit.value()
+        #    }
+        #)
+        #self.log.info(f"High Temperature Alert Set For:{ht}")
+        #self.log.info(f"Low Temperature Alert Set For:{lt}")
+        #self.save()
 
     def update_timer(self):
         self.form.light_clock_display.display(strftime("%H:%M", gmtime()))
