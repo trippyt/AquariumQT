@@ -9,7 +9,7 @@ app = Quart(__name__)
 async def temperature_alert():
     ht = request.args.get('ht')
     lt = request.args.get('lt')
-    utils.alert_data()
+    utils.alert_data(ht, lt)
 
 @app.route('/calibrationModeOn', methods=['GET', 'POST'])
 async def run_calibration():
