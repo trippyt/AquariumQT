@@ -33,14 +33,6 @@ cal_time = None
 class ThreadKilled (Exception):
    pass
 
-def load():
-    if os.path.isfile('data.txt'):
-        with open('data.txt', 'r') as json_file:
-            data = json.loads(json_file.read())
-            temperature_data = data["Temperature Data"]
-
-
-
 temperature_data = {
     "Temperature Data": {},
 }
@@ -77,15 +69,20 @@ calibration_data = {
 light_hour_data = {
             "Mode Hours": {},
         }
-load()
+
+def load():
+    if os.path.isfile('data.txt'):
+        with open('data.txt', 'r') as json_file:
+            data = json.loads(json_file.read())
+            temperature_data = data["Temperature Data"]
 
 def save():
     data = {
-        "Conversion Data": conversion_data,
-        "Schedule Data": schedule_data,
+        #"Conversion Data": conversion_data,
+        #"Schedule Data": schedule_data,
         "Calibration Data": calibration_data,
         "Temperature Data": temperature_data,
-        "Light Hour Data": light_hour_data
+        #"Light Hour Data": light_hour_data
     }
     with open('data.txt', 'w') as json_file:
         json_file.write(json.dumps(data, indent=4))

@@ -81,3 +81,4 @@ async def temp():
 
 if __name__ == '__main__':
     app.run("0.0.0.0")
+    utils.load()
