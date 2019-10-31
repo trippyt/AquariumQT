@@ -3,6 +3,7 @@ import os
 import time
 import logging
 import json
+import asyncio
 from time import gmtime, strftime
 from PyQt5 import QtWidgets, QtWebSockets
 from PyQt5 import QtCore, QtNetwork
@@ -173,7 +174,6 @@ class App(object):
         self.log = logging.getLogger('AquariumQT')
         self.log.handlers = [InfoHandler(self.form.textBrowser)]
         self.load()
-        self.load_server()
         self.start_timers()
 
         self.update_timer()
@@ -203,7 +203,8 @@ class App(object):
         url = f"http://192.168.1.35:5000/getTemperatureAlert"
         request = QtNetwork.QNetworkRequest(QUrl(url))
         resp = self.nam.get(request)
-        data = resp.readAll()
+        #data = resp.readAll()
+        await data = json.loads(resp.readAll())
         print(data)
 
     def load(self):
@@ -213,9 +214,9 @@ class App(object):
 
             self.conversion_data = data["Conversion Data"]
             self.schedule_data = data["Schedule Data"]
-            self.calibration_data = data["Calibration Data"]
+            #self.calibration_data = data["Calibration Data"]
             self.light_hour_data = data["Light Hour Data"]
-            self.temperature_data = data["Temperature Data"]
+            #self.temperature_data = data["Temperature Data"]
             self.form.TankSize_DoubleSpinBox.blockSignals(True)
             self.form.C02_DoubleSpinBox.blockSignals(True)
             self.form.C02toWater_DoubleSpinBox.blockSignals(True)
@@ -255,12 +256,12 @@ class App(object):
             except KeyError:
                 print("No Calibration Data To Load")
 
-            if self.temperature_data:
-                self.form.ht_alert_edit.setValue(self.temperature_data["High Temp"]),
-                self.form.lt_alert_edit.setValue(self.temperature_data["Low Temp"]),
-                print("Loading Temperature Data")
-            else:
-                print("No Temperature Data To Load")
+            #if self.temperature_data:
+            #    self.form.ht_alert_edit.setValue(self.temperature_data["High Temp"]),
+            #    self.form.lt_alert_edit.setValue(self.temperature_data["Low Temp"]),
+            #    print("Loading Temperature Data")
+            #else:
+            #    print("No Temperature Data To Load")
             self.load_server()
 
     def co2_perml(self):
@@ -340,7 +341,7 @@ class App(object):
         print(f"Low Temperature: {lt}")
         url = f"http://192.168.1.35:5000/setTemperatureAlert?ht={ht}&lt={lt}"
         request = QtNetwork.QNetworkRequest(QUrl(url))
-        self.nam.get(request)
+        self.nam.post(request)
 
         #self.log.info(f"High Temperature Alert Set For:{ht}")
         #self.log.info(f"Low Temperature Alert Set For:{lt}")
