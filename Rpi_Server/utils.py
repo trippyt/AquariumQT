@@ -70,14 +70,6 @@ light_hour_data = {
             "Mode Hours": {},
         }
 
-        # Simple mapping for the combobox
-light_type_map = {
-            'default': 'off',
-            0: 'day',
-            1: 'night',
-            2: 'off',
-        }
-
 def save():
     data = {
         "Conversion Data": conversion_data,
@@ -98,6 +90,8 @@ def load():
 
 def alert_data(ht: int, lt: int):
         print("New Alert Set")
+        print(f"High Temperature: {ht}")
+        print(f"Low Temperature: {lt}")
         temperature_data.update(
             {
                 "High Temp": {ht},
