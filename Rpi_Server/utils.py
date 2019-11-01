@@ -80,6 +80,7 @@ def load():
 def save():
     global temperature_data
     global calibration_data
+    global conversion_data
     data = {
         "Conversion Data": conversion_data,
         #"Schedule Data": schedule_data,
