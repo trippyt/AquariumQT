@@ -5,6 +5,12 @@ import threading
 from time import sleep
 app = Quart(__name__)
 
+@app.route('/setConversionTankSize', methods=['GET', 'POST'])
+async def set_conversions_tanksize():
+    data = request.args.get('data')
+    print(data)
+    return f"TankSize {data}"
+
 @app.route('/setTemperatureAlert', methods=['GET', 'POST'])
 async def set_temperature_alert():
     ht = request.args.get('ht')

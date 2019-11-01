@@ -212,6 +212,15 @@ class App(object):
         new_data = json.loads(byte_array.data())
         self.calibration_data = new_data["Calibration Data"]
         self.temperature_data = new_data["Temperature Data"]
+        try:
+            self.form.co2_dosing_lcd.display(self.calibration_data["Co2 Calibration Data"]["Time"])
+            self.form.co2_calibration_perml_display.display(self.calibration_data["Co2 Calibration Data"]["Time"] / 10)
+            #self.form.fertz_dosing_lcd.display(self.calibration_data["Fertilizer Calibration Data"]["Time"])
+            #self.form.conditioner_dosing_lcd.display(self.calibration_data["Water Conditioner Calibration Data"]["Time"])
+            #self.form.co2_seconds_display.display(self.calibration_data["Co2 Calibration Data"]["Dosing Runtime"])
+            print("Loading Calibration Data")
+        except KeyError:
+            print("No Calibration Data To Load")
 
         self.form.ht_alert_edit.blockSignals(True)
         self.form.lt_alert_edit.blockSignals(True)
@@ -264,7 +273,6 @@ class App(object):
             self.set_tanksize_conversion()
 
             try:
-                self.form.co2_dosing_lcd.display(self.calibration_data["Co2 Calibration Data"]["Time"])
                 self.form.co2_calibration_perml_display.display(self.calibration_data["Co2 Calibration Data"]["Time"] / 10)
                 self.form.fertz_dosing_lcd.display(self.calibration_data["Fertilizer Calibration Data"]["Time"])
                 self.form.conditioner_dosing_lcd.display(self.calibration_data["Water Conditioner Calibration Data"]["Time"])
@@ -273,12 +281,6 @@ class App(object):
             except KeyError:
                 print("No Calibration Data To Load")
 
-            #if self.temperature_data:
-            #    self.form.ht_alert_edit.setValue(self.temperature_data["High Temp"]),
-            #    self.form.lt_alert_edit.setValue(self.temperature_data["Low Temp"]),
-            #    print("Loading Temperature Data")
-            #else:
-            #    print("No Temperature Data To Load")
             self.load_server()
 
     def co2_perml(self):
@@ -392,6 +394,10 @@ class App(object):
                 "Water Volume": self.form.TankSize_DoubleSpinBox.value()
             }
         )
+        data = self.conversion_data["Tank Size"]
+        url = f"http://192.168.1.35:5000/setConversionTankSize?data={data}"
+        request = QtNetwork.QNetworkRequest(QUrl(url))
+        self.nam.get(request)
 
     def set_co2_conversion(self):
         self.set_conversion()

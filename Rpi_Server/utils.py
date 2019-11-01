@@ -81,7 +81,7 @@ def save():
     global temperature_data
     global calibration_data
     data = {
-        #"Conversion Data": conversion_data,
+        "Conversion Data": conversion_data,
         #"Schedule Data": schedule_data,
         "Calibration Data": calibration_data,
         "Temperature Data": temperature_data,
@@ -90,6 +90,17 @@ def save():
     with open('data.txt', 'w') as json_file:
         json_file.write(json.dumps(data, indent=4))
     print("Settings Updated")
+
+def conversions_tanksize(data: int)
+    global conversion_data
+    print("Conversion Data Updated")
+    print(f"Tank Size: {data}")
+    conversion_data["Tank Size"].update(
+        {
+            "Water Volume": self.form.TankSize_DoubleSpinBox.value()
+        }
+    )
+    save()
 
 def alert_data(ht: int, lt: int):
     global temperature_data
