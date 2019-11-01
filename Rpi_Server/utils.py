@@ -92,7 +92,7 @@ def save():
         json_file.write(json.dumps(data, indent=4))
     print("Settings Updated")
 
-def conversions_tanksize(data: int):
+def conversions_tanksize(data: str):
     global conversion_data
     print("Conversion Data Updated")
     print(f"Tank Size: {data}")
