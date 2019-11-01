@@ -90,16 +90,18 @@ def save():
     print("Settings Updated")
 
 def alert_data(ht: int, lt: int):
-        print("New Alert Set")
-        print(f"High Temperature: {ht}")
-        print(f"Low Temperature: {lt}")
-        temperature_data.update(
-            {
-                "High Temp": ht,
-                "Low Temp": lt
-            }
-        )
-        save()
+    global ht
+    global lt
+    print("New Alert Set")
+    print(f"High Temperature: {ht}")
+    print(f"Low Temperature: {lt}")
+    temperature_data.update(
+        {
+            "High Temp": ht,
+            "Low Temp": lt
+        }
+    )
+    save()
 
 async def do_pump(pump_type: str, seconds: int):
     if pump_type == 'co2':
