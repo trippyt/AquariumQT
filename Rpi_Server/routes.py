@@ -9,6 +9,7 @@ app = Quart(__name__)
 async def set_conversions_tanksize():
     data = request.args.get('data')
     print(data)
+    utils.conversions_tanksize(data)
     return f"TankSize {data}"
 
 @app.route('/setTemperatureAlert', methods=['GET', 'POST'])
