@@ -98,7 +98,7 @@ def conversions_tanksize(data: int):
     print(f"Tank Size: {data}")
     conversion_data["Tank Size"].update(
         {
-            "Water Volume": self.form.TankSize_DoubleSpinBox.value()
+            "Water Volume": data
         }
     )
     save()
