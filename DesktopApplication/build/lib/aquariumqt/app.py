@@ -208,22 +208,21 @@ class App(object):
         loop.exec_()
         data = resp.readAll()
         byte_array = data
+        print(byte_array)
         new_data = json.loads(byte_array.data())
+        self.calibration_data = new_data["Calibration Data"]
         self.temperature_data = new_data["Temperature Data"]
+
         self.form.ht_alert_edit.blockSignals(True)
         self.form.lt_alert_edit.blockSignals(True)
-        self.form.ht_alert_edit.setValue(float(self.temperature_data["High Temp"])),
-        self.form.lt_alert_edit.setValue(float(self.temperature_data["Low Temp"])),
+        try:
+            self.form.ht_alert_edit.setValue(float(self.temperature_data["High Temp"])),
+            self.form.lt_alert_edit.setValue(float(self.temperature_data["Low Temp"])),
+        except KeyError:
+            print("No Temperture Data on Server")
         self.form.ht_alert_edit.blockSignals(False)
         self.form.lt_alert_edit.blockSignals(False)
         print(new_data)
-
-        # if self.temperature_data:
-        #    self.form.ht_alert_edit.setValue(self.temperature_data["High Temp"]),
-        #    self.form.lt_alert_edit.setValue(self.temperature_data["Low Temp"]),
-        #    print("Loading Temperature Data")
-        # else:
-        #    print("No Temperature Data To Load")
 
     def load(self):
         if os.path.isfile('data.txt'):
@@ -360,19 +359,6 @@ class App(object):
         url = f"http://192.168.1.35:5000/setTemperatureAlert?ht={ht}&lt={lt}"
         request = QtNetwork.QNetworkRequest(QUrl(url))
         self.nam.get(request)
-
-        #self.log.info(f"High Temperature Alert Set For:{ht}")
-        #self.log.info(f"Low Temperature Alert Set For:{lt}")
-
-        #self.temperature_data.update(
-        #    {
-        #        "High Temp": self.form.ht_alert_edit.value(),
-        #        "Low Temp": self.form.lt_alert_edit.value()
-        #    }
-        #)
-        #self.log.info(f"High Temperature Alert Set For:{ht}")
-        #self.log.info(f"Low Temperature Alert Set For:{lt}")
-        #self.save()
 
     def update_timer(self):
         self.form.light_clock_display.display(strftime("%H:%M", gmtime()))
@@ -535,7 +521,13 @@ class App(object):
             url = f"http://192.168.1.35:5000/calibrationModeOn?type={pump_type}"
             print("Entering Calibration Mode")
             request = QtNetwork.QNetworkRequest(QUrl(url))
-            self.nam.get(request)
+            #loop = QEventLoop()
+            resp = self.nam.get(request)
+            #resp.finished.connect(loop.quit)
+            #print("Waiting For Calibration Data")
+            #loop.exec_()
+            data = resp.readAll()
+            print(data)
         else:
             self.exit_calibration_mode(pump_type)
 

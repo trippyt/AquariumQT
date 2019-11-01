@@ -208,6 +208,7 @@ class App(object):
         loop.exec_()
         data = resp.readAll()
         byte_array = data
+        print(byte_array)
         new_data = json.loads(byte_array.data())
         self.calibration_data = new_data["Calibration Data"]
         self.temperature_data = new_data["Temperature Data"]

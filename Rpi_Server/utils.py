@@ -90,8 +90,6 @@ def save():
     print("Settings Updated")
 
 def alert_data(ht: int, lt: int):
-    global ht
-    global lt
     print("New Alert Set")
     print(f"High Temperature: {ht}")
     print(f"Low Temperature: {lt}")
