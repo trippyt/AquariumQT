@@ -7,9 +7,9 @@ app = Quart(__name__)
 
 @app.route('/setTemperatureAlert', methods=['GET', 'POST'])
 async def set_temperature_alert():
-    print("Receiving Alert Data")
     ht = request.args.get('ht')
     lt = request.args.get('lt')
+    print(f"Receiving Temperature Alert Data H:{ht} L:{lt}")
     utils.alert_data(ht, lt)
     return f"Temperature Alerts H:{ht} L:{lt}"
 
