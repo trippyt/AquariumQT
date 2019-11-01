@@ -6,7 +6,7 @@ import json
 from time import gmtime, strftime
 from PyQt5 import QtWidgets, QtWebSockets
 from PyQt5 import QtCore, QtNetwork
-from PyQt5.QtCore import QTime, QUrl
+from PyQt5.QtCore import QTime, QUrl, QEventLoop
 from aquariumqt.form import Ui_Form
 
 from . import dummyGPIO as GPIO
@@ -201,10 +201,29 @@ class App(object):
     def load_server(self):
         url = f"http://192.168.1.35:5000/getTemperatureAlert"
         request = QtNetwork.QNetworkRequest(QUrl(url))
+        loop = QEventLoop()
         resp = self.nam.get(request)
-        #data = resp.readAll()
-        data = json.loads(resp.readAll())
-        print(data)
+        resp.finished.connect(loop.quit)
+        print('fetching request...')
+        loop.exec_()
+        data = resp.readAll()
+        byte_array = data
+        new_data = json.loads(byte_array.data())
+        self.temperature_data = new_data["Temperature Data"]
+        self.form.ht_alert_edit.blockSignals(True)
+        self.form.lt_alert_edit.blockSignals(True)
+        self.form.ht_alert_edit.setValue(float(self.temperature_data["High Temp"])),
+        self.form.lt_alert_edit.setValue(float(self.temperature_data["Low Temp"])),
+        self.form.ht_alert_edit.blockSignals(False)
+        self.form.lt_alert_edit.blockSignals(False)
+        print(new_data)
+
+        # if self.temperature_data:
+        #    self.form.ht_alert_edit.setValue(self.temperature_data["High Temp"]),
+        #    self.form.lt_alert_edit.setValue(self.temperature_data["Low Temp"]),
+        #    print("Loading Temperature Data")
+        # else:
+        #    print("No Temperature Data To Load")
 
     def load(self):
         if os.path.isfile('data.txt'):
@@ -340,20 +359,7 @@ class App(object):
         print(f"Low Temperature: {lt}")
         url = f"http://192.168.1.35:5000/setTemperatureAlert?ht={ht}&lt={lt}"
         request = QtNetwork.QNetworkRequest(QUrl(url))
-        self.nam.post(request)
-
-        #self.log.info(f"High Temperature Alert Set For:{ht}")
-        #self.log.info(f"Low Temperature Alert Set For:{lt}")
-
-        #self.temperature_data.update(
-        #    {
-        #        "High Temp": self.form.ht_alert_edit.value(),
-        #        "Low Temp": self.form.lt_alert_edit.value()
-        #    }
-        #)
-        #self.log.info(f"High Temperature Alert Set For:{ht}")
-        #self.log.info(f"Low Temperature Alert Set For:{lt}")
-        #self.save()
+        self.nam.get(request)
 
     def update_timer(self):
         self.form.light_clock_display.display(strftime("%H:%M", gmtime()))
