@@ -173,6 +173,7 @@ def start_calibration(pump_type: str):
     try:
         global cal_stop_signal
         global cal_time
+        global calibration_data
         cal_time = None
         cal_stop_signal = False
         led_pulse(PULSE)
