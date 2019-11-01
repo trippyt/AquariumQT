@@ -78,6 +78,8 @@ def load():
             return data
 
 def save():
+    global temperature_data
+    global calibration_data
     data = {
         #"Conversion Data": conversion_data,
         #"Schedule Data": schedule_data,
@@ -90,6 +92,7 @@ def save():
     print("Settings Updated")
 
 def alert_data(ht: int, lt: int):
+    global temperature_data
     print("New Alert Set")
     print(f"High Temperature: {ht}")
     print(f"Low Temperature: {lt}")
