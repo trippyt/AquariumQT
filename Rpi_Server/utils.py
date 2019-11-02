@@ -92,13 +92,21 @@ def save():
         json_file.write(json.dumps(data, indent=4))
     print("Settings Updated")
 
-def conversions_tanksize(tank: int):
+def conversions_tanksize(tank: int, co2ml: int, co2water: int):
     global conversion_data
     print("Conversion Data Updated")
     print(f"Tank Size: {tank}")
     conversion_data["Tank Size"].update(
         {
             "Water Volume": tank
+        }
+    )
+    conversion_values["co2_dosage"] = co2ml*tank/co2water
+    conversion_data["Co2 Ratio"].update(
+        {
+            "Co2 Amount": co2ml,
+            "Co2 to Water": co2water,
+            "Co2 Dosage": round(conversion_values["co2_dosage"], 2)
         }
     )
     save()

@@ -8,8 +8,12 @@ app = Quart(__name__)
 @app.route('/setConversionTankSize', methods=['GET', 'POST'])
 async def set_conversions_tanksize():
     tank = request.args.get('tank')
+    co2ml = request.args.get('co2ml')
+    co2water = requests.args.get('co2water')
     print(f"New Tank Size Set: {tank}")
-    utils.conversions_tanksize(tank)
+    print(f"New Co2 Conversion Set:{co2ml}")
+    print(f"new Co2 to Water Conversion Set:{co2water}")
+    utils.conversions_tanksize(tank, co2ml, co2water)
     return f"TankSize {tank}"
 
 @app.route('/getConversionTankSize', methods=['GET', 'POST'])
