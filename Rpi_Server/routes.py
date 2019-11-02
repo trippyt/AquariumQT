@@ -12,6 +12,11 @@ async def set_conversions_tanksize():
     utils.conversions_tanksize(data)
     return f"TankSize {data}"
 
+@app.route('/getConversionTankSize', methods=['GET', 'POST'])
+async def get_conversions_tanksize():
+    print(f"Sending Tank Size:{} Litres")
+    return jsonify(utils.load())
+
 @app.route('/setTemperatureAlert', methods=['GET', 'POST'])
 async def set_temperature_alert():
     ht = request.args.get('ht')
