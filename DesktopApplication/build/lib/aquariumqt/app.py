@@ -131,14 +131,14 @@ class App(object):
         self.form.night_hour_wheel.valueChanged.connect(self.night_hour_wheel_changed)
         self.form.off_hour_wheel.valueChanged.connect(self.log_off_hour_wheel)
 
-        self.form.TankSize_DoubleSpinBox.valueChanged.connect(self.set_tanksize_conversion)
+        #self.form.TankSize_DoubleSpinBox.valueChanged.connect(self.set_tanksize_conversion)
         self.form.C02_DoubleSpinBox.valueChanged.connect(self.set_co2_conversion)
         self.form.C02toWater_DoubleSpinBox.valueChanged.connect(self.set_co2_conversion)
         self.form.Fertz_DoubleSpinBox.valueChanged.connect(self.set_fertz_conversion)
         self.form.FertztoWater_DoubleSpinBox.valueChanged.connect(self.set_fertz_conversion)
         self.form.TapSafe_DoubleSpinBox.valueChanged.connect(self.set_conditioner_conversion)
         self.form.TapSafetoWater_DoubleSpinBox.valueChanged.connect(self.set_conditioner_conversion)
-        self.form.saveDoses_pushButton.clicked.connect(self.save)
+        self.form.saveDoses_pushButton.clicked.connect(self.save_doses())
 
         self.form.feed_pushButton.clicked.connect(self.feed_test)
         self.form.C02CalibrationButton.clicked.connect(lambda: self.enter_calibration_mode("co2"))
@@ -186,16 +186,15 @@ class App(object):
         self.client.pong.connect(self.ws_receive)
         self.client.textMessageReceived.connect(self.ws_receive)
 
+    def save_doses(self):
+        print(f"Sending New Tank Size to Server")
+        tank = self.form.TankSize_DoubleSpinBox.value()
+        print(f"TankSize:{tank} Litres")
+        url = f"http://192.168.1.35:5000/setConversionTankSize?tank={tank}"
+        request = QtNetwork.QNetworkRequest(QUrl(url))
+        self.nam.get(request)
+
     def save(self):
-        data = {
-            "Conversion Data": self.conversion_data,
-            "Schedule Data": self.schedule_data,
-            "Calibration Data": self.calibration_data,
-            #"Temperature Data": self.temperature_data,
-            "Light Hour Data": self.light_hour_data
-        }
-        with open('data.txt', 'w') as json_file:
-            json_file.write(json.dumps(data, indent=4))
         self.log.info("Settings Updated")
 
     def load_server(self):
@@ -204,12 +203,12 @@ class App(object):
         loop = QEventLoop()
         resp = self.nam.get(request)
         resp.finished.connect(loop.quit)
-        print('fetching request...')
+        print('Loading Data From the Server')
         loop.exec_()
         data = resp.readAll()
         byte_array = data
-        print(byte_array)
         new_data = json.loads(byte_array.data())
+        print(new_data)
         self.calibration_data = new_data["Calibration Data"]
         self.temperature_data = new_data["Temperature Data"]
         self.conversion_data = new_data["Conversion Data"]
@@ -231,9 +230,9 @@ class App(object):
             #self.form.FertztoWater_DoubleSpinBox.setValue(self.conversion_data["Fertilizer Ratio"]["Fertilizer to Water"])
             #self.form.TapSafe_DoubleSpinBox.setValue(self.conversion_data["Water Conditioner Ratio"]["Conditioner Amount"])
             #self.form.TapSafetoWater_DoubleSpinBox.setValue(self.conversion_data["Water Conditioner Ratio"]["Conditioner to Water"])
-            print("Loading Ratio Data")
+            print("Loaded Ratio Data From The Server")
         except KeyError:
-            print("No Ratio Data To Load")
+            print("No Ratio Data From The Server to Load")
 
         self.form.TankSize_DoubleSpinBox.blockSignals(False)
         #self.form.C02_DoubleSpinBox.blockSignals(False)
@@ -242,7 +241,6 @@ class App(object):
         #self.form.FertztoWater_DoubleSpinBox.blockSignals(False)
         #self.form.TapSafe_DoubleSpinBox.blockSignals(False)
         #self.form.TapSafetoWater_DoubleSpinBox.blockSignals(False)
-        #self.set_tanksize_conversion()
 
         try:
             self.form.co2_dosing_lcd.display(self.calibration_data["Co2 Calibration Data"]["Time"])
@@ -250,17 +248,18 @@ class App(object):
             #self.form.fertz_dosing_lcd.display(self.calibration_data["Fertilizer Calibration Data"]["Time"])
             #self.form.conditioner_dosing_lcd.display(self.calibration_data["Water Conditioner Calibration Data"]["Time"])
             #self.form.co2_seconds_display.display(self.calibration_data["Co2 Calibration Data"]["Dosing Runtime"])
-            print("Loading Calibration Data")
+            print("Loaded Calibration Data From The Server")
         except KeyError:
-            print("No Calibration Data To Load")
+            print("No Calibration Data From The Server to Load")
 
         self.form.ht_alert_edit.blockSignals(True)
         self.form.lt_alert_edit.blockSignals(True)
         try:
             self.form.ht_alert_edit.setValue(float(self.temperature_data["High Temp"])),
             self.form.lt_alert_edit.setValue(float(self.temperature_data["Low Temp"])),
+            print("Loaded Temperature Alert Data From The Server")
         except KeyError:
-            print("No Temperture Data on Server")
+            print("No Temperature Alert Data From The Server to Load")
         self.form.ht_alert_edit.blockSignals(False)
         self.form.lt_alert_edit.blockSignals(False)
         print(new_data)
@@ -409,14 +408,15 @@ class App(object):
         self.form.light_mode_display.setText("Toggle Mode")
         self.log.info(f"Switched Toggle Mode to : {text} :")
 
+    """
     def set_tanksize_conversion(self):
         print(f"Sending New Tank Size to Server")
         tank = self.form.TankSize_DoubleSpinBox.value()
-        print(f"TankSize:{data} Litres")
+        print(f"TankSize:{tank} Litres")
         url = f"http://192.168.1.35:5000/setConversionTankSize?tank={tank}"
         request = QtNetwork.QNetworkRequest(QUrl(url))
         self.nam.get(request)
-
+"""
     def set_co2_conversion(self):
         self.set_conversion()
         self.conversion_values["co2_dosage"] = self.conversion_values["co2_amount"] * (self.conversion_values["tank_size"] / self.conversion_values["co2_to_water"])
@@ -606,7 +606,7 @@ class App(object):
             self.save()
 
     def set_conversion(self):
-        self.conversion_values["tank_size"] = self.form.TankSize_DoubleSpinBox.value()
+        #self.conversion_values["tank_size"] = self.form.TankSize_DoubleSpinBox.value()
         self.conversion_values["co2_amount"] = self.form.C02_DoubleSpinBox.value()
         self.conversion_values["co2_to_water"] = self.form.C02toWater_DoubleSpinBox.value()
         self.conversion_values["fertz_amount"] = self.form.Fertz_DoubleSpinBox.value()
