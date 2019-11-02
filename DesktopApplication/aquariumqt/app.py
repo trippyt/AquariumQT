@@ -410,16 +410,7 @@ class App(object):
         self.log.info(f"Switched Toggle Mode to : {text} :")
 
     def set_tanksize_conversion(self):
-        self.set_conversion()
-        self.set_co2_conversion()
-        self.set_fertz_conversion()
-        self.set_conditioner_conversion()
-        self.conversion_data["Tank Size"].update(
-            {
-                "Water Volume": self.form.TankSize_DoubleSpinBox.value()
-            }
-        )
-        data = self.conversion_data["Tank Size"]
+        data = self.form.TankSize_DoubleSpinBox.value()
         url = f"http://192.168.1.35:5000/setConversionTankSize?data={data}"
         request = QtNetwork.QNetworkRequest(QUrl(url))
         self.nam.get(request)
