@@ -191,9 +191,11 @@ class App(object):
         tank = self.form.TankSize_DoubleSpinBox.value()
         co2ml = self.form.C02_DoubleSpinBox.value()
         co2water = self.form.C02toWater_DoubleSpinBox.value()
+        x = co2ml*tank/co2water
+        co2dosage = round(x, 2)
         print(f"TankSize:{tank} Litres")
-        print(f"Co2:{co2ml}mL   Co2 to Water:{co2water}")
-        url = f"http://192.168.1.35:5000/setConversionTankSize?tank={tank}&co2ml={co2ml}&co2water={co2water}"
+        print(f"Co2:{co2ml}mL   Co2 to Water:{co2water} Co2 Dosage:{co2dosage}")
+        url = f"http://192.168.1.35:5000/setConversionTankSize?tank={tank}&co2ml={co2ml}&co2water={co2water}&co2dosage={co2dosage}"
         request = QtNetwork.QNetworkRequest(QUrl(url))
         self.nam.get(request)
 
