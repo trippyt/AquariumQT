@@ -412,7 +412,7 @@ class App(object):
     def set_tanksize_conversion(self):
         print(f"Sending New Tank Size to Server")
         tank = self.form.TankSize_DoubleSpinBox.value()
-        print(f"TankSize:{data} Litres")
+        print(f"TankSize:{tank} Litres")
         url = f"http://192.168.1.35:5000/setConversionTankSize?tank={tank}"
         request = QtNetwork.QNetworkRequest(QUrl(url))
         self.nam.get(request)
