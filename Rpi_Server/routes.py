@@ -9,7 +9,7 @@ app = Quart(__name__)
 async def set_conversions_tanksize():
     tank = request.args.get('tank')
     co2ml = request.args.get('co2ml')
-    co2water = requests.args.get('co2water')
+    co2water = request.args.get('co2water')
     print(f"New Tank Size Set: {tank}")
     print(f"New Co2 Conversion Set:{co2ml}")
     print(f"new Co2 to Water Conversion Set:{co2water}")

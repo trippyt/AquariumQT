@@ -132,8 +132,8 @@ class App(object):
         self.form.off_hour_wheel.valueChanged.connect(self.log_off_hour_wheel)
 
         #self.form.TankSize_DoubleSpinBox.valueChanged.connect(self.set_tanksize_conversion)
-        self.form.C02_DoubleSpinBox.valueChanged.connect(self.set_co2_conversion)
-        self.form.C02toWater_DoubleSpinBox.valueChanged.connect(self.set_co2_conversion)
+        #self.form.C02_DoubleSpinBox.valueChanged.connect(self.set_co2_conversion)
+        #self.form.C02toWater_DoubleSpinBox.valueChanged.connect(self.set_co2_conversion)
         self.form.Fertz_DoubleSpinBox.valueChanged.connect(self.set_fertz_conversion)
         self.form.FertztoWater_DoubleSpinBox.valueChanged.connect(self.set_fertz_conversion)
         self.form.TapSafe_DoubleSpinBox.valueChanged.connect(self.set_conditioner_conversion)
@@ -146,7 +146,7 @@ class App(object):
         self.form.FertzCalibrationButton.clicked.connect(self.fertz_calibration)
         self.form.TapSafeCalibrationButton.clicked.connect(self.conditioner_calibration)
 
-        self.form.c02_comboBox_2.currentIndexChanged.connect(self.set_co2_conversion)
+        #self.form.c02_comboBox_2.currentIndexChanged.connect(self.set_co2_conversion)
         self.form.fertz_comboBox_2.currentIndexChanged.connect(self.set_fertz_conversion)
         self.form.water_conditioner_comboBox.currentIndexChanged.connect(self.set_conditioner_conversion)
 
