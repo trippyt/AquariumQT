@@ -212,6 +212,37 @@ class App(object):
         new_data = json.loads(byte_array.data())
         self.calibration_data = new_data["Calibration Data"]
         self.temperature_data = new_data["Temperature Data"]
+        self.conversion_data = new_data["Conversion Data"]
+
+        self.form.TankSize_DoubleSpinBox.blockSignals(True)
+        self.form.C02_DoubleSpinBox.blockSignals(True)
+        self.form.C02toWater_DoubleSpinBox.blockSignals(True)
+        self.form.Fertz_DoubleSpinBox.blockSignals(True)
+        self.form.FertztoWater_DoubleSpinBox.blockSignals(True)
+        self.form.TapSafe_DoubleSpinBox.blockSignals(True)
+        self.form.TapSafetoWater_DoubleSpinBox.blockSignals(True)
+
+        try:
+            self.form.TankSize_DoubleSpinBox.setValue(self.conversion_data["Water Volume"])
+            #self.form.C02_DoubleSpinBox.setValue(self.conversion_data["Co2 Ratio"]["Co2 Amount"])
+            #self.form.C02toWater_DoubleSpinBox.setValue(self.conversion_data["Co2 Ratio"]["Co2 to Water"])
+            #self.form.Fertz_DoubleSpinBox.setValue(self.conversion_data["Fertilizer Ratio"]["Fertilizer Amount"])
+            #self.form.FertztoWater_DoubleSpinBox.setValue(self.conversion_data["Fertilizer Ratio"]["Fertilizer to Water"])
+            #self.form.TapSafe_DoubleSpinBox.setValue(self.conversion_data["Water Conditioner Ratio"]["Conditioner Amount"])
+            #self.form.TapSafetoWater_DoubleSpinBox.setValue(self.conversion_data["Water Conditioner Ratio"]["Conditioner to Water"])
+            print("Loading Ratio Data")
+        except KeyError:
+            print("No Ratio Data To Load")
+
+        self.form.TankSize_DoubleSpinBox.blockSignals(False)
+        #self.form.C02_DoubleSpinBox.blockSignals(False)
+        #self.form.C02toWater_DoubleSpinBox.blockSignals(False)
+        #self.form.Fertz_DoubleSpinBox.blockSignals(False)
+        #self.form.FertztoWater_DoubleSpinBox.blockSignals(False)
+        #self.form.TapSafe_DoubleSpinBox.blockSignals(False)
+        #self.form.TapSafetoWater_DoubleSpinBox.blockSignals(False)
+        #self.set_tanksize_conversion()
+
         try:
             self.form.co2_dosing_lcd.display(self.calibration_data["Co2 Calibration Data"]["Time"])
             self.form.co2_calibration_perml_display.display(self.calibration_data["Co2 Calibration Data"]["Time"] / 10)
@@ -238,12 +269,8 @@ class App(object):
             with open('data.txt', 'r') as json_file:
                 data = json.loads(json_file.read())
 
-            self.conversion_data = data["Conversion Data"]
             self.schedule_data = data["Schedule Data"]
-            #self.calibration_data = data["Calibration Data"]
             self.light_hour_data = data["Light Hour Data"]
-            #self.temperature_data = data["Temperature Data"]
-            self.form.TankSize_DoubleSpinBox.blockSignals(True)
             self.form.C02_DoubleSpinBox.blockSignals(True)
             self.form.C02toWater_DoubleSpinBox.blockSignals(True)
             self.form.Fertz_DoubleSpinBox.blockSignals(True)
@@ -252,7 +279,6 @@ class App(object):
             self.form.TapSafetoWater_DoubleSpinBox.blockSignals(True)
 
             try:
-                self.form.TankSize_DoubleSpinBox.setValue(self.conversion_data["Tank Size"]["Water Volume"])
                 self.form.C02_DoubleSpinBox.setValue(self.conversion_data["Co2 Ratio"]["Co2 Amount"])
                 self.form.C02toWater_DoubleSpinBox.setValue(self.conversion_data["Co2 Ratio"]["Co2 to Water"])
                 self.form.Fertz_DoubleSpinBox.setValue(self.conversion_data["Fertilizer Ratio"]["Fertilizer Amount"])
@@ -263,7 +289,6 @@ class App(object):
             except KeyError:
                 print("No Ratio Data To Load")
 
-            self.form.TankSize_DoubleSpinBox.blockSignals(False)
             self.form.C02_DoubleSpinBox.blockSignals(False)
             self.form.C02toWater_DoubleSpinBox.blockSignals(False)
             self.form.Fertz_DoubleSpinBox.blockSignals(False)

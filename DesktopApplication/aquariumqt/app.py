@@ -223,7 +223,7 @@ class App(object):
         self.form.TapSafetoWater_DoubleSpinBox.blockSignals(True)
 
         try:
-            self.form.TankSize_DoubleSpinBox.setValue(self.conversion_data["Tank Size"]["Water Volume"])
+            self.form.TankSize_DoubleSpinBox.setValue(self.conversion_data["Water Volume"])
             #self.form.C02_DoubleSpinBox.setValue(self.conversion_data["Co2 Ratio"]["Co2 Amount"])
             #self.form.C02toWater_DoubleSpinBox.setValue(self.conversion_data["Co2 Ratio"]["Co2 to Water"])
             #self.form.Fertz_DoubleSpinBox.setValue(self.conversion_data["Fertilizer Ratio"]["Fertilizer Amount"])
