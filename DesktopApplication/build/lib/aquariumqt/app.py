@@ -215,15 +215,16 @@ class App(object):
         self.conversion_data = new_data["Conversion Data"]
 
         self.form.TankSize_DoubleSpinBox.blockSignals(True)
-        self.form.C02_DoubleSpinBox.blockSignals(True)
-        self.form.C02toWater_DoubleSpinBox.blockSignals(True)
-        self.form.Fertz_DoubleSpinBox.blockSignals(True)
-        self.form.FertztoWater_DoubleSpinBox.blockSignals(True)
-        self.form.TapSafe_DoubleSpinBox.blockSignals(True)
-        self.form.TapSafetoWater_DoubleSpinBox.blockSignals(True)
+        #self.form.C02_DoubleSpinBox.blockSignals(True)
+        #self.form.C02toWater_DoubleSpinBox.blockSignals(True)
+        #self.form.Fertz_DoubleSpinBox.blockSignals(True)
+        #self.form.FertztoWater_DoubleSpinBox.blockSignals(True)
+        #self.form.TapSafe_DoubleSpinBox.blockSignals(True)
+        #self.form.TapSafetoWater_DoubleSpinBox.blockSignals(True)
 
         try:
             self.form.TankSize_DoubleSpinBox.setValue(self.conversion_data["Water Volume"])
+            #self.form.TankSize_DoubleSpinBox.setValue(self.conversion_data["Tank Size"]["Water Volume"])
             #self.form.C02_DoubleSpinBox.setValue(self.conversion_data["Co2 Ratio"]["Co2 Amount"])
             #self.form.C02toWater_DoubleSpinBox.setValue(self.conversion_data["Co2 Ratio"]["Co2 to Water"])
             #self.form.Fertz_DoubleSpinBox.setValue(self.conversion_data["Fertilizer Ratio"]["Fertilizer Amount"])
@@ -295,7 +296,6 @@ class App(object):
             self.form.FertztoWater_DoubleSpinBox.blockSignals(False)
             self.form.TapSafe_DoubleSpinBox.blockSignals(False)
             self.form.TapSafetoWater_DoubleSpinBox.blockSignals(False)
-            self.set_tanksize_conversion()
 
             try:
                 self.form.co2_calibration_perml_display.display(self.calibration_data["Co2 Calibration Data"]["Time"] / 10)
@@ -410,16 +410,9 @@ class App(object):
         self.log.info(f"Switched Toggle Mode to : {text} :")
 
     def set_tanksize_conversion(self):
-        self.set_conversion()
-        self.set_co2_conversion()
-        self.set_fertz_conversion()
-        self.set_conditioner_conversion()
-        self.conversion_data["Tank Size"].update(
-            {
-                "Water Volume": self.form.TankSize_DoubleSpinBox.value()
-            }
-        )
-        data = self.conversion_data["Tank Size"]
+        print(f"Sending New Tank Size to Server")
+        data = self.form.TankSize_DoubleSpinBox.value()
+        print(f"TankSize:{data} Litres")
         url = f"http://192.168.1.35:5000/setConversionTankSize?data={data}"
         request = QtNetwork.QNetworkRequest(QUrl(url))
         self.nam.get(request)

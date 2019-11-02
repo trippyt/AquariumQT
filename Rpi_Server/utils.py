@@ -92,13 +92,13 @@ def save():
         json_file.write(json.dumps(data, indent=4))
     print("Settings Updated")
 
-def conversions_tanksize(data: int):
+def conversions_tanksize(tank: int):
     global conversion_data
     print("Conversion Data Updated")
-    print(f"Tank Size: {data}")
+    print(f"Tank Size: {tank}")
     conversion_data["Tank Size"].update(
         {
-            "Water Volume": data
+            "Water Volume": tank
         }
     )
     save()
@@ -209,7 +209,7 @@ def start_calibration(pump_type: str):
             print(cal_time)
             calibration_data["Co2 Calibration Data"].update(
                 {
-                    "Time": round(cal_time, 2)
+                    "Time per 10mL": round(cal_time, 2)
                 }
             )
             save()
