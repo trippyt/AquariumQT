@@ -223,7 +223,7 @@ class App(object):
         #self.form.TapSafetoWater_DoubleSpinBox.blockSignals(True)
 
         try:
-            self.form.TankSize_DoubleSpinBox.setValue(self.conversion_data["Water Volume"])
+            self.form.TankSize_DoubleSpinBox.setValue(float(self.conversion_data["Water Volume"]))
             #self.form.TankSize_DoubleSpinBox.setValue(self.conversion_data["Tank Size"]["Water Volume"])
             #self.form.C02_DoubleSpinBox.setValue(self.conversion_data["Co2 Ratio"]["Co2 Amount"])
             #self.form.C02toWater_DoubleSpinBox.setValue(self.conversion_data["Co2 Ratio"]["Co2 to Water"])
@@ -411,9 +411,9 @@ class App(object):
 
     def set_tanksize_conversion(self):
         print(f"Sending New Tank Size to Server")
-        data = self.form.TankSize_DoubleSpinBox.value()
+        tank = self.form.TankSize_DoubleSpinBox.value()
         print(f"TankSize:{data} Litres")
-        url = f"http://192.168.1.35:5000/setConversionTankSize?data={data}"
+        url = f"http://192.168.1.35:5000/setConversionTankSize?tank={tank}"
         request = QtNetwork.QNetworkRequest(QUrl(url))
         self.nam.get(request)
 
