@@ -129,12 +129,13 @@ def set_dosage_data():
 
 def conversions_tanksize(tank: int, co2_ml: int, co2_water: int, fertz_ml: int, fertz_water: int, conditioner_ml: int, conditioner_water: int):
     global conversion_data
+
     conversion_data["Tank Size"].update(
         {
             "Water Volume": tank
         }
     )
-    x = co2ml * tank / co2_water
+    x = co2_ml * tank / co2_water
     co2_dosage = round(x, 2)
     conversion_data["Co2 Ratio"].update(
         {
