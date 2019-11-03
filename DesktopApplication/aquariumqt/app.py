@@ -262,7 +262,7 @@ class App(object):
             fertzdosagelcd = float(self.conversion_data["Fertilizer Ratio"]["Fertilizer Dosage"])
             self.form.Fertz_outLcd.setProperty('value', fertzdosagelcd)
 
-
+            conditioneramountlcd
             #self.form.TapSafe_DoubleSpinBox.setValue(self.conversion_data["Water Conditioner Ratio"]["Conditioner Amount"])
 
             #self.form.TapSafetoWater_DoubleSpinBox.setValue(self.conversion_data["Water Conditioner Ratio"]["Conditioner to Water"])
