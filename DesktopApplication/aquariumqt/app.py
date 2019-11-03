@@ -135,7 +135,7 @@ class App(object):
         #self.form.C02_DoubleSpinBox.valueChanged.connect(self.set_co2_conversion)
         #self.form.C02toWater_DoubleSpinBox.valueChanged.connect(self.set_co2_conversion)
         #self.form.Fertz_DoubleSpinBox.valueChanged.connect(self.set_fertz_conversion)
-        self.form.FertztoWater_DoubleSpinBox.valueChanged.connect(self.set_fertz_conversion)
+        #self.form.FertztoWater_DoubleSpinBox.valueChanged.connect(self.set_fertz_conversion)
         self.form.TapSafe_DoubleSpinBox.valueChanged.connect(self.set_conditioner_conversion)
         self.form.TapSafetoWater_DoubleSpinBox.valueChanged.connect(self.set_conditioner_conversion)
         self.form.saveDoses_pushButton.clicked.connect(self.save_doses)
