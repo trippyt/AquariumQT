@@ -23,7 +23,7 @@ async def set_conversions_ratios():
     print(f"New Fertilizer Conversion Set:{fertzml}, {fertzwater}, {fertzdosage}")
     print(f"New Conditioner Dosage Conversion Set:{conditionerml}, {conditionerwater}, {conditionerdosage}")
     utils.conversions_tanksize(tank, co2ml, co2water, co2dosage, fertzml, fertzwater, fertzdosage, conditionerml, conditionerwater, conditionerdosage)
-    return f"TankSize {tank}"
+    return
 
 @app.route('/getConversionTankSize', methods=['GET', 'POST'])
 async def get_conversions_tanksize():
