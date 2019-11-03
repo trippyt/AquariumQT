@@ -196,8 +196,15 @@ class App(object):
         self.form.C02_outLcd.setProperty('value', co2dosage)
         self.co2_dose_times_a_day()
         print(f"TankSize:{tank} Litres")
-        print(f"Co2:{co2ml}mL   Co2 to Water:{co2water} Co2 Dosage:{co2dosage}")
-        url = f"http://192.168.1.35:5000/setConversionTankSize?tank={tank}&co2ml={co2ml}&co2water={co2water}&co2dosage={co2dosage}"
+        print(f"Co2:{co2ml}mL    Co2 to Water:{co2water}    Co2 Dosage:{co2dosage}")
+        fertzml = self.form.Fertz_DoubleSpinBox.value()
+        fertzwater = self.form.FertztoWater_DoubleSpinBox.value()
+        y = fertzml*tank/fertzwater
+        fertzdosage = round(y, 2)
+        self.form.Fertz_outLcd.setProperty('value', fertzdosage)
+        #self.fertz_dose_times_a_day()
+        print(f"Fertz:{fertzml}mL    Fertz to Water:{fertzwater}    Fertz Dosage:{fertzdosage}")
+        url = f"http://192.168.1.35:5000/setConversionTankSize?tank={tank}&co2ml={co2ml}&co2water={co2water}&co2dosage={co2dosage}&fertzml={fertzml}&fertzwater={fertzwater}&fertzdosage={fertzdosage}"
         request = QtNetwork.QNetworkRequest(QUrl(url))
         self.nam.get(request)
 
@@ -225,8 +232,8 @@ class App(object):
         self.form.TankSize_DoubleSpinBox.blockSignals(True)
         self.form.C02_DoubleSpinBox.blockSignals(True)
         self.form.C02toWater_DoubleSpinBox.blockSignals(True)
-        #self.form.Fertz_DoubleSpinBox.blockSignals(True)
-        #self.form.FertztoWater_DoubleSpinBox.blockSignals(True)
+        self.form.Fertz_DoubleSpinBox.blockSignals(True)
+        self.form.FertztoWater_DoubleSpinBox.blockSignals(True)
         #self.form.TapSafe_DoubleSpinBox.blockSignals(True)
         #self.form.TapSafetoWater_DoubleSpinBox.blockSignals(True)
 
@@ -235,8 +242,8 @@ class App(object):
             self.form.C02_DoubleSpinBox.setValue(float(self.conversion_data["Co2 Ratio"]["Co2 Amount"]))
             self.form.C02toWater_DoubleSpinBox.setValue(float(self.conversion_data["Co2 Ratio"]["Co2 to Water"]))
             self.form.co2_dosing_lcd.display(float(self.conversion_data["Co2 Ratio"]["co2_dosage"]))
-            #self.form.Fertz_DoubleSpinBox.setValue(self.conversion_data["Fertilizer Ratio"]["Fertilizer Amount"])
-            #self.form.FertztoWater_DoubleSpinBox.setValue(self.conversion_data["Fertilizer Ratio"]["Fertilizer to Water"])
+            self.form.Fertz_DoubleSpinBox.setValue(float(self.conversion_data["Fertilizer Ratio"]["Fertilizer Amount"]))
+            self.form.FertztoWater_DoubleSpinBox.setValue(float(self.conversion_data["Fertilizer Ratio"]["Fertilizer to Water"]))
             #self.form.TapSafe_DoubleSpinBox.setValue(self.conversion_data["Water Conditioner Ratio"]["Conditioner Amount"])
             #self.form.TapSafetoWater_DoubleSpinBox.setValue(self.conversion_data["Water Conditioner Ratio"]["Conditioner to Water"])
             print("Loaded Ratio Data From The Server")
@@ -246,15 +253,15 @@ class App(object):
         self.form.TankSize_DoubleSpinBox.blockSignals(False)
         self.form.C02_DoubleSpinBox.blockSignals(False)
         self.form.C02toWater_DoubleSpinBox.blockSignals(False)
-        #self.form.Fertz_DoubleSpinBox.blockSignals(False)
-        #self.form.FertztoWater_DoubleSpinBox.blockSignals(False)
+        self.form.Fertz_DoubleSpinBox.blockSignals(False)
+        self.form.FertztoWater_DoubleSpinBox.blockSignals(False)
         #self.form.TapSafe_DoubleSpinBox.blockSignals(False)
         #self.form.TapSafetoWater_DoubleSpinBox.blockSignals(False)
 
         try:
             self.form.co2_dosing_lcd.display(self.calibration_data["Co2 Calibration Data"]["Time per 10mL"])
             self.form.co2_calibration_perml_display.display(self.calibration_data["Co2 Calibration Data"]["Time per 10mL"] / 10)
-            #self.form.fertz_dosing_lcd.display(self.calibration_data["Fertilizer Calibration Data"]["Time"])
+            #self.form.fertz_dosing_lcd.display(self.calibration_data["Fertilizer Calibration Data"]["Time per 10mL"])
             #self.form.conditioner_dosing_lcd.display(self.calibration_data["Water Conditioner Calibration Data"]["Time"])
             #self.form.co2_seconds_display.display(self.calibration_data["Co2 Calibration Data"]["Dosing Runtime"])
             print("Loaded Calibration Data From The Server")
@@ -434,24 +441,6 @@ class App(object):
     #    request = QtNetwork.QNetworkRequest(QUrl(url))
     #    self.nam.get(request)
 
-    #def set_co2_conversion(self):
-    #    self.set_conversion()
-    #    self.conversion_values["co2_dosage"] = self.conversion_values["co2_amount"] * (self.conversion_values["tank_size"] / self.conversion_values["co2_to_water"])
-    #    a = self.conversion_values["co2_dosage"]
-    #    self.form.C02_outLcd.setProperty('value', round(a, 2))
-    #    x = self.form.c02_comboBox_2.currentIndex() + 1
-    #    if x == 0:
-    #        x = 1
-    #    c02_dose = round(a/x, 2)
-    #    self.form.c02_ml_outLcd.setProperty('value', c02_dose)
-    #    self.conversion_data["Co2 Ratio"].update(
-    #        {
-    #            "Co2 Amount": self.form.C02_DoubleSpinBox.value(),
-    #            "Co2 to Water": self.form.C02toWater_DoubleSpinBox.value(),
-    #            "Co2 Dosage": round(self.conversion_values["co2_dosage"], 2)
-    #        }
-    #    )
-
     def set_co2_schedule(self):
         self.schedule_data["Co2 Schedule Data"].update(
             {
@@ -462,23 +451,23 @@ class App(object):
         )
         self.save()
 
-    def set_fertz_conversion(self):
-        self.set_conversion()
-        self.conversion_values["fertz_dosage"] = self.conversion_values["fertz_amount"] * (self.conversion_values["tank_size"] / self.conversion_values["fertz_to_water"])
-        a = self.conversion_values["fertz_dosage"]
-        self.form.Fertz_outLcd.setProperty('value', round(a, 2))
-        x = self.form.fertz_comboBox_2.currentIndex() + 1
-        if x == 0:
-            x = 1
-        fertz_dose = round(a/x, 2)
-        self.form.fertz_ml_display.setProperty('value', fertz_dose)
-        self.conversion_data["Fertilizer Ratio"].update(
-            {
-                "Fertilizer Amount": self.form.Fertz_DoubleSpinBox.value(),
-                "Fertilizer to Water": self.form.FertztoWater_DoubleSpinBox.value(),
-                "Fertilizer Dosage": round(self.conversion_values["fertz_dosage"], 2)
-            }
-        )
+    #def set_fertz_conversion(self):
+    #    self.set_conversion()
+    #    self.conversion_values["fertz_dosage"] = self.conversion_values["fertz_amount"] * (self.conversion_values["tank_size"] / self.conversion_values["fertz_to_water"])
+    #    a = self.conversion_values["fertz_dosage"]
+    #    self.form.Fertz_outLcd.setProperty('value', round(a, 2))
+    #    x = self.form.fertz_comboBox_2.currentIndex() + 1
+    #    if x == 0:
+    #        x = 1
+    #    fertz_dose = round(a/x, 2)
+    #    self.form.fertz_ml_display.setProperty('value', fertz_dose)
+    #    self.conversion_data["Fertilizer Ratio"].update(
+    #        {
+    #            "Fertilizer Amount": self.form.Fertz_DoubleSpinBox.value(),
+    #            "Fertilizer to Water": self.form.FertztoWater_DoubleSpinBox.value(),
+    #            "Fertilizer Dosage": round(self.conversion_values["fertz_dosage"], 2)
+    #        }
+    #    )
 
     def set_fertz_schedule(self):
         self.schedule_data["Fertilizer Schedule Data"].update(
