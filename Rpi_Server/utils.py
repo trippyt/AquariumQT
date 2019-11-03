@@ -95,7 +95,6 @@ def save():
 def conversions_tanksize(tank: int, co2ml: int, co2water: int, co2dosage: int, fertzml: int, fertzwater: int, fertzdosage: int, conditionerml: int, conditionerwater: int, conditionerdosage: int):
     global conversion_data
     print("Conversion Data Updated")
-    print(f"Tank Size: {tank}")
     conversion_data["Tank Size"].update(
         {
             "Water Volume": tank
