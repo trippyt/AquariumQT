@@ -6,8 +6,8 @@ import threading
 from time import sleep
 app = Quart(__name__)
 
-@app.route('/setConversionTankSize', methods=['GET', 'POST'])
-async def set_conversions_tanksize():
+@app.route('/setConversionRatios', methods=['GET', 'POST'])
+async def set_conversions_ratios():
     tank = request.args.get('tank')
     co2ml = request.args.get('co2ml')
     co2water = request.args.get('co2water')
@@ -15,11 +15,14 @@ async def set_conversions_tanksize():
     fertzml = request.args.get('fertzml')
     fertzwater = request.args.get('fertzwater')
     fertzdosage = request.args.get('fertzdosage')
+    conditionerml = request.args.get('conditionerml')
+    conditionerwater = request.args.get('conditionerwater')
+    conditionerdosage = request.args.get('conditionerdosage')
     print(f"New Tank Size Set: {tank}")
     print(f"New Co2 Conversion Set:{co2ml}, {co2water}, {co2dosage}")
     print(f"New Fertilizer Conversion Set:{fertzml}, {fertzwater}, {fertzdosage}")
-    #print(f"New Co2 Dosage Conversion Set:{co2dosage}")
-    utils.conversions_tanksize(tank, co2ml, co2water, co2dosage, fertzml, fertzwater, fertzdosage)
+    print(f"New Conditioner Dosage Conversion Set:{conditionerml}, {conditionerwater}, {conditionerdosage}")
+    utils.conversions_tanksize(tank, co2ml, co2water, co2dosage, fertzml, fertzwater, fertzdosage, conditionerml, conditionerwater, conditionerdosage)
     return f"TankSize {tank}"
 
 @app.route('/getConversionTankSize', methods=['GET', 'POST'])

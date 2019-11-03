@@ -92,7 +92,7 @@ def save():
         json_file.write(json.dumps(data, indent=4))
     print("Settings Updated")
 
-def conversions_tanksize(tank: int, co2ml: int, co2water: int, co2dosage: int, fertzml: int, fertzwater: int, fertzdosage: int):
+def conversions_tanksize(tank: int, co2ml: int, co2water: int, co2dosage: int, fertzml: int, fertzwater: int, fertzdosage: int, conditionerml: int, conditionerwater: int, conditionerdosage: int):
     global conversion_data
     print("Conversion Data Updated")
     print(f"Tank Size: {tank}")
@@ -113,6 +113,13 @@ def conversions_tanksize(tank: int, co2ml: int, co2water: int, co2dosage: int, f
             "Fertilizer Amount": fertzml,
             "Fertilizer to Water": fertzwater,
             "Fertilizer Dosage": fertzdosage
+        }
+    )
+    conversion_data["Water Conditioner Ratio"].update(
+        {
+            "Conditioner Amount": conditionerml,
+            "Conditioner to Water": conditionerwater,
+            "Conditioner Dosage": conditionerdosage
         }
     )
     save()
