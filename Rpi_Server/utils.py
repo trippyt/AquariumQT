@@ -108,7 +108,7 @@ def conversions_tanksize(tank: int, co2ml: int, co2water: int, co2dosage: int, f
             "Co2 Dosage": co2dosage
         }
     )
-    self.conversion_data["Fertilizer Ratio"].update(
+    conversion_data["Fertilizer Ratio"].update(
         {
             "Fertilizer Amount": fertzml,
             "Fertilizer to Water": fertzwater,
