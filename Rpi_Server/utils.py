@@ -13,7 +13,7 @@ except:
     import dummyGPIO as GPIO
 Co2_pump = 17 # Initializing the GPIO pin 17 for Dosage pump
 Fertilizer_pump = 27 # Initializing the GPIO pin 27 for Dosage pump
-led_pin = 12  # Initializing the GPIO pin 12 for LED
+led_pin = 18  # Initializing the GPIO pin 12 for LED
 Button = 16  # Initializing the GPIO pin 16 for Button
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
