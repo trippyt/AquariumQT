@@ -314,7 +314,7 @@ class App(object):
         co2_runtime = co2_dose*co2secper1ml
         self.form.co2_seconds_display.display(co2_runtime)
         self.co2_dose_times_a_day()
-        self.dos
+
 
 
     def co2_dose_times_a_day(self):
