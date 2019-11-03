@@ -124,7 +124,7 @@ def set_dosage_data():
     )
     save()
 
-def conversions_tanksize(tank: int, co2_ml: int, co2_water: int, fertz_ml: int, fertz_water: int, conditioner_ml: int, conditioner_water: int, conditioner_dosage: int):
+def conversions_tanksize(tank: int, co2_ml: int, co2_water: int, fertz_ml: int, fertz_water: int, conditioner_ml: int, conditioner_water: int):
     global conversion_data
     conversion_data["Tank Size"].update(
         {

@@ -189,31 +189,28 @@ class App(object):
     def save_doses(self):
         print(f"Sending New Tank Size to Server")
         tank = self.form.TankSize_DoubleSpinBox.value()
-        co2ml = self.form.C02_DoubleSpinBox.value()
-        co2water = self.form.C02toWater_DoubleSpinBox.value()
-        x = co2ml*tank/co2water
-        co2dosage = round(x, 2)
-        self.form.C02_outLcd.setProperty('value', co2dosage)
+        co2_ml = self.form.C02_DoubleSpinBox.value()
+        co2_water = self.form.C02toWater_DoubleSpinBox.value()
+
         self.co2_dose_times_a_day()
         print(f"TankSize:{tank} Litres")
-        print(f"Co2:{co2ml}mL    Co2 to Water:{co2water}    Co2 Dosage:{co2dosage}")
-        fertzml = self.form.Fertz_DoubleSpinBox.value()
-        fertzwater = self.form.FertztoWater_DoubleSpinBox.value()
-        y = fertzml*tank/fertzwater
-        fertzdosage = round(y, 2)
-        self.form.Fertz_outLcd.setProperty('value', fertzdosage)
+        print(f"Co2:{co2_ml}mL    Co2 to Water:{co2_water}")
+        fertz_ml = self.form.Fertz_DoubleSpinBox.value()
+        fertz_water = self.form.FertztoWater_DoubleSpinBox.value()
+
+        #self.form.Fertz_outLcd.setProperty('value', fertzdosage)
         #self.fertz_dose_times_a_day()
-        print(f"Fertz:{fertzml}mL    Fertz to Water:{fertzwater}    Fertz Dosage:{fertzdosage}")
-        conditionerml = self.form.TapSafe_DoubleSpinBox.value()
-        conditionerwater = self.form.TapSafetoWater_DoubleSpinBox.value()
-        y = conditionerml * tank / conditionerwater
-        conditionerdosage = round(y, 2)
-        self.form.conditioner_outLcd.setProperty('value', conditionerdosage)
+        print(f"Fertz:{fertz_ml}mL    Fertz to Water:{fertz_water}")
+        conditioner_ml = self.form.TapSafe_DoubleSpinBox.value()
+        conditioner_water = self.form.TapSafetoWater_DoubleSpinBox.value()
+
+        #self.form.conditioner_outLcd.setProperty('value', conditionerdosage)
         # self.conditioner_dose_times_a_day()
-        print(f"conditioner:{conditionerml}mL    conditioner to Water:{conditionerwater}    conditioner Dosage:{conditionerdosage}")
-        url = f"http://192.168.1.35:5000/setConversionRatios?tank={tank}&co2ml={co2ml}&co2water={co2water}&co2dosage={co2dosage}&fertzml={fertzml}&fertzwater={fertzwater}&fertzdosage={fertzdosage}&conditionerml={conditionerml}&conditionerwater={conditionerwater}&conditionerdosage={conditionerdosage}"
+        print(f"conditioner:{conditioner_ml}mL    conditioner to Water:{conditioner_water}")
+        url = f"http://192.168.1.35:5000/setConversionRatios?tank={tank}&co2ml={co2_ml}&co2_water={co2_water}&fertzml={fertz_ml}&fertzwater={fertz_water}&conditionerml={conditioner_ml}&conditionerwater={conditioner_water}"
         request = QtNetwork.QNetworkRequest(QUrl(url))
         self.nam.get(request)
+        self.load_server()
 
     def save(self):
         self.log.info("Settings Updated")
@@ -317,6 +314,7 @@ class App(object):
         co2_runtime = co2_dose*co2secper1ml
         self.form.co2_seconds_display.display(co2_runtime)
         self.co2_dose_times_a_day()
+
 
 
     def co2_dose_times_a_day(self):
