@@ -259,7 +259,7 @@ class App(object):
             print("Loaded Ratio Data From The Server")
             print(f"Tank Size :{tanklcd}")
             print(f"Co2 Amount :{co2amountlcd}    Co2 to Water :{co2waterlcd}    Co2 Dosage :{co2dosagelcd}")
-            print(f"Fertz Amount :{Fertzamountlcd}    Fertz to Water :{Fertzwaterlcd}    Fertz Dosage :{Fertzdosagelcd}")
+            #print(f"Fertz Amount :{Fertzamountlcd}    Fertz to Water :{Fertzwaterlcd}    Fertz Dosage :{Fertzdosagelcd}")
             #print(f"Conditioner Amount :{Conditioneramountlcd}    Conditioner to Water :{Conditionerwaterlcd}    Conditioner Dosage :{Conditionerdosagelcd}")
         except KeyError:
             print("No Ratio Data From The Server to Load")
