@@ -69,6 +69,14 @@ calibration_data = {
 light_hour_data = {
             "Mode Hours": {},
         }
+dosage_data = {
+    "Co2 Dosage": {},
+    "Co2 Runtime": {},
+    "Fertilizer Dosage": {},
+    "Fertilizer Runtime": {},
+    "Water Conditioner Dosage": {},
+    "Water Conditioner Runtime": {},
+        }
 
 def load():
     if os.path.isfile('data.txt'):
@@ -81,44 +89,71 @@ def save():
     global temperature_data
     global calibration_data
     global conversion_data
+    global dosage_data
     data = {
         "Conversion Data": conversion_data,
         #"Schedule Data": schedule_data,
         "Calibration Data": calibration_data,
         "Temperature Data": temperature_data,
+        "Dosage Data": dosage_data,
         #"Light Hour Data": light_hour_data
     }
     with open('data.txt', 'w') as json_file:
         json_file.write(json.dumps(data, indent=4))
     print("Settings Updated")
+#co2_dose: int, co2_runtime: int, fertz_dose: int, fertz_runtime: int, conditioner_dose: int, conditioner_runtime: int
+def set_dosage_data():
+    global dosage_data
+    co2_dose = float(conversion_data["Co2 Ratio"]["Co2 Dosage"])
+    co2_runtime =
+    fertz_dose =
+    fertz_runtime =
+    conditioner_dose =
+    conditioner_runtime =
+    dosage_data["Dosage Data"].update(
+        {
+            "Co2 Dosage": co2_dose,
+            "Co2 Runtime": co2_runtime,
+            "Fertilizer Dosage": fertz_dose,
+            "Fertilizer Runtime": fertz_runtime,
+            "Water Conditioner Dosage": conditioner_dose,
+            "Water Conditioner Runtime": conditioner_runtime,
+        }
+    )
+    save()
 
-def conversions_tanksize(tank: int, co2ml: int, co2water: int, co2dosage: int, fertzml: int, fertzwater: int, fertzdosage: int, conditionerml: int, conditionerwater: int, conditionerdosage: int):
+def conversions_tanksize(tank: int, co2_ml: int, co2_water: int, fertz_ml: int, fertz_water: int, conditioner_ml: int, conditioner_water: int, conditioner_dosage: int):
     global conversion_data
-    print("Conversion Data Updated")
     conversion_data["Tank Size"].update(
         {
             "Water Volume": tank
         }
     )
+    x = co2ml * tank / co2_water
+    co2_dosage = round(x, 2)
     conversion_data["Co2 Ratio"].update(
         {
-            "Co2 Amount": co2ml,
-            "Co2 to Water": co2water,
-            "Co2 Dosage": co2dosage
+            "Co2 Amount": co2_ml,
+            "Co2 to Water": co2_water,
+            "Co2 Dosage": co2_dosage
         }
     )
+    y = fertz_ml * tank / fertz_water
+    fertz_dosage = round(y, 2)
     conversion_data["Fertilizer Ratio"].update(
         {
-            "Fertilizer Amount": fertzml,
-            "Fertilizer to Water": fertzwater,
-            "Fertilizer Dosage": fertzdosage
+            "Fertilizer Amount": fertz_ml,
+            "Fertilizer to Water": fertz_water,
+            "Fertilizer Dosage": fertz_dosage
         }
     )
+    y = conditioner_ml * tank / conditioner_water
+    conditioner_dosage = round(y, 2)
     conversion_data["Water Conditioner Ratio"].update(
         {
-            "Conditioner Amount": conditionerml,
-            "Conditioner to Water": conditionerwater,
-            "Conditioner Dosage": conditionerdosage
+            "Conditioner Amount": conditioner_ml,
+            "Conditioner to Water": conditioner_water,
+            "Conditioner Dosage": conditioner_dosage
         }
     )
     save()
@@ -183,7 +218,7 @@ def led_pulse_worker(option):
 
 def led_pulse(option):
     pulse_thread = threading.Thread(target=led_pulse_worker, args=(option,))
-    print("Starting LED Pulse")
+    print(f"Starting LED {option}")
     pulse_thread.start()
 
 def stop_led_pulse():
@@ -213,9 +248,11 @@ def start_calibration(pump_type: str):
         global calibration_data
         cal_time = None
         cal_stop_signal = False
+        stop_led_pulse()
         led_pulse(PULSE)
         btn_pressed()
         if pump_type == 'co2':
+            stop_led_pulse()
             print("Running co2")
             print("Co2                      Calibration started.")
             led_pulse(FLASH)

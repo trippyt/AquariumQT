@@ -285,12 +285,14 @@ class App(object):
         self.form.TapSafetoWater_DoubleSpinBox.blockSignals(False)
 
         try:
-            self.form.co2_dosing_lcd.display(self.calibration_data["Co2 Calibration Data"]["Time per 10mL"])
-            self.form.co2_calibration_perml_display.display(self.calibration_data["Co2 Calibration Data"]["Time per 10mL"] / 10)
+            self.co2_dosing_displays()
+
             #self.form.fertz_dosing_lcd.display(self.calibration_data["Fertilizer Calibration Data"]["Time per 10mL"])
             #self.form.conditioner_dosing_lcd.display(self.calibration_data["Water Conditioner Calibration Data"]["Time"])
             self.form.co2_seconds_display.display(self.calibration_data["Co2 Calibration Data"]["Dosing Runtime"])
             print("Loaded Calibration Data From The Server")
+            print(f"Co2 Ran for:{co2secper10ml}secs to Reach 10mL")
+            print(f"Co2 Run for :{co2secper1ml}secs per 1mL Required")
         except KeyError:
             print("No Calibration Data From The Server to Load")
 
@@ -305,6 +307,17 @@ class App(object):
         self.form.ht_alert_edit.blockSignals(False)
         self.form.lt_alert_edit.blockSignals(False)
         print(new_data)
+
+    def co2_dosing_displays(self):
+        co2secper10ml = self.calibration_data["Co2 Calibration Data"]["Time per 10mL"]
+        self.form.co2_dosing_lcd.display(co2secper10ml)
+        co2secper1ml = co2secper10ml / 10
+        self.form.co2_calibration_perml_display.display(co2secper1ml)
+        co2_dose = float(self.conversion_data["Co2 Ratio"]["Co2 Dosage"])
+        co2_runtime = co2_dose*co2secper1ml
+        self.form.co2_seconds_display.display(co2_runtime)
+        self.co2_dose_times_a_day()
+
 
     def co2_dose_times_a_day(self):
         x = (self.form.C02_DoubleSpinBox.value()*self.form.TankSize_DoubleSpinBox.value())/self.form.C02toWater_DoubleSpinBox.value()
@@ -542,13 +555,14 @@ class App(object):
             url = f"http://192.168.1.35:5000/calibrationModeOn?type={pump_type}"
             print("Entering Calibration Mode")
             request = QtNetwork.QNetworkRequest(QUrl(url))
-            #loop = QEventLoop()
+            loop = QEventLoop()
             resp = self.nam.get(request)
-            #resp.finished.connect(loop.quit)
-            #print("Waiting For Calibration Data")
-            #loop.exec_()
+            resp.finished.connect(loop.quit)
+            print("Waiting For Calibration Data")
+            loop.exec_()
             data = resp.readAll()
             print(data)
+            #self.exit_calibration_mode(pump_type)
         else:
             self.exit_calibration_mode(pump_type)
 
@@ -559,22 +573,24 @@ class App(object):
         loop = QEventLoop()
         resp = self.nam.get(request)
         resp.finished.connect(loop.quit)
-        co2time = self.calibration_data["Co2 Calibration Data"]["Time per 10mL"]
-        print(f"Loading Co2 Time Per 10mL: {co2time}")
-        self.form.co2_dosing_lcd.display(co2time)
+        self.load_server()
+        #co2time = self.calibration_data["Co2 Calibration Data"]["Time per 10mL"]
+        #print(f"Loading Co2 Time Per 10mL: {co2time}")
+        #self.co2_perml()
+        #self.form.co2_dosing_lcd.display(co2time)
 
-    #    def send_calibration_request(self, pump_type):
-#        self.pump_on = not self.pump_on
-#        if not self.pump_on:
-#            url = f"http://192.168.1.35:5000/runPump?type={pump_type}"
-#            print("starting calibration request")
-#            request = QtNetwork.QNetworkRequest(QUrl(url))
-#            self.nam.get(request)
-#        else:
-#            url = f"http://192.168.1.35:5000/stopPump?type={pump_type}"
-#            print("finishing calibration request")
-#            request = QtNetwork.QNetworkRequest(QUrl(url))
-#            self.nam.get(request)
+    def run_dosage(self, pump_type):
+        self.pump_on = not self.pump_on
+        if not self.pump_on:
+            url = f"http://192.168.1.35:5000/runPump?type={pump_type}"
+            print("Starting Dosage Request")
+            request = QtNetwork.QNetworkRequest(QUrl(url))
+            self.nam.get(request)
+        else:
+            url = f"http://192.168.1.35:5000/stopPump?type={pump_type}"
+            print("Finishing Dosage Request")
+            request = QtNetwork.QNetworkRequest(QUrl(url))
+            self.nam.get(request)
 
     def fertz_calibration(self):
         self.fertz_calibration_started = not self.fertz_calibration_started
