@@ -11,11 +11,14 @@ async def set_conversions_tanksize():
     co2ml = request.args.get('co2ml')
     co2water = request.args.get('co2water')
     co2dosage = request.args.get('co2dosage')
+    fertzml = request.args.get('fertzml')
+    fertzwater = request.args.get('fertzwater')
+    fertzdosage = request.args.get('fertzdosage')
     print(f"New Tank Size Set: {tank}")
-    print(f"New Co2 Conversion Set:{co2ml}")
-    print(f"New Co2 to Water Conversion Set:{co2water}")
-    print(f"New Co2 Dosage Conversion Set:{co2dosage}")
-    utils.conversions_tanksize(tank, co2ml, co2water, co2dosage)
+    print(f"New Co2 Conversion Set:{co2ml}, {co2water}, {co2dosage}")
+    print(f"New Fertilizer Conversion Set:{fertzml}, {fertzwater}, {fertzdosage}")
+    #print(f"New Co2 Dosage Conversion Set:{co2dosage}")
+    utils.conversions_tanksize(tank, co2ml, co2water, co2dosage, fertzml, fertzwater, fertzdosage)
     return f"TankSize {tank}"
 
 @app.route('/getConversionTankSize', methods=['GET', 'POST'])

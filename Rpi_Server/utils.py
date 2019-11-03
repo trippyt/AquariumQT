@@ -92,7 +92,7 @@ def save():
         json_file.write(json.dumps(data, indent=4))
     print("Settings Updated")
 
-def conversions_tanksize(tank: int, co2ml: int, co2water: int, co2dosage: int):
+def conversions_tanksize(tank: int, co2ml: int, co2water: int, co2dosage: int, fertzml: int, fertzwater: int, fertzdosage: int):
     global conversion_data
     print("Conversion Data Updated")
     print(f"Tank Size: {tank}")
@@ -106,6 +106,13 @@ def conversions_tanksize(tank: int, co2ml: int, co2water: int, co2dosage: int):
             "Co2 Amount": co2ml,
             "Co2 to Water": co2water,
             "Co2 Dosage": co2dosage
+        }
+    )
+    self.conversion_data["Fertilizer Ratio"].update(
+        {
+            "Fertilizer Amount": fertzml,
+            "Fertilizer to Water": fertzwater,
+            "Fertilizer Dosage": fertzdosage
         }
     )
     save()
@@ -219,6 +226,7 @@ def start_calibration(pump_type: str):
                     "Time per 10mL": round(cal_time, 2)
                 }
             )
+            stop_led_pulse()
             save()
     except ThreadKilled:
         print('calibration was cancelled!')

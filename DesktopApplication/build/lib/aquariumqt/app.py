@@ -146,7 +146,7 @@ class App(object):
         self.form.FertzCalibrationButton.clicked.connect(self.fertz_calibration)
         self.form.TapSafeCalibrationButton.clicked.connect(self.conditioner_calibration)
 
-        #self.form.c02_comboBox_2.currentIndexChanged.connect(self.set_co2_conversion)
+        self.form.c02_comboBox_2.currentIndexChanged.connect(self.co2_dose_times_a_day)
         self.form.fertz_comboBox_2.currentIndexChanged.connect(self.set_fertz_conversion)
         self.form.water_conditioner_comboBox.currentIndexChanged.connect(self.set_conditioner_conversion)
 
@@ -191,9 +191,13 @@ class App(object):
         tank = self.form.TankSize_DoubleSpinBox.value()
         co2ml = self.form.C02_DoubleSpinBox.value()
         co2water = self.form.C02toWater_DoubleSpinBox.value()
+        x = co2ml*tank/co2water
+        co2dosage = round(x, 2)
+        self.form.C02_outLcd.setProperty('value', co2dosage)
+        self.co2_dose_times_a_day()
         print(f"TankSize:{tank} Litres")
-        print(f"Co2:{co2ml}mL   Co2 to Water:{co2water}")
-        url = f"http://192.168.1.35:5000/setConversionTankSize?tank={tank}&co2ml={co2ml}&co2water={co2water}"
+        print(f"Co2:{co2ml}mL   Co2 to Water:{co2water} Co2 Dosage:{co2dosage}")
+        url = f"http://192.168.1.35:5000/setConversionTankSize?tank={tank}&co2ml={co2ml}&co2water={co2water}&co2dosage={co2dosage}"
         request = QtNetwork.QNetworkRequest(QUrl(url))
         self.nam.get(request)
 
@@ -230,7 +234,7 @@ class App(object):
             self.form.TankSize_DoubleSpinBox.setValue(float(self.conversion_data["Tank Size"]["Water Volume"]))
             self.form.C02_DoubleSpinBox.setValue(float(self.conversion_data["Co2 Ratio"]["Co2 Amount"]))
             self.form.C02toWater_DoubleSpinBox.setValue(float(self.conversion_data["Co2 Ratio"]["Co2 to Water"]))
-            self.form.co2_dosing_lcd.display(float(conversion_data["Co2 Ratio"]["co2_dosage"]))
+            self.form.co2_dosing_lcd.display(float(self.conversion_data["Co2 Ratio"]["co2_dosage"]))
             #self.form.Fertz_DoubleSpinBox.setValue(self.conversion_data["Fertilizer Ratio"]["Fertilizer Amount"])
             #self.form.FertztoWater_DoubleSpinBox.setValue(self.conversion_data["Fertilizer Ratio"]["Fertilizer to Water"])
             #self.form.TapSafe_DoubleSpinBox.setValue(self.conversion_data["Water Conditioner Ratio"]["Conditioner Amount"])
@@ -311,6 +315,14 @@ class App(object):
             #    print("No Calibration Data To Load")
 
             #self.load_server()
+
+    def co2_dose_times_a_day(self):
+        x = (self.form.C02_DoubleSpinBox.value()*self.form.TankSize_DoubleSpinBox.value())/self.form.C02toWater_DoubleSpinBox.value()
+        a = self.form.c02_comboBox_2.currentIndex() + 1
+        if a == 0:
+            a = 1
+        c02_dose = x / a
+        self.form.c02_ml_outLcd.setProperty('value', c02_dose)
 
     def co2_perml(self):
         time = self.calibration_data["Co2 Calibration Data"]["Time"] / 10
@@ -564,8 +576,14 @@ class App(object):
         url = f"http://192.168.1.35:5000/calibrationModeOff?type={pump_type}"
         print("Exiting Calibration Mode")
         request = QtNetwork.QNetworkRequest(QUrl(url))
-        self.nam.get(request)
-#    def send_calibration_request(self, pump_type):
+        loop = QEventLoop()
+        resp = self.nam.get(request)
+        resp.finished.connect(loop.quit)
+        co2time = self.calibration_data["Co2 Calibration Data"]["Time per 10mL"]
+        print(f"Loading Co2 Time Per 10mL: {co2time}")
+        self.form.co2_dosing_lcd.display(co2time)
+
+    #    def send_calibration_request(self, pump_type):
 #        self.pump_on = not self.pump_on
 #        if not self.pump_on:
 #            url = f"http://192.168.1.35:5000/runPump?type={pump_type}"
