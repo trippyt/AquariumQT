@@ -204,7 +204,14 @@ class App(object):
         self.form.Fertz_outLcd.setProperty('value', fertzdosage)
         #self.fertz_dose_times_a_day()
         print(f"Fertz:{fertzml}mL    Fertz to Water:{fertzwater}    Fertz Dosage:{fertzdosage}")
-        url = f"http://192.168.1.35:5000/setConversionTankSize?tank={tank}&co2ml={co2ml}&co2water={co2water}&co2dosage={co2dosage}&fertzml={fertzml}&fertzwater={fertzwater}&fertzdosage={fertzdosage}"
+        conditionerml = self.form.TapSafe_DoubleSpinBox.value()
+        conditionerwater = self.form.TapSafetoWater_DoubleSpinBox.value()
+        y = conditionerml * tank / conditionerwater
+        conditionerdosage = round(y, 2)
+        self.form.conditioner_outLcd.setProperty('value', conditionerdosage)
+        # self.conditioner_dose_times_a_day()
+        print(f"conditioner:{conditionerml}mL    conditioner to Water:{conditionerwater}    conditioner Dosage:{conditionerdosage}")
+        url = f"http://192.168.1.35:5000/setConversionTankSize?tank={tank}&co2ml={co2ml}&co2water={co2water}&co2dosage={co2dosage}&fertzml={fertzml}&fertzwater={fertzwater}&fertzdosage={fertzdosage}&conditionerml={conditionerml}&conditionerwater={conditionerwater}&conditionerdosage={conditionerdosage}"
         request = QtNetwork.QNetworkRequest(QUrl(url))
         self.nam.get(request)
 
@@ -239,18 +246,32 @@ class App(object):
         #self.form.TapSafetoWater_DoubleSpinBox.blockSignals(True)
 
         try:
-            self.form.TankSize_DoubleSpinBox.setValue(float(self.conversion_data["Tank Size"]["Water Volume"]))
-            self.form.C02_DoubleSpinBox.setValue(float(self.conversion_data["Co2 Ratio"]["Co2 Amount"]))
-            self.form.C02toWater_DoubleSpinBox.setValue(float(self.conversion_data["Co2 Ratio"]["Co2 to Water"]))
-            co2lcd = float(self.conversion_data["Co2 Ratio"]["Co2 Dosage"])
-            self.form.C02_outLcd.setProperty('Value', co2lcd)
-            #self.form.co2_dosing_lcd.display(float(self.conversion_data["Co2 Ratio"]["co2_dosage"]))
-            self.form.Fertz_DoubleSpinBox.setValue(float(self.conversion_data["Fertilizer Ratio"]["Fertilizer Amount"]))
-            self.form.FertztoWater_DoubleSpinBox.setValue(float(self.conversion_data["Fertilizer Ratio"]["Fertilizer to Water"]))
+            tanklcd = float(self.conversion_data["Tank Size"]["Water Volume"])
+            self.form.TankSize_DoubleSpinBox.setValue(tanklcd)
+            co2amountlcd = float(self.conversion_data["Co2 Ratio"]["Co2 Amount"])
+            self.form.C02_DoubleSpinBox.setValue(co2amountlcd)
+            co2waterlcd = float(self.conversion_data["Co2 Ratio"]["Co2 to Water"])
+            self.form.C02toWater_DoubleSpinBox.setValue(co2waterlcd)
+            co2dosagelcd = float(self.conversion_data["Co2 Ratio"]["Co2 Dosage"])
+            self.form.C02_outLcd.setProperty('value', co2dosagelcd)
+
+            fertzamountlcd = float(self.conversion_data["Fertilizer Ratio"]["Fertilizer Amount"])
+            self.form.Fertz_DoubleSpinBox.setValue(fertzamountlcd)
+            fertzwaterlcd = float(self.conversion_data["Fertilizer Ratio"]["Fertilizer to Water"])
+            self.form.FertztoWater_DoubleSpinBox.setValue(fertzwaterlcd)
+            fertzdosagelcd = float(self.conversion_data["Fertilizer Ratio"]["Fertilizer Dosage"])
+            self.form.Fertz_outLcd.setProperty('value', fertzdosagelcd)
+
+
             #self.form.TapSafe_DoubleSpinBox.setValue(self.conversion_data["Water Conditioner Ratio"]["Conditioner Amount"])
+
             #self.form.TapSafetoWater_DoubleSpinBox.setValue(self.conversion_data["Water Conditioner Ratio"]["Conditioner to Water"])
+
             print("Loaded Ratio Data From The Server")
-            print(f"LCD :{co2lcd}")
+            print(f"Tank Size :{tanklcd}")
+            print(f"Co2 Amount :{co2amountlcd}    Co2 to Water :{co2waterlcd}    Co2 Dosage :{co2dosagelcd}")
+            print(f"Fertz Amount :{fertzamountlcd}    Fertz to Water :{fertzwaterlcd}    Fertz Dosage :{fertzdosagelcd}")
+            #print(f"Conditioner Amount :{conditioneramountlcd}    Conditioner to Water :{conditionerwaterlcd}    Conditioner Dosage :{conditionerdosagelcd}")
         except KeyError:
             print("No Ratio Data From The Server to Load")
 

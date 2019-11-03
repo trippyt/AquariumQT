@@ -1,4 +1,4 @@
-To Install Application on Client
+To Install Application on Client.
     ``python setup.py install``        # install app from egg
     ``aquariumqt``                     # run app
 
