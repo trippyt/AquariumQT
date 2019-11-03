@@ -147,7 +147,7 @@ class App(object):
         self.form.TapSafeCalibrationButton.clicked.connect(self.conditioner_calibration)
 
         self.form.c02_comboBox_2.currentIndexChanged.connect(self.co2_dose_times_a_day)
-        self.form.fertz_comboBox_2.currentIndexChanged.connect(self.set_fertz_conversion)
+        self.form.fertz_comboBox_2.currentIndexChanged.connect(self.fertz_dose_times_a_day)
         self.form.water_conditioner_comboBox.currentIndexChanged.connect(self.set_conditioner_conversion)
 
         self.form.calendarWidget.selectionChanged.connect(self.dose_sch)
@@ -330,6 +330,10 @@ class App(object):
             a = 1
         c02_dose = x / a
         self.form.c02_ml_outLcd.setProperty('value', c02_dose)
+
+    def fertz_dose_times_a_day(self):
+        y = (self.form.Fertz_DoubleSpinBox.value()*self.form.TankSize_DoubleSpinBox.value())/self.form.FertztoWater_DoubleSpinBox.value()
+        #b =
 
     def co2_perml(self):
         time = self.calibration_data["Co2 Calibration Data"]["Time"] / 10
