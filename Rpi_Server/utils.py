@@ -104,12 +104,14 @@ def save():
 #co2_dose: int, co2_runtime: int, fertz_dose: int, fertz_runtime: int, conditioner_dose: int, conditioner_runtime: int
 def set_dosage_data():
     global dosage_data
+
     co2_dose = float(conversion_data["Co2 Ratio"]["Co2 Dosage"])
-    co2_runtime =
-    fertz_dose =
-    fertz_runtime =
-    conditioner_dose =
-    conditioner_runtime =
+    co2_per_ml = float(calibration_data["Co2 Calibration Data"]["Time Per 1mL"])
+    co2_runtime = co2_dose*co2_per_ml
+    #fertz_dose =
+    #fertz_runtime =
+    #conditioner_dose =
+    #conditioner_runtime =
     dosage_data["Dosage Data"].update(
         {
             "Co2 Dosage": co2_dose,
@@ -265,10 +267,12 @@ def start_calibration(pump_type: str):
             end = time.time()
             GPIO.output(Co2_pump, 0)
             cal_time = round(end - start, 2)
+            co2_per_ml = cal_time/10
             print(cal_time)
             calibration_data["Co2 Calibration Data"].update(
                 {
-                    "Time per 10mL": round(cal_time, 2)
+                    "Time per 10mL": cal_time,
+                    "Time Per 1mL": co2_per_ml
                 }
             )
             stop_led_pulse()
