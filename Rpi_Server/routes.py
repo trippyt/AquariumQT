@@ -11,7 +11,7 @@ async def set_conversions_ratios():
     tank = request.args.get('tank')
     co2_ml = request.args.get('co2ml')
     co2_water = request.args.get('co2water')
-    co2_dosage = tank*co2_ml
+    co2_dosage = float(tank)*float(co2_ml)
     fertz_ml = request.args.get('fertz_ml')
     fertz_water = request.args.get('fertz_water')
     fertz_dosage = request.args.get('fertz_dosage')
