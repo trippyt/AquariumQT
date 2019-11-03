@@ -11,18 +11,10 @@ async def set_conversions_ratios():
     tank = request.args.get('tank')
     co2_ml = request.args.get('co2ml')
     co2_water = request.args.get('co2water')
-    co2_dosage = float(tank)*float(co2_ml)
     fertz_ml = request.args.get('fertz_ml')
     fertz_water = request.args.get('fertz_water')
-    fertz_dosage = request.args.get('fertz_dosage')
     conditioner_ml = request.args.get('conditioner_ml')
     conditioner_water = request.args.get('conditioner_water')
-    conditioner_dosage = request.args.get('conditioner_dosage')
-    print("Updating Conversion Data From the Client")
-    print(f"New Tank Size Set: {tank}")
-    print(f"New Co2 Conversion Set:{co2_ml}, {co2_water}, {co2_dosage}")
-    print(f"New Fertilizer Conversion Set:{fertz_ml}, {fertz_water}, {fertz_dosage}")
-    print(f"New Conditioner Dosage Conversion Set:{conditioner_ml}, {conditioner_water}, {conditioner_dosage}")
     utils.conversions_tanksize(tank, co2_ml, co2_water, fertz_ml, fertz_water, conditioner_ml, conditioner_water)
     return f"Update Completed"
 
