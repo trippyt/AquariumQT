@@ -232,27 +232,42 @@ class App(object):
         self.form.TankSize_DoubleSpinBox.blockSignals(True)
         self.form.C02_DoubleSpinBox.blockSignals(True)
         self.form.C02toWater_DoubleSpinBox.blockSignals(True)
+        self.form.C02_outLcd.blockSignals(True)
         self.form.Fertz_DoubleSpinBox.blockSignals(True)
         self.form.FertztoWater_DoubleSpinBox.blockSignals(True)
         #self.form.TapSafe_DoubleSpinBox.blockSignals(True)
         #self.form.TapSafetoWater_DoubleSpinBox.blockSignals(True)
 
         try:
-            self.form.TankSize_DoubleSpinBox.setValue(float(self.conversion_data["Tank Size"]["Water Volume"]))
-            self.form.C02_DoubleSpinBox.setValue(float(self.conversion_data["Co2 Ratio"]["Co2 Amount"]))
-            self.form.C02toWater_DoubleSpinBox.setValue(float(self.conversion_data["Co2 Ratio"]["Co2 to Water"]))
-            self.form.co2_dosing_lcd.display(float(self.conversion_data["Co2 Ratio"]["co2_dosage"]))
+            tanklcd = float(self.conversion_data["Tank Size"]["Water Volume"])
+            self.form.TankSize_DoubleSpinBox.setValue(tanklcd)
+
+            co2amountlcd = float(self.conversion_data["Co2 Ratio"]["Co2 Amount"])
+            self.form.C02_DoubleSpinBox.setValue(co2amountlcd)
+
+            co2waterlcd = float(self.conversion_data["Co2 Ratio"]["Co2 to Water"])
+            self.form.C02toWater_DoubleSpinBox.setValue(co2waterlcd)
+
+            co2dosagelcd = float(self.conversion_data["Co2 Ratio"]["Co2 Dosage"])
+            self.form.C02_outLcd.setProperty('Value', co2dosagelcd)
+
+            #self.form.co2_dosing_lcd.display(float(self.conversion_data["Co2 Ratio"]["co2_dosage"]))
             self.form.Fertz_DoubleSpinBox.setValue(float(self.conversion_data["Fertilizer Ratio"]["Fertilizer Amount"]))
             self.form.FertztoWater_DoubleSpinBox.setValue(float(self.conversion_data["Fertilizer Ratio"]["Fertilizer to Water"]))
             #self.form.TapSafe_DoubleSpinBox.setValue(self.conversion_data["Water Conditioner Ratio"]["Conditioner Amount"])
             #self.form.TapSafetoWater_DoubleSpinBox.setValue(self.conversion_data["Water Conditioner Ratio"]["Conditioner to Water"])
             print("Loaded Ratio Data From The Server")
+            print(f"Tank Size :{tanklcd}")
+            print(f"Co2 Amount :{co2amountlcd}    Co2 to Water :{co2waterlcd}    Co2 Dosage :{co2dosagelcd}")
+            print(f"Fertz Amount :{Fertzamountlcd}    Fertz to Water :{Fertzwaterlcd}    Fertz Dosage :{Fertzdosagelcd}")
+            #print(f"Conditioner Amount :{Conditioneramountlcd}    Conditioner to Water :{Conditionerwaterlcd}    Conditioner Dosage :{Conditionerdosagelcd}")
         except KeyError:
             print("No Ratio Data From The Server to Load")
 
         self.form.TankSize_DoubleSpinBox.blockSignals(False)
         self.form.C02_DoubleSpinBox.blockSignals(False)
         self.form.C02toWater_DoubleSpinBox.blockSignals(False)
+        self.form.C02_outLcd.blockSignals(False)
         self.form.Fertz_DoubleSpinBox.blockSignals(False)
         self.form.FertztoWater_DoubleSpinBox.blockSignals(False)
         #self.form.TapSafe_DoubleSpinBox.blockSignals(False)

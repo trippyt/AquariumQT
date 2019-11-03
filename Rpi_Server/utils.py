@@ -177,11 +177,13 @@ def led_pulse_worker(option):
 
 def led_pulse(option):
     pulse_thread = threading.Thread(target=led_pulse_worker, args=(option,))
+    print("Starting LED Pulse")
     pulse_thread.start()
 
 def stop_led_pulse():
     global led_pulse_loop
     led_pulse_loop = False
+    print("Stopping LED Pulse")
 
 def btn_pressed():
     while GPIO.input(Button):

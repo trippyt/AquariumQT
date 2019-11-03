@@ -96,8 +96,8 @@ async def temp():
     while True:
         temp = await utils.temp()
         #print(temp)
-        #await asyncio.sleep(2)
-        sleep(2)
+        await asyncio.sleep(2)
+        #sleep(2)
         await websocket.send(str(temp))
 
 
