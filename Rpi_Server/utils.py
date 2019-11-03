@@ -106,8 +106,11 @@ def set_dosage_data():
     global dosage_data
 
     co2_dose = float(conversion_data["Co2 Ratio"]["Co2 Dosage"])
+    print(co2_dose)
     co2_per_ml = float(calibration_data["Co2 Calibration Data"]["Time Per 1mL"])
+    print(co2_per_ml)
     co2_runtime = co2_dose*co2_per_ml
+    print(co2_runtime)
     #fertz_dose =
     #fertz_runtime =
     #conditioner_dose =
