@@ -19,14 +19,10 @@ To Rebuild The Application .egg
 
     ``pip uninstall aquariumqt``       # uninstall app
 
-
     ``cd AquariumQT``                  # program location
-
 
     ``cd DesktopApplication``          # app location
 
-
     ``python setup.py bdist_egg``      # rebuild app egg
-
 
     ``python setup.py install``        # install app from egg
