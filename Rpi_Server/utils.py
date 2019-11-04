@@ -118,14 +118,9 @@ def set_dosage_data():
     #fertz_runtime =
     #conditioner_dose =
     #conditioner_runtime =
-    dosage_data["Dosage Data"].update(
+    dosage_data["Co2 Data"].update(
         {
-            "Co2 Dosage": co2_dose,
-            "Co2 Runtime": co2_runtime,
-            "Fertilizer Dosage": fertz_dose,
-            "Fertilizer Runtime": fertz_runtime,
-            "Water Conditioner Dosage": conditioner_dose,
-            "Water Conditioner Runtime": conditioner_runtime,
+            "Runtime": co2_runtime,
         }
     )
     save()
@@ -188,6 +183,7 @@ def conversions(tank: int, co2_ml: int, co2_water: int, fertz_ml: int, fertz_wat
             "Dosage": conditioner_dosage,
         }
     )
+    set_dosage_data()
     print("Updating Conversion Data From the Client")
     print(f"New Tank Size Set: {tank}")
     print(f"New Co2 Conversion Set:{co2_ml}, {co2_water}, {co2_dosage}")
