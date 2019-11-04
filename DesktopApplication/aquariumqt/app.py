@@ -87,7 +87,7 @@ class App(object):
         }
 
         self.temperature_data = {
-            "Temperature Data": {},
+            "Temperature Alert": {},
         }
 
         self.app = QtWidgets.QApplication(sys.argv)
@@ -231,7 +231,7 @@ class App(object):
         #print(new_data)
         try:
             self.calibration_data = new_data["Calibration Data"]
-            self.temperature_data = new_data["Temperature Data"]
+            self.temperature_data = new_data["Temperature Alert"]
             self.conversion_data = new_data["Conversion Data"]
             # self.schedule_data = new_data["Schedule Data"]
             # self.light_hour_data = new_data["Light Hour Data"]
@@ -312,8 +312,8 @@ class App(object):
             self.form.ht_alert_edit.blockSignals(True)
             self.form.lt_alert_edit.blockSignals(True)
             try:
-                high_ta = self.form.ht_alert_edit.setValue(float(self.temperature_data["High Temp"])),
-                low_ta = self.form.lt_alert_edit.setValue(float(self.temperature_data["Low Temp"])),
+                high_ta = self.form.ht_alert_edit.setValue(float(self.temperature_data["Temperature Alert"]["High Temp"])),
+                low_ta = self.form.lt_alert_edit.setValue(float(self.temperature_data["Temperature Alert"]["Low Temp"])),
                 print("Loaded Temperature Alert Data From The Server")
                 print("=" * 10)
                 print(f"High Temperature Alert Set to: {high_ta}")
