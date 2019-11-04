@@ -293,7 +293,7 @@ def start_calibration(pump_type: str):
                     "Time Per 1mL": co2_per_ml
                 }
             )
-            stop_cal()
+            stop_led_pulse()
             save()
             return f"{cal_time} Calibration Completed"
     except ThreadKilled:
