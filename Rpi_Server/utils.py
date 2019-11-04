@@ -109,7 +109,7 @@ def set_dosage_data():
     global dosage_data
 
     co2_dose = round(float(conversion_data["Co2 Ratio"]["Co2 Dosage"]), 2)
-    print(co2_dose)
+    print(type, f"Co2 Dosage: {co2_dose}")
     co2_per_ml = float(calibration_data["Co2 Calibration Data"]["Time per 1mL"])
     print(co2_per_ml)
     co2_runtime = co2_dose*co2_per_ml
