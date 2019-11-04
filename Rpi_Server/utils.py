@@ -309,6 +309,7 @@ def start_calibration(pump_type: str):
             )
             stop_led_pulse()
             save()
+            print(calibration_data)
             return f"{cal_time} Calibration Completed"
     except ThreadKilled:
         print('calibration was cancelled!')
