@@ -298,7 +298,7 @@ def start_calibration(pump_type: str):
             return f"{cal_time} Calibration Completed"
     except ThreadKilled:
         print('calibration was cancelled!')
-        stop_led_pulse()
+        stop_cal()
 
 async def temp():
     temp_c, temp_f = t_sensor.read_temp()
