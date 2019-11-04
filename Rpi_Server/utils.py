@@ -34,7 +34,7 @@ class ThreadKilled (Exception):
    pass
 
 temperature_data = {
-    "Temperature Alert": {},
+    "Temperature Data": {},
 }
 conversion_values = {
             "tank_size": {},
