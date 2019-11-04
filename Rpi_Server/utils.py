@@ -127,7 +127,7 @@ def set_dosage_data():
     )
     save()
 
-def conversions_tanksize(tank: int, co2_ml: int, co2_water: int, fertz_ml: int, fertz_water: int, conditioner_ml: int, conditioner_water: int):
+def conversions(tank: int, co2_ml: int, co2_water: int, fertz_ml: int, fertz_water: int, conditioner_ml: int, conditioner_water: int):
     global conversion_data
 
     conversion_data["Tank Size"].update(
@@ -286,7 +286,7 @@ def start_calibration(pump_type: str):
             )
             stop_led_pulse()
             save()
-            return f"{pump_type} Calibration Completed"
+            return f"{cal_time} Calibration Completed"
     except ThreadKilled:
         print('calibration was cancelled!')
         stop_led_pulse()

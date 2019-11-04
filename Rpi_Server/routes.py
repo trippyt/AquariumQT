@@ -15,7 +15,7 @@ async def set_conversions_ratios():
     fertz_water = request.args.get('fertz_water')
     conditioner_ml = request.args.get('conditioner_ml')
     conditioner_water = request.args.get('conditioner_water')
-    utils.conversions_tanksize(tank, co2_ml, co2_water, fertz_ml, fertz_water, conditioner_ml, conditioner_water)
+    utils.conversions(tank, co2_ml, co2_water, fertz_ml, fertz_water, conditioner_ml, conditioner_water)
     return f"Update Completed"
 
 @app.route('/getConversionTankSize', methods=['GET', 'POST'])
@@ -43,7 +43,7 @@ async def run_calibration():
     if pump_type in ['conditioner', 'co2', 'fertilizer']:
         cal_thread = threading.Thread(target=utils.start_calibration, args=(pump_type,))
         cal_thread.start()
-        return self.exit_calibration_mode(pump_type)
+        return f"Calibrating {pump_type} pump."
     else:
         return "Invalid pump specified"
 
