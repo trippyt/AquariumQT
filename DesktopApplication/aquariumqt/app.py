@@ -231,7 +231,7 @@ class App(object):
         #print(new_data)
         try:
             self.calibration_data = new_data["Calibration Data"]
-            self.temperature_data = new_data["Temperature Alert"]
+            self.temperature_data = new_data["Temperature Data"]
             self.conversion_data = new_data["Conversion Data"]
             # self.schedule_data = new_data["Schedule Data"]
             # self.light_hour_data = new_data["Light Hour Data"]

@@ -97,7 +97,7 @@ def save():
         "Conversion Data": conversion_data,
         #"Schedule Data": schedule_data,
         "Calibration Data": calibration_data,
-        "Temperature Alert": temperature_data,
+        "Temperature Data": temperature_data,
         "Dosage Data": dosage_data,
         #"Light Hour Data": light_hour_data
     }
