@@ -245,7 +245,6 @@ def led_pulse(option):
 def stop_led_pulse():
     global led_pulse_loop
     led_pulse_loop = False
-    print(f"Stopping LED {option}")
 
 def btn_pressed():
     while GPIO.input(Button):
