@@ -244,7 +244,7 @@ def led_pulse(option):
 
 def stop_led_pulse():
     global led_pulse_loop
-    led_pulse_loop = True
+    led_pulse_loop = False
 
 def btn_pressed():
     while GPIO.input(Button):
@@ -267,6 +267,7 @@ def start_calibration(pump_type: str):
         global cal_time
         global calibration_data
         cal_time = None
+        led_pulse_loop = True
         cal_stop_signal = False
         led_pulse(PULSE)
         btn_pressed()
