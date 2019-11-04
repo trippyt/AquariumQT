@@ -216,6 +216,7 @@ def led_pulse_worker(option):
         sleep_time = 0.01
 
     while led_pulse_loop:
+        print("looping")
         for x in range(100):  # This Loop will run 100; times 0 to 100
             pwm.ChangeDutyCycle(x)  # Change duty cycle
             sleep(sleep_time)  # Delay of 10mS
