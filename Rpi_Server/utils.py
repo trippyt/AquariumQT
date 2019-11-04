@@ -151,7 +151,7 @@ def conversions(tank: int, co2_ml: int, co2_water: int, co2_split_dose: int, fer
             "Co2 Amount": co2_ml,
             "Co2 to Water": co2_water,
             "Co2 Dosage": co2_dosage,
-            "Co2 Times a Week": co2_split_dose,
+            "Co2 Times a Day": co2_split_dose,
         }
     )
     dosage_data["Co2 Data"].update(
@@ -187,6 +187,7 @@ def conversions(tank: int, co2_ml: int, co2_water: int, co2_split_dose: int, fer
             "Dosage": conditioner_dosage,
         }
     )
+    co2_runtime()
     #set_dosage_data()
     print("Updating Conversion Data From the Client")
     print(f"New Tank Size Set: {tank}")
@@ -194,8 +195,22 @@ def conversions(tank: int, co2_ml: int, co2_water: int, co2_split_dose: int, fer
     print(f"New Fertilizer Conversion Set:{fertz_ml}, {fertz_water}, {fertz_dosage}")
     print(f"New Conditioner Dosage Conversion Set:{conditioner_ml}, {conditioner_water}, {conditioner_dosage}")
     print("===OUTSIDE UTILS===")
-
     save()
+
+def co2_runtime():
+    try:
+        time_per_ml = calibration_data["Co2 Calibration Data"]["Time per 1mL"]
+    except KeyError:
+        print("Defaulting Co2 Calibration")
+        time_per_ml = 1
+    try:
+        dose = dosage_data["Co2 Data"]["Dosage"]
+    except KeyError:
+        print("Defaulting Co2 Dosage")
+        dose = 1
+
+    runtime = time_per_ml*dose
+    print(f"Co2 Runtime: {runtime}")
 
 def alert_data(ht: int, lt: int):
     global temperature_data
@@ -312,6 +327,7 @@ def start_calibration(pump_type: str):
                 }
             )
             stop_led_pulse()
+            co2_runtime()
             save()
             print(calibration_data)
             return f"{cal_time} Calibration Completed"
