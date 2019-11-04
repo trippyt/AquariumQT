@@ -137,13 +137,13 @@ def conversions(tank: int, co2_ml: int, co2_water: int, fertz_ml: int, fertz_wat
     print(f"fertz_water:{fertz_water}")
     print(f"conditioner_ml:{conditioner_ml}")
     print(f"conditioner_water:{conditioner_water}")
-    tank = int(tank)
-    co2_ml = int(co2_ml)
-    co2_water = int(co2_water)
-    fertz_ml = int(fertz_ml)
-    fertz_water = int(fertz_water)
-    conditioner_ml = int(conditioner_ml)
-    conditioner_water = int(conditioner_water)
+    tank = float(tank)
+    co2_ml = float(co2_ml)
+    co2_water = float(co2_water)
+    fertz_ml = float(fertz_ml)
+    fertz_water = float(fertz_water)
+    conditioner_ml = float(conditioner_ml)
+    conditioner_water = float(conditioner_water)
 
     conversion_data["Tank Size"].update(
         {
