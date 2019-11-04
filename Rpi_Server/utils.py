@@ -34,7 +34,7 @@ class ThreadKilled (Exception):
    pass
 
 temperature_data = {
-    "Temperature Data": {},
+    "Temperature Alert": {},
 }
 conversion_values = {
             "tank_size": {},
@@ -97,7 +97,7 @@ def save():
         "Conversion Data": conversion_data,
         #"Schedule Data": schedule_data,
         "Calibration Data": calibration_data,
-        "Temperature Data": temperature_data,
+        "Temperature Alert": temperature_data,
         "Dosage Data": dosage_data,
         #"Light Hour Data": light_hour_data
     }
@@ -225,7 +225,7 @@ def alert_data(ht: int, lt: int):
     print("New Alert Set")
     print(f"High Temperature: {ht}")
     print(f"Low Temperature: {lt}")
-    temperature_data["Temperature Data"].update(
+    temperature_data["Temperature Alert"].update(
         {
             "High Temp": ht,
             "Low Temp": lt
