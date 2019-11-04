@@ -15,6 +15,16 @@ async def set_conversions_ratios():
     fertz_water = request.args.get('fertz_water')
     conditioner_ml = request.args.get('conditioner_ml')
     conditioner_water = request.args.get('conditioner_water')
+    print("===INSIDE ROUTES===")
+    print(f"tank:{tank}")
+    print(f"co2_ml:{co2_ml}")
+    print(f"co2_water:{co2_water}")
+    print(f"fertz_ml:{fertz_ml}")
+    print(f"fertz_water:{fertz_water}")
+    print(f"conditioner_ml:{conditioner_ml}")
+    print(f"conditioner_water:{conditioner_water}")
+    print("===OUTSIDE ROUTES===")
+
     utils.conversions(tank, co2_ml, co2_water, fertz_ml, fertz_water, conditioner_ml, conditioner_water)
     return f"Update Completed"
 

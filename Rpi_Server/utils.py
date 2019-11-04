@@ -162,11 +162,14 @@ def conversions(tank: int, co2_ml: int, co2_water: int, fertz_ml: int, fertz_wat
             "Conditioner Dosage": conditioner_dosage
         }
     )
+    print("===INSIDE UTILS===")
     print("Updating Conversion Data From the Client")
     print(f"New Tank Size Set: {tank}")
     print(f"New Co2 Conversion Set:{co2_ml}, {co2_water}, {co2_dosage}")
     print(f"New Fertilizer Conversion Set:{fertz_ml}, {fertz_water}, {fertz_dosage}")
     print(f"New Conditioner Dosage Conversion Set:{conditioner_ml}, {conditioner_water}, {conditioner_dosage}")
+    print("===OUTSIDE UTILS===")
+
     save()
 
 def alert_data(ht: int, lt: int):
