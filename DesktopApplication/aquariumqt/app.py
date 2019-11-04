@@ -191,7 +191,7 @@ class App(object):
         tank = self.form.TankSize_DoubleSpinBox.value()
         co2_ml = self.form.C02_DoubleSpinBox.value()
         co2_water = self.form.C02toWater_DoubleSpinBox.value()
-        co2_split_dose = self.form.c02_comboBox_2.value() + 1
+        co2_split_dose = self.form.c02_comboBox_2.currentIndex() + 1
         #self.co2_dose_times_a_day()
         print(f"TankSize:{tank} Litres")
         print(f"Co2:{co2_ml}mL    Co2 to Water:{co2_water}L")

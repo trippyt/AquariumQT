@@ -107,6 +107,8 @@ def save():
 #co2_dose: int, co2_runtime: int, fertz_dose: int, fertz_runtime: int, conditioner_dose: int, conditioner_runtime: int
 def set_dosage_data():
     global dosage_data
+    global calibration_data
+    global conversion_data
 
     co2_dose = round(float(conversion_data["Co2 Ratio"]["Co2 Dosage"]), 2)
     print(f"Co2 Dosage: {co2_dose}")
