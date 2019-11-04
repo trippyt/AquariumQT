@@ -110,7 +110,7 @@ def set_dosage_data():
 
     co2_dose = round(float(conversion_data["Co2 Ratio"]["Co2 Dosage"]), 2)
     print(co2_dose)
-    co2_per_ml = float(calibration_data["Co2 Calibration Data"]["Time Per 1mL"])
+    co2_per_ml = float(calibration_data["Co2 Calibration Data"]["Time per 1mL"])
     print(co2_per_ml)
     co2_runtime = co2_dose*co2_per_ml
     print(co2_runtime)
@@ -304,7 +304,7 @@ def start_calibration(pump_type: str):
             calibration_data["Co2 Calibration Data"].update(
                 {
                     "Time per 10mL": cal_time,
-                    "Time Per 1mL": co2_per_ml
+                    "Time per 1mL": co2_per_ml
                 }
             )
             stop_led_pulse()
