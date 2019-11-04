@@ -33,9 +33,7 @@ cal_time = None
 class ThreadKilled (Exception):
    pass
 
-temperature_data = {
-    "Temperature Data": {},
-}
+temperature_data = {},
 conversion_values = {
             "tank_size": {},
             "co2_amount": {},
