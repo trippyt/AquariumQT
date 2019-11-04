@@ -101,7 +101,6 @@ def save():
         "Dosage Data": dosage_data,
         #"Light Hour Data": light_hour_data
     }
-    print(data)
     with open('data.txt', 'w') as json_file:
         json_file.write(json.dumps(data, indent=4))
     print("Settings Updated")
