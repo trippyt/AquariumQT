@@ -225,7 +225,7 @@ def alert_data(ht: int, lt: int):
     print("New Alert Set")
     print(f"High Temperature: {ht}")
     print(f"Low Temperature: {lt}")
-    temperature_data.update(
+    temperature_data["Temperature Data"].update(
         {
             "High Temp": ht,
             "Low Temp": lt
