@@ -229,8 +229,8 @@ def led_pulse_worker(option):
 
 def led_pulse(option):
     pulse_thread = threading.Thread(target=led_pulse_worker, args=(option,))
-    print(f"Starting LED {option}")
     pulse_thread.start()
+    print(f"Starting LED {option}")
 
 def stop_led_pulse():
     global led_pulse_loop
