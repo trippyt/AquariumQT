@@ -221,7 +221,7 @@ def led_pulse_worker(option):
     '''worker function for led pulse thread'''
     global led_pulse_loop
     if option == FLASH:
-        sleep_time = 0.0001
+        sleep_time = 0.001
     else: # PULSE
         sleep_time = 0.01
 
