@@ -130,6 +130,7 @@ def set_dosage_data():
 def conversions(tank: int, co2_ml: int, co2_water: int, co2_split_dose: int, fertz_ml: int, fertz_water: int, conditioner_ml: int, conditioner_water: int):
     print("===INSIDE UTILS===")
     global conversion_data
+    global dosage_data
     tank = float(tank)
     co2_ml = float(co2_ml)
     co2_water = float(co2_water)
@@ -198,6 +199,8 @@ def conversions(tank: int, co2_ml: int, co2_water: int, co2_split_dose: int, fer
     save()
 
 def co2_runtime():
+    global calibration_data
+    global dosage_data
     try:
         time_per_ml = calibration_data["Co2 Calibration Data"]["Time per 1mL"]
     except KeyError:
@@ -332,7 +335,7 @@ def start_calibration(pump_type: str):
                 }
             )
             stop_led_pulse()
-            #co2_runtime()
+            co2_runtime()
             save()
             print(calibration_data)
             return f"{cal_time} Calibration Completed"
