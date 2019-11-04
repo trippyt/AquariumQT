@@ -187,7 +187,7 @@ def conversions(tank: int, co2_ml: int, co2_water: int, co2_split_dose: int, fer
             "Dosage": conditioner_dosage,
         }
     )
-    set_dosage_data()
+    #set_dosage_data()
     print("Updating Conversion Data From the Client")
     print(f"New Tank Size Set: {tank}")
     print(f"New Co2 Conversion Set:{co2_ml}, {co2_water}, {co2_dosage}")
