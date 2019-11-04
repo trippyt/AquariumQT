@@ -143,7 +143,7 @@ def conversions(tank: int, co2_ml: int, co2_water: int, fertz_ml: int, fertz_wat
             "Water Volume": tank
         }
     )
-    x = float((co2_ml*tank)/co2_water)
+    x = co2_ml*tank/co2_water
     co2_dosage = round(x, 2)
     conversion_data["Co2 Ratio"].update(
         {
