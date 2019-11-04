@@ -218,18 +218,20 @@ class App(object):
         loop = QEventLoop()
         resp = self.nam.get(request)
         resp.finished.connect(loop.quit)
+        print("="*10)
         print('Loading Data From the Server')
         loop.exec_()
         data = resp.readAll()
         byte_array = data
         new_data = json.loads(byte_array.data())
-        print(new_data)
+        #print(new_data)
         self.calibration_data = new_data["Calibration Data"]
         self.temperature_data = new_data["Temperature Data"]
         self.conversion_data = new_data["Conversion Data"]
         # self.schedule_data = new_data["Schedule Data"]
         # self.light_hour_data = new_data["Light Hour Data"]
 
+        print("=" * 10)
         self.form.TankSize_DoubleSpinBox.blockSignals(True)
         self.form.C02_DoubleSpinBox.blockSignals(True)
         self.form.C02toWater_DoubleSpinBox.blockSignals(True)
@@ -263,6 +265,7 @@ class App(object):
             self.form.conditioner_outLcd.setProperty('value', conditionerdosagelcd)
 
             print("Loaded Ratio Data From The Server")
+            print("=" * 10)
             print(f"Tank Size :{tanklcd}")
             print(f"Co2 Amount :{co2amountlcd}    Co2 to Water :{co2waterlcd}    Co2 Dosage :{co2dosagelcd}")
             print(f"Fertz Amount :{fertzamountlcd}    Fertz to Water :{fertzwaterlcd}    Fertz Dosage :{fertzdosagelcd}")
@@ -277,30 +280,44 @@ class App(object):
         self.form.FertztoWater_DoubleSpinBox.blockSignals(False)
         self.form.TapSafe_DoubleSpinBox.blockSignals(False)
         self.form.TapSafetoWater_DoubleSpinBox.blockSignals(False)
+        print("=" * 10)
 
         try:
-            self.co2_dosing_displays()
-
+            #self.co2_dosing_displays()
+            co2secper10ml = self.calibration_data["Co2 Calibration Data"]["Time per 10mL"]
+            self.form.co2_dosing_lcd.display(co2secper10ml)
+            co2secper1ml = self.calibration_data["Co2 Calibration Data"]["Time per 1mL"]
+            self.form.co2_calibration_perml_display.display(co2secper1ml)
+            co2_dose = float(self.conversion_data["Co2 Ratio"]["Co2 Dosage"])
+            self.form.c02_ml_outLcd.display(co2_dose)
+            #co2_runtime = co2_dose * co2secper1ml
+            #self.form.co2_seconds_display.display(co2_runtime)
             #self.form.fertz_dosing_lcd.display(self.calibration_data["Fertilizer Calibration Data"]["Time per 10mL"])
             #self.form.conditioner_dosing_lcd.display(self.calibration_data["Water Conditioner Calibration Data"]["Time"])
-            co2runtime = round(self.calibration_data["Co2 Calibration Data"]["Dosing Runtime"], 2)
-            self.form.co2_seconds_display.display(co2runtime)
+            #co2runtime = round(self.calibration_data["Co2 Calibration Data"]["Dosing Runtime"], 2)
+            #self.form.co2_seconds_display.display(co2runtime)
             print("Loaded Calibration Data From The Server")
+            print("=" * 10)
             print(f"Co2 Ran for:{co2secper10ml}secs to Reach 10mL")
             print(f"Co2 Run for :{co2secper1ml}secs per 1mL Required")
         except KeyError:
             print("No Calibration Data From The Server to Load")
+        print("=" * 10)
 
         self.form.ht_alert_edit.blockSignals(True)
         self.form.lt_alert_edit.blockSignals(True)
         try:
-            self.form.ht_alert_edit.setValue(float(self.temperature_data["High Temp"])),
-            self.form.lt_alert_edit.setValue(float(self.temperature_data["Low Temp"])),
+            high_ta = self.form.ht_alert_edit.setValue(float(self.temperature_data["High Temp"])),
+            low_ta = self.form.lt_alert_edit.setValue(float(self.temperature_data["Low Temp"])),
             print("Loaded Temperature Alert Data From The Server")
+            print("=" * 10)
+            print(f"High Temperature Alert Set to: {high_ta}")
+            print(f"Low Temperature Alert Set to: {low_ta}")
         except KeyError:
             print("No Temperature Alert Data From The Server to Load")
         self.form.ht_alert_edit.blockSignals(False)
         self.form.lt_alert_edit.blockSignals(False)
+        print("=" * 10)
         print(new_data)
 
     def co2_dosing_displays(self):
@@ -311,7 +328,7 @@ class App(object):
         co2_dose = float(self.conversion_data["Co2 Ratio"]["Co2 Dosage"])
         co2_runtime = co2_dose*co2secper1ml
         self.form.co2_seconds_display.display(co2_runtime)
-        self.co2_dose_times_a_day()
+        #self.co2_dose_times_a_day()
 
 
 
