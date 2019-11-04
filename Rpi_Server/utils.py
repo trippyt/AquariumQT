@@ -335,7 +335,7 @@ def start_calibration(pump_type: str):
                 }
             )
             stop_led_pulse()
-            co2_runtime()
+            #co2_runtime()
             save()
             print(calibration_data)
             return f"{cal_time} Calibration Completed"
