@@ -213,7 +213,7 @@ class App(object):
         self.log.info("Settings Updated")
 
     def load_server(self):
-        url = f"http://192.168.1.35:5000/getTemperatureAlert"
+        url = f"http://192.168.1.35:5000/getServerData"
         request = QtNetwork.QNetworkRequest(QUrl(url))
         loop = QEventLoop()
         resp = self.nam.get(request)
