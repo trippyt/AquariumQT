@@ -70,13 +70,16 @@ light_hour_data = {
             "Mode Hours": {},
         }
 dosage_data = {
-    "Co2 Dosage": {},
-    "Co2 Runtime": {},
-    "Fertilizer Dosage": {},
-    "Fertilizer Runtime": {},
-    "Water Conditioner Dosage": {},
-    "Water Conditioner Runtime": {},
+    "Co2 Data": {},
+    "Fertilizer Data": {},
+    "Water Conditioner Data": {},
         }
+
+    #"Co2 Runtime": {},
+    #"Fertilizer Dosage": {},
+    #"Fertilizer Runtime": {},
+    #"Water Conditioner Dosage": {},
+    #"Water Conditioner Runtime": {},
 
 def load():
     if os.path.isfile('data.txt'):
@@ -152,6 +155,11 @@ def conversions(tank: int, co2_ml: int, co2_water: int, fertz_ml: int, fertz_wat
             "Co2 Dosage": co2_dosage
         }
     )
+    dosage_data["Co2 Data"].update(
+        {
+            "Dosage": co2_dosage,
+        }
+    )
     y = (fertz_ml*tank)/fertz_water
     fertz_dosage = round(y, 2)
     conversion_data["Fertilizer Ratio"].update(
@@ -161,6 +169,11 @@ def conversions(tank: int, co2_ml: int, co2_water: int, fertz_ml: int, fertz_wat
             "Fertilizer Dosage": fertz_dosage
         }
     )
+    dosage_data["Fertilizer Data"].update(
+        {
+            "Dosage": fertz_dosage,
+        }
+    )
     y = (conditioner_ml*tank)/conditioner_water
     conditioner_dosage = round(y, 2)
     conversion_data["Water Conditioner Ratio"].update(
@@ -168,6 +181,11 @@ def conversions(tank: int, co2_ml: int, co2_water: int, fertz_ml: int, fertz_wat
             "Conditioner Amount": conditioner_ml,
             "Conditioner to Water": conditioner_water,
             "Conditioner Dosage": conditioner_dosage
+        }
+    )
+    dosage_data["Water Conditioner Data"].update(
+        {
+            "Dosage": conditioner_dosage,
         }
     )
     print("Updating Conversion Data From the Client")
