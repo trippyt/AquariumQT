@@ -127,23 +127,16 @@ def set_dosage_data():
     )
     save()
 
-def conversions(tank: int, co2_ml: int, co2_water: int, fertz_ml: int, fertz_water: int, conditioner_ml: int, conditioner_water: int):
+def conversions(tank: float, co2_ml: float, co2_water: float, fertz_ml: float, fertz_water: float, conditioner_ml: float, conditioner_water: float):
     print("===INSIDE UTILS===")
     global conversion_data
-    print(f"tank:{tank}")
-    print(f"co2_ml:{co2_ml}")
-    print(f"co2_water:{co2_water}")
-    print(f"fertz_ml:{fertz_ml}")
-    print(f"fertz_water:{fertz_water}")
-    print(f"conditioner_ml:{conditioner_ml}")
-    print(f"conditioner_water:{conditioner_water}")
-    tank = float(tank)
-    co2_ml = float(co2_ml)
-    co2_water = float(co2_water)
-    fertz_ml = float(fertz_ml)
-    fertz_water = float(fertz_water)
-    conditioner_ml = float(conditioner_ml)
-    conditioner_water = float(conditioner_water)
+    #tank = float(tank)
+    #co2_ml = float(co2_ml)
+    #co2_water = float(co2_water)
+    #fertz_ml = float(fertz_ml)
+    #fertz_water = float(fertz_water)
+    #conditioner_ml = float(conditioner_ml)
+    #conditioner_water = float(conditioner_water)
 
     conversion_data["Tank Size"].update(
         {
