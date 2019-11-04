@@ -187,26 +187,23 @@ class App(object):
         self.client.textMessageReceived.connect(self.ws_receive)
 
     def save_doses(self):
-        print(f"Sending New Tank Size to Server")
+        print(f"Sending New Ratio Data to Server")
         tank = self.form.TankSize_DoubleSpinBox.value()
         co2_ml = self.form.C02_DoubleSpinBox.value()
         co2_water = self.form.C02toWater_DoubleSpinBox.value()
-
         self.co2_dose_times_a_day()
         print(f"TankSize:{tank} Litres")
-        print(f"Co2:{co2_ml}mL    Co2 to Water:{co2_water}")
+        print(f"Co2:{co2_ml}mL    Co2 to Water:{co2_water}L")
         fertz_ml = self.form.Fertz_DoubleSpinBox.value()
         fertz_water = self.form.FertztoWater_DoubleSpinBox.value()
-
         #self.form.Fertz_outLcd.setProperty('value', fertzdosage)
         #self.fertz_dose_times_a_day()
-        print(f"Fertz:{fertz_ml}mL    Fertz to Water:{fertz_water}")
+        print(f"Fertz:{fertz_ml}mL    Fertz to Water:{fertz_water}L")
         conditioner_ml = self.form.TapSafe_DoubleSpinBox.value()
         conditioner_water = self.form.TapSafetoWater_DoubleSpinBox.value()
-
         #self.form.conditioner_outLcd.setProperty('value', conditionerdosage)
         # self.conditioner_dose_times_a_day()
-        print(f"conditioner:{conditioner_ml}mL    conditioner to Water:{conditioner_water}")
+        print(f"conditioner:{conditioner_ml}mL    conditioner to Water:{conditioner_water}L")
         url = f"http://192.168.1.35:5000/setConversionRatios?tank={tank}&co2_ml={co2_ml}&co2_water={co2_water}&fertz_ml={fertz_ml}&fertz_water={fertz_water}&conditioner_ml={conditioner_ml}&conditioner_water={conditioner_water}"
         request = QtNetwork.QNetworkRequest(QUrl(url))
         self.nam.get(request)

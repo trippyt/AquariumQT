@@ -128,7 +128,15 @@ def set_dosage_data():
     save()
 
 def conversions(tank: int, co2_ml: int, co2_water: int, fertz_ml: int, fertz_water: int, conditioner_ml: int, conditioner_water: int):
+    print("===INSIDE UTILS===")
     global conversion_data
+    print(f"tank:{tank}")
+    print(f"co2_ml:{co2_ml}")
+    print(f"co2_water:{co2_water}")
+    print(f"fertz_ml:{fertz_ml}")
+    print(f"fertz_water:{fertz_water}")
+    print(f"conditioner_ml:{conditioner_ml}")
+    print(f"conditioner_water:{conditioner_water}")
 
     conversion_data["Tank Size"].update(
         {
@@ -162,7 +170,6 @@ def conversions(tank: int, co2_ml: int, co2_water: int, fertz_ml: int, fertz_wat
             "Conditioner Dosage": conditioner_dosage
         }
     )
-    print("===INSIDE UTILS===")
     print("Updating Conversion Data From the Client")
     print(f"New Tank Size Set: {tank}")
     print(f"New Co2 Conversion Set:{co2_ml}, {co2_water}, {co2_dosage}")

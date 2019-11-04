@@ -24,7 +24,6 @@ async def set_conversions_ratios():
     print(f"conditioner_ml:{conditioner_ml}")
     print(f"conditioner_water:{conditioner_water}")
     print("===OUTSIDE ROUTES===")
-
     utils.conversions(tank, co2_ml, co2_water, fertz_ml, fertz_water, conditioner_ml, conditioner_water)
     return f"Update Completed"
 
