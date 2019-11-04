@@ -89,7 +89,7 @@ def load():
             return data
 
 def save():
-    global temperature_data
+    #global temperature_data
     global calibration_data
     global conversion_data
     global dosage_data

@@ -44,7 +44,7 @@ async def set_temperature_alert():
 
 @app.route('/getServerData', methods=['GET'])
 async def get_server_data():
-    print("Sending Data")
+    print("Sending Data to Client")
     return jsonify(utils.load())
 
 @app.route('/calibrationModeOn', methods=['GET', 'POST'])
