@@ -135,7 +135,7 @@ def conversions(tank: int, co2_ml: int, co2_water: int, fertz_ml: int, fertz_wat
             "Water Volume": tank
         }
     )
-    x = co2_ml * tank / co2_water
+    x = (co2_ml*tank)/co2_water
     co2_dosage = round(x, 2)
     conversion_data["Co2 Ratio"].update(
         {
@@ -144,7 +144,7 @@ def conversions(tank: int, co2_ml: int, co2_water: int, fertz_ml: int, fertz_wat
             "Co2 Dosage": co2_dosage
         }
     )
-    y = fertz_ml * tank / fertz_water
+    y = (fertz_ml*tank)/fertz_water
     fertz_dosage = round(y, 2)
     conversion_data["Fertilizer Ratio"].update(
         {
@@ -153,7 +153,7 @@ def conversions(tank: int, co2_ml: int, co2_water: int, fertz_ml: int, fertz_wat
             "Fertilizer Dosage": fertz_dosage
         }
     )
-    y = conditioner_ml * tank / conditioner_water
+    y = (conditioner_ml*tank)/conditioner_water
     conditioner_dosage = round(y, 2)
     conversion_data["Water Conditioner Ratio"].update(
         {
