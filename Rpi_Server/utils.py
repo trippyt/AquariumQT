@@ -260,7 +260,6 @@ def start_calibration(pump_type: str):
         global calibration_data
         cal_time = None
         cal_stop_signal = False
-        stop_led_pulse()
         led_pulse(PULSE)
         btn_pressed()
         if pump_type == 'co2':
