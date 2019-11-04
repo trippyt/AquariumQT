@@ -264,14 +264,14 @@ def start_calibration(pump_type: str):
         btn_pressed()
         if pump_type == 'co2':
             stop_led_pulse()
-            print("Running co2")
-            print("Co2                      Calibration started.")
+            print(f"Running {pump_type}")
+            print(f"{pump_type}                      Calibration started.")
             led_pulse(FLASH)
             start = time.time()
             GPIO.output(Co2_pump, 1)
             btn_pressed()
-            print("Stopping co2")
-            print("Co2                      Calibration finished.")
+            print(f"Stopping {pump_type}")
+            print(f"{pump_type}                      Calibration finished.")
             stop_led_pulse()
             end = time.time()
             GPIO.output(Co2_pump, 0)
@@ -286,6 +286,7 @@ def start_calibration(pump_type: str):
             )
             stop_led_pulse()
             save()
+            return f"{pump_type} Calibration Completed"
     except ThreadKilled:
         print('calibration was cancelled!')
         stop_led_pulse()
