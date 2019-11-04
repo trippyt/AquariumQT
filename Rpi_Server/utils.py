@@ -210,6 +210,11 @@ def co2_runtime():
         dose = 1
 
     runtime = time_per_ml*dose
+    dosage_data["Co2 Data"].update(
+        {
+            "Runtime": co2_runtime,
+        }
+    )
     print(f"Co2 Runtime: {runtime}")
 
 def alert_data(ht: int, lt: int):
