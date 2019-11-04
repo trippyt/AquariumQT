@@ -273,7 +273,7 @@ def start_calibration(pump_type: str):
         led_pulse(PULSE)
         btn_pressed()
         if pump_type == 'co2':
-            stop_led_pulse()
+            #stop_led_pulse()
             print(f"Running {pump_type}")
             print(f"{pump_type}                      Calibration started.")
             led_pulse(FLASH)
