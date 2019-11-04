@@ -33,7 +33,9 @@ cal_time = None
 class ThreadKilled (Exception):
    pass
 
-temperature_data = {},
+temperature_data = {
+    "Temperature Data": {},
+}
 conversion_values = {
             "tank_size": {},
             "co2_amount": {},
@@ -87,7 +89,7 @@ def load():
             return data
 
 def save():
-    #global temperature_data
+    global temperature_data
     global calibration_data
     global conversion_data
     global dosage_data
