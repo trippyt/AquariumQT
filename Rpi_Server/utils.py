@@ -280,7 +280,6 @@ def start_calibration(pump_type: str):
             btn_pressed()
             print(f"Stopping {pump_type}")
             print(f"{pump_type}                      Calibration finished.")
-            stop_led_pulse()
             end = time.time()
             GPIO.output(Co2_pump, 0)
             cal_time = round(end - start, 2)
