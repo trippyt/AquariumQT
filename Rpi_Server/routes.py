@@ -42,8 +42,8 @@ async def set_temperature_alert():
     utils.alert_data(ht, lt)
     return f"Temperature Alerts H:{ht} L:{lt}"
 
-@app.route('/getTemperatureAlert', methods=['GET'])
-async def get_temperature_alert():
+@app.route('/getServerData', methods=['GET'])
+async def get_server_data():
     print("Sending Data")
     return jsonify(utils.load())
 
