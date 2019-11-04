@@ -11,6 +11,7 @@ async def set_conversions_ratios():
     tank = request.args.get('tank')
     co2_ml = request.args.get('co2_ml')
     co2_water = request.args.get('co2_water')
+    co2_split_dose = request.args.get('co2_split_dose')
     fertz_ml = request.args.get('fertz_ml')
     fertz_water = request.args.get('fertz_water')
     conditioner_ml = request.args.get('conditioner_ml')
@@ -19,12 +20,13 @@ async def set_conversions_ratios():
     print(f"tank:{tank}", type(tank))
     print(f"co2_ml:{co2_ml}", type(co2_ml))
     print(f"co2_water:{co2_water}", type(co2_water))
+    print(f"co2_split_dose:{co2_split_dose}", type(co2_split_dose))
     print(f"fertz_ml:{fertz_ml}", type(fertz_ml))
     print(f"fertz_water:{fertz_water}", type(fertz_water))
     print(f"conditioner_ml:{conditioner_ml}", type(conditioner_ml))
     print(f"conditioner_water:{conditioner_water}", type(conditioner_water))
     print("===OUTSIDE ROUTES===")
-    utils.conversions(tank, co2_ml, co2_water, fertz_ml, fertz_water, conditioner_ml, conditioner_water)
+    utils.conversions(tank, co2_ml, co2_water, co2_split_dose, fertz_ml, fertz_water, conditioner_ml, conditioner_water)
     return f"Update Completed"
 
 @app.route('/getConversionTankSize', methods=['GET', 'POST'])

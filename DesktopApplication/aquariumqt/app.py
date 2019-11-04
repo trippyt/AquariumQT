@@ -146,7 +146,7 @@ class App(object):
         self.form.FertzCalibrationButton.clicked.connect(self.fertz_calibration)
         self.form.TapSafeCalibrationButton.clicked.connect(self.conditioner_calibration)
 
-        self.form.c02_comboBox_2.currentIndexChanged.connect(self.co2_dose_times_a_day)
+        self.form.c02_comboBox_2.currentIndexChanged.connect(self.save_doses)
         self.form.fertz_comboBox_2.currentIndexChanged.connect(self.fertz_dose_times_a_week)
         self.form.water_conditioner_comboBox.currentIndexChanged.connect(self.conditioner_dose_times_a_week)
 
@@ -191,9 +191,11 @@ class App(object):
         tank = self.form.TankSize_DoubleSpinBox.value()
         co2_ml = self.form.C02_DoubleSpinBox.value()
         co2_water = self.form.C02toWater_DoubleSpinBox.value()
-        self.co2_dose_times_a_day()
+        co2_split_dose = self.form.c02_comboBox_2.value() + 1
+        #self.co2_dose_times_a_day()
         print(f"TankSize:{tank} Litres")
         print(f"Co2:{co2_ml}mL    Co2 to Water:{co2_water}L")
+        print(f"Divide Dose by: {co2_split_dose}")
         fertz_ml = self.form.Fertz_DoubleSpinBox.value()
         fertz_water = self.form.FertztoWater_DoubleSpinBox.value()
         #self.fertz_dose_times_a_day()
@@ -202,7 +204,7 @@ class App(object):
         conditioner_water = self.form.TapSafetoWater_DoubleSpinBox.value()
         # self.conditioner_dose_times_a_day()
         print(f"conditioner:{conditioner_ml}mL    conditioner to Water:{conditioner_water}L")
-        url = f"http://192.168.1.35:5000/setConversionRatios?tank={tank}&co2_ml={co2_ml}&co2_water={co2_water}&fertz_ml={fertz_ml}&fertz_water={fertz_water}&conditioner_ml={conditioner_ml}&conditioner_water={conditioner_water}"
+        url = f"http://192.168.1.35:5000/setConversionRatios?tank={tank}&co2_ml={co2_ml}&co2_water={co2_water}&co2_split_dose={co2_split_dose}&fertz_ml={fertz_ml}&fertz_water={fertz_water}&conditioner_ml={conditioner_ml}&conditioner_water={conditioner_water}"
         request = QtNetwork.QNetworkRequest(QUrl(url))
         self.nam.get(request)
         self.load_server()

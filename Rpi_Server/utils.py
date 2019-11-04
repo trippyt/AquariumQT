@@ -110,7 +110,7 @@ def set_dosage_data():
 
     co2_dose = round(float(conversion_data["Co2 Ratio"]["Co2 Dosage"]), 2)
     print(f"Co2 Dosage: {co2_dose}")
-    co2_per_ml = float(calibration_data["Calibration Data"]["Co2 Calibration Data"]["Time per 1mL"])
+    co2_per_ml = float(calibration_data["Co2 Calibration Data"]["Time per 1mL"])
     print(co2_per_ml)
     co2_runtime = co2_dose*co2_per_ml
     print(co2_runtime)
@@ -125,12 +125,13 @@ def set_dosage_data():
     )
     save()
 
-def conversions(tank: int, co2_ml: int, co2_water: int, fertz_ml: int, fertz_water: int, conditioner_ml: int, conditioner_water: int):
+def conversions(tank: int, co2_ml: int, co2_water: int, co2_split_dose: int, fertz_ml: int, fertz_water: int, conditioner_ml: int, conditioner_water: int):
     print("===INSIDE UTILS===")
     global conversion_data
     tank = float(tank)
     co2_ml = float(co2_ml)
     co2_water = float(co2_water)
+    co2_split_dose = float(co2_split_dose)
     fertz_ml = float(fertz_ml)
     fertz_water = float(fertz_water)
     conditioner_ml = float(conditioner_ml)
@@ -147,7 +148,8 @@ def conversions(tank: int, co2_ml: int, co2_water: int, fertz_ml: int, fertz_wat
         {
             "Co2 Amount": co2_ml,
             "Co2 to Water": co2_water,
-            "Co2 Dosage": co2_dosage
+            "Co2 Dosage": co2_dosage,
+            "Co2 Times a Week": co2_split_dose,
         }
     )
     dosage_data["Co2 Data"].update(
