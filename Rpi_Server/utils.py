@@ -247,7 +247,7 @@ async def do_pump(pump_type: str):
                 await asyncio.sleep(c_runtime)
         except KeyError:
             print("Error Running Dosage")
-            print(c_runtime)
+            print(type(c_runtime), c_runtime)
 
     elif pump_type == 'conditioner':
         return
