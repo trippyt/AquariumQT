@@ -238,12 +238,12 @@ async def do_pump(pump_type: str):
     if pump_type == 'co2':
         try:
             c_runtime = int(dosage_data["Co2 Data"]["Runtime"])
-            if seconds == 1:
+            if c_runtime == 1:
                 print(f"Runtime Too Short: {c_runtime}")
             else:
                 print(f"Running Co2 for: {c_runtime}")
                 GPIO.output(Co2_pump, 1)
-                asyncio.sleep(c_runtime)
+                await asyncio.sleep(c_runtime)
 
         except KeyError:
             print("Error Running Dosage")

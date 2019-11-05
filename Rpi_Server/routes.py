@@ -33,7 +33,7 @@ async def set_conversions_ratios():
 async def start_manual_dose():
     pump_type = request.args.get('pump')
     print("Received Manual Dosing Request")
-    print(f"{pump_type} Requested")
+    print(f"Pump: {pump_type} Requested")
     await utils.do_pump(pump_type)
     return f"Dosing Completed"
 
