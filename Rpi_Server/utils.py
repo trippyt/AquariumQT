@@ -80,6 +80,7 @@ def load():
     if os.path.isfile('data.txt'):
         with open('data.txt', 'r') as json_file:
             data = json.loads(json_file.read())
+            print("Loading Saved Data")
             print(data)
             temperature_data = data["Temperature Data"]
             #conversion_values
