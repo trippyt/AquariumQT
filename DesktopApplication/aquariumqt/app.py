@@ -557,7 +557,7 @@ class App(object):
         )
         self.save()
 
-    def co2_manual_dose(self):
+    def co2_manual_dose(self, pump_type):
         url = f"http://192.168.1.35:5000/startManualDose?pump={pump_type}"
         co2_runtime = round(self.dosage_data["Co2 Data"]["Runtime"], 2)
         print("Requesting Manual Co2 Dose")

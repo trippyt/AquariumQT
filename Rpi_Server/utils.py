@@ -254,7 +254,7 @@ async def do_pump(pump_type: str):
     GPIO.output(Fertilizer_pump, 0)
     print("Dosing Completed")
     print(f"Dosing Ran For: {seconds}")
-    return
+    return f"Dose Complete"
 
 async def stop_pump(pump_type: str):
     if pump_type == 'co2':
