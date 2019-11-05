@@ -104,28 +104,6 @@ def save():
     with open('data.txt', 'w') as json_file:
         json_file.write(json.dumps(data, indent=4))
     print("Settings Updated")
-#co2_dose: int, co2_runtime: int, fertz_dose: int, fertz_runtime: int, conditioner_dose: int, conditioner_runtime: int
-def set_dosage_data():
-    global dosage_data
-    global calibration_data
-    global conversion_data
-
-    co2_dose = round(float(conversion_data["Co2 Ratio"]["Co2 Dosage"]), 2)
-    print(f"Co2 Dosage: {co2_dose}")
-    co2_per_ml = float(calibration_data["Co2 Calibration Data"]["Time per 1mL"])
-    print(co2_per_ml)
-    co2_runtime = co2_dose*co2_per_ml
-    print(co2_runtime)
-    #fertz_dose =
-    #fertz_runtime =
-    #conditioner_dose =
-    #conditioner_runtime =
-    dosage_data["Co2 Data"].update(
-        {
-            "Runtime": co2_runtime,
-        }
-    )
-    save()
 
 def conversions(tank: int, co2_ml: int, co2_water: int, co2_split_dose: int, fertz_ml: int, fertz_water: int, conditioner_ml: int, conditioner_water: int):
     print("===INSIDE UTILS===")
@@ -189,7 +167,6 @@ def conversions(tank: int, co2_ml: int, co2_water: int, co2_split_dose: int, fer
         }
     )
     set_co2_runtime()
-    #set_dosage_data()
     print("Updating Conversion Data From the Client")
     print(f"New Tank Size Set: {tank}")
     print(f"New Co2 Conversion Set:{co2_ml}, {co2_water}, {co2_dosage}")
@@ -237,6 +214,7 @@ async def do_pump(pump_type: str):
     global dosage_data
     print(f"Starting Dose: {pump_type}")
     if pump_type == 'Co2':
+        print(type(dosage_data), dosage_data)
         c_runtime = int(dosage_data["Co2 Data"]["Runtime"])
         try:
             if c_runtime == 1:
