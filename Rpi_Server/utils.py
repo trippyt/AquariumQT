@@ -235,6 +235,7 @@ def alert_data(ht: int, lt: int):
 
 async def do_pump(pump_type: str):
     global dosage_data
+    print(f"Starting Dose: {pump_type}")
     if pump_type == 'co2':
         try:
             c_runtime = int(dosage_data["Co2 Data"]["Runtime"])
