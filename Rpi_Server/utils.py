@@ -326,7 +326,7 @@ def start_calibration(pump_type: str):
             end = time.time()
             GPIO.output(Co2_pump, 0)
             cal_time = round(end - start, 2)
-            co2_per_ml = cal_time/10
+            co2_per_ml = round(cal_time/10, 2)
             print(cal_time)
             calibration_data["Co2 Calibration Data"].update(
                 {
