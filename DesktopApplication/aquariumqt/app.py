@@ -292,8 +292,10 @@ class App(object):
             self.form.ht_alert_edit.blockSignals(True)
             self.form.lt_alert_edit.blockSignals(True)
             try:
-                high_ta = self.form.ht_alert_edit.setValue(float(self.temperature_data["Temperature Alert"]["High Temp"])),
-                low_ta = self.form.lt_alert_edit.setValue(float(self.temperature_data["Temperature Alert"]["Low Temp"])),
+                high_ta = float(self.temperature_data["Temperature Alert"]["High Temp"])
+                low_ta = float(self.temperature_data["Temperature Alert"]["Low Temp"])
+                self.form.ht_alert_edit.setValue(high_ta),
+                self.form.lt_alert_edit.setValue(low_ta),
                 print("Loaded Temperature Alert Data From The Server".center(100))
                 print("=" * 100)
                 print(f"High Temperature Alert Set to: {high_ta}")
