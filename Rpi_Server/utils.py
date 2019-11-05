@@ -249,9 +249,11 @@ async def do_pump(pump_type: str):
     elif pump_type == 'fertilizer':
         print("Running fertz")
         GPIO.output(Fertilizer_pump, 1)
-    await asyncio.sleep(int(seconds))
+    await asyncio.sleep(seconds)
     GPIO.output(Co2_pump, 0)
     GPIO.output(Fertilizer_pump, 0)
+    print("Dosing Completed")
+    print(f"Dosing Ran For: {seconds}")
     return
 
 async def stop_pump(pump_type: str):
