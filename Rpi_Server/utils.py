@@ -29,6 +29,8 @@ PULSE = 1
 led_pulse_loop = True
 cal_stop_signal = False
 cal_time = None
+pause_signal = False
+pump_running = False
 
 class ThreadKilled (Exception):
    pass
@@ -182,6 +184,18 @@ def conversions(tank: int, co2_ml: int, co2_water: int, co2_split_dose: int, fer
     print("===OUTSIDE UTILS===")
     save()
 
+#def pause_operation():
+#    global pause_state
+#    pause_thread = threading.Thread
+#    if pause_state == True:
+#        pause_thread.start()
+#        print("Pausing Opertaion")
+#    else:
+#        resume_operation()
+
+
+
+
 def set_co2_runtime():
     global calibration_data
     global dosage_data
@@ -217,9 +231,56 @@ def alert_data(ht: int, lt: int):
     )
     save()
 
+def pause_operation():
+    global pause_signal
+    pause_signal = True
+
+def resume_operation():
+    global pump_running
+    global pause_signal
+    pause_signal = False
+    if pump_running:
+        print("Resuming Operation")
+
+def run_co2_pump():
+    global pump_running
+    pump_running = True
+    GPIO.output(Co2_pump, 1)
+
+
+def do_pump(pump_type: str):
+    global pump_running
+    global pause_signal
+    pause_signal = False
+    print(f"Starting Dose: {pump_type}")
+    if pump_type == 'Co2':
+        print(type(dosage_data), dosage_data)
+        c_runtime = float(dosage_data["Co2 Data"]["Runtime"])
+        try:
+            if c_runtime == 1:
+                print(f"Runtime Too Short: {c_runtime}")
+            else:
+                print(f"Running Co2 for: {c_runtime} Seconds")
+                ran_for_start = time.time()
+                run_co2_pump()
+                await asyncio.sleep(c_runtime)
+        except KeyError:
+            print("Error Running Dosage")
+            print(type(c_runtime), c_runtime)
+        run_co2_pump()
+    ran_for_end = time.time()
+    ran_for = round(ran_for_end - ran_for_start, 2)
+    GPIO.output(Co2_pump, 0)
+    print(f"{pump_type} Dosing Completed")
+    print(f"{pump_type} Ran for: {ran_for} Seconds")
+    return f"Dose Complete"
+
+"""
 async def do_pump(pump_type: str):
     global dosage_data
     global ran_for_start
+    global pause_signal
+    pause_signal = False
     ran_for = None
     print(f"Starting Dose: {pump_type}")
     if pump_type == 'Co2':
@@ -229,7 +290,7 @@ async def do_pump(pump_type: str):
             if c_runtime == 1:
                 print(f"Runtime Too Short: {c_runtime}")
             else:
-                print(f"Running Co2 for: {c_runtime}")
+                print(f"Running Co2 for: {c_runtime} Seconds")
                 ran_for_start = time.time()
                 GPIO.output(Co2_pump, 1)
                 await asyncio.sleep(c_runtime)
@@ -247,9 +308,9 @@ async def do_pump(pump_type: str):
     GPIO.output(Co2_pump, 0)
     GPIO.output(Fertilizer_pump, 0)
     print(f"{pump_type} Dosing Completed")
-    print(f"{pump_type} Ran for: {ran_for}")
+    print(f"{pump_type} Ran for: {ran_for} Seconds")
     return f"Dose Complete"
-
+"""
 async def stop_pump(pump_type: str):
     if pump_type == 'co2':
         print("Stopping co2")

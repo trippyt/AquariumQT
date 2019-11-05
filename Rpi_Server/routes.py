@@ -29,6 +29,12 @@ async def set_conversions_ratios():
     utils.conversions(tank, co2_ml, co2_water, co2_split_dose, fertz_ml, fertz_water, conditioner_ml, conditioner_water)
     return f"Update Completed"
 
+@app.route('/pauseOperation', methods=['GET', 'POST'])
+async def pause_operation():
+    pause_state = request.args.get('state')
+    print(f"Pause State Changed: {pause_state}")
+    await utils.pause_operation(pause_state)
+
 @app.route('/startManualDose', methods=['GET', 'POST'])
 async def start_manual_dose():
     pump_type = request.args.get('pump')

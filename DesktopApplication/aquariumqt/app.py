@@ -29,6 +29,7 @@ class App(object):
         self.nam = QtNetwork.QNetworkAccessManager()
         self.timers = []
         self.calibration_mode_on = True
+        self.pause_on = False
 
         self.conversion_values = {
             "tank_size": {},
@@ -119,6 +120,7 @@ class App(object):
         ]
 
         self.form.clear_log_button.clicked.connect(self.clear_log_button)
+        self.form.pause_button.clicked.connect(self.pause_operation)
 
         self.form.day_hour_wheel.valueChanged.connect(self.log_day_hour_wheel)
         self.form.night_hour_wheel.valueChanged.connect(self.night_hour_wheel_changed)
@@ -320,6 +322,20 @@ class App(object):
         except UnboundLocalError:
             print("Couldn't Load Data".center(125))
             print("=" * 125)
+
+    def pause_operation(self):
+        global pause_state
+        self.pause_on = not self.pause_on
+        print(self.pause_on)
+        url = f"http://192.168.1.35:5000/pauseOperation?state={self.pause_on}"
+        request = QtNetwork.QNetworkRequest(QUrl(url))
+        loop = QEventLoop()
+        resp = self.nam.get(request)
+        resp.finished.connect(loop.quit)
+        print("Waiting For Pause Confirmation")
+        loop.exec_()
+        server_reply = resp.readAll()
+        print(f"Server Response: {server_reply}")
 
     def co2_dose_times_a_day(self):
         x = float(self.conversion_data["Co2 Ratio"]["Co2 Dosage"])
