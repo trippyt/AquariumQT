@@ -34,7 +34,7 @@ async def start_manual_dose():
     pump_type = request.args.get('pump')
     print("Received Manual Dosing Request")
     print(f"{pump_type} Requested")
-    utils.do_pump(pump_type)
+    await utils.do_pump(pump_type)
     return f"Dosing Completed"
 
 @app.route('/getConversionTankSize', methods=['GET', 'POST'])
