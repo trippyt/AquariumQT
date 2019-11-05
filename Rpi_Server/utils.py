@@ -237,8 +237,8 @@ async def do_pump(pump_type: str):
     global dosage_data
     print(f"Starting Dose: {pump_type}")
     if pump_type == 'Co2':
+        c_runtime = int(dosage_data["Co2 Data"]["Runtime"])
         try:
-            c_runtime = int(dosage_data["Co2 Data"]["Runtime"])
             if c_runtime == 1:
                 print(f"Runtime Too Short: {c_runtime}")
             else:
