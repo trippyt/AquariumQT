@@ -69,17 +69,12 @@ calibration_data = {
 light_hour_data = {
             "Mode Hours": {},
         }
+
 dosage_data = {
     "Co2 Data": {},
     "Fertilizer Data": {},
     "Water Conditioner Data": {},
         }
-
-    #"Co2 Runtime": {},
-    #"Fertilizer Dosage": {},
-    #"Fertilizer Runtime": {},
-    #"Water Conditioner Dosage": {},
-    #"Water Conditioner Runtime": {},
 
 def load():
     if os.path.isfile('data.txt'):
@@ -217,7 +212,7 @@ async def do_pump(pump_type: str):
     print(f"Starting Dose: {pump_type}")
     if pump_type == 'Co2':
         print(type(dosage_data), dosage_data)
-        c_runtime = int(dosage_data["Co2 Data"]["Runtime"])
+        c_runtime = float(dosage_data["Co2 Data"]["Runtime"])
         try:
             if c_runtime == 1:
                 print(f"Runtime Too Short: {c_runtime}")

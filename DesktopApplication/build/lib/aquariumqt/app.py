@@ -204,16 +204,16 @@ class App(object):
         loop = QEventLoop()
         resp = self.nam.get(request)
         resp.finished.connect(loop.quit)
-        print("="*100)
-        print('Loading Data From the Server'.center(100))
+        print("="*125)
+        print('Loading Data From the Server'.center(125))
         loop.exec_()
         data = resp.readAll()
         byte_array = data
         try:
             new_data = json.loads(byte_array.data())
-            print("JSON Data Loaded".center(100))
+            print("JSON Data Loaded".center(125))
         except json.decoder.JSONDecodeError:
-            print("Couldn't Load JSON From Server".center(100))
+            print("Couldn't Load JSON From Server".center(125))
         #print(new_data)
         try:
             self.calibration_data = new_data["Calibration Data"]
@@ -223,7 +223,7 @@ class App(object):
             # self.schedule_data = new_data["Schedule Data"]
             # self.light_hour_data = new_data["Light Hour Data"]
 
-            print("=" * 100)
+            print("=" * 125)
             self.form.TankSize_DoubleSpinBox.blockSignals(True)
             self.form.C02_DoubleSpinBox.blockSignals(True)
             self.form.C02toWater_DoubleSpinBox.blockSignals(True)
@@ -256,14 +256,14 @@ class App(object):
                 conditionerdosagelcd = float(self.conversion_data["Water Conditioner Ratio"]["Conditioner Dosage"])
                 self.form.conditioner_outLcd.setProperty('value', conditionerdosagelcd)
 
-                print("Loaded Ratio Data From The Server".center(100))
-                print("=" * 100)
+                print("Loaded Ratio Data From The Server".center(125))
+                print("=" * 125)
                 print(f"Tank Size :{tanklcd}")
                 print(f"Co2 Amount :{co2amountlcd}    Co2 to Water :{co2waterlcd}    Co2 Dosage :{co2dosagelcd}")
                 print(f"Fertz Amount :{fertzamountlcd}    Fertz to Water :{fertzwaterlcd}    Fertz Dosage :{fertzdosagelcd}")
                 print(f"Conditioner Amount :{conditioneramountlcd}    Conditioner to Water :{conditionerwaterlcd}    Conditioner Dosage :{conditionerdosagelcd}")
             except KeyError:
-                print("No Ratio Data From The Server to Load".center(100))
+                print("No Ratio Data From The Server to Load".center(125))
 
             self.form.TankSize_DoubleSpinBox.blockSignals(False)
             self.form.C02_DoubleSpinBox.blockSignals(False)
@@ -272,7 +272,7 @@ class App(object):
             self.form.FertztoWater_DoubleSpinBox.blockSignals(False)
             self.form.TapSafe_DoubleSpinBox.blockSignals(False)
             self.form.TapSafetoWater_DoubleSpinBox.blockSignals(False)
-            print("=" * 100)
+            print("=" * 125)
 
             try:
                 co2secper10ml = self.calibration_data["Co2 Calibration Data"]["Time per 10mL"]
@@ -281,13 +281,13 @@ class App(object):
                 self.form.co2_calibration_perml_display.display(co2secper1ml)
                 co2_dose = float(self.conversion_data["Co2 Ratio"]["Co2 Dosage"])
                 self.form.c02_ml_outLcd.display(co2_dose)
-                print("Loaded Calibration Data From The Server".center(100))
-                print("=" * 100)
+                print("Loaded Calibration Data From The Server".center(125))
+                print("=" * 125)
                 print(f"Co2 Ran for:{co2secper10ml}secs to Reach 10mL")
                 print(f"Co2 Run for :{co2secper1ml}secs per 1mL Required")
             except KeyError:
-                print("No Calibration Data From The Server to Load".center(100))
-            print("=" * 100)
+                print("No Calibration Data From The Server to Load".center(125))
+            print("=" * 125)
 
             self.form.ht_alert_edit.blockSignals(True)
             self.form.lt_alert_edit.blockSignals(True)
@@ -296,30 +296,30 @@ class App(object):
                 low_ta = float(self.temperature_data["Temperature Alert"]["Low Temp"])
                 self.form.ht_alert_edit.setValue(high_ta),
                 self.form.lt_alert_edit.setValue(low_ta),
-                print("Loaded Temperature Alert Data From The Server".center(100))
-                print("=" * 100)
+                print("Loaded Temperature Alert Data From The Server".center(125))
+                print("=" * 125)
                 print(f"High Temperature Alert Set to: {high_ta}")
                 print(f"Low Temperature Alert Set to: {low_ta}")
             except KeyError:
-                print("No Temperature Alert Data From The Server to Load".center(100))
+                print("No Temperature Alert Data From The Server to Load".center(125))
             self.form.ht_alert_edit.blockSignals(False)
             self.form.lt_alert_edit.blockSignals(False)
-            print("=" * 100)
+            print("=" * 125)
 
             try:
                 co2_runtime = float(self.dosage_data["Co2 Data"]["Runtime"])
                 self.form.co2_seconds_display.display(co2_runtime)
-                print("Loaded Dosing Data From The Server to Load".center(100))
-                print("=" * 100)
+                print("Loaded Dosing Data From The Server to Load".center(125))
+                print("=" * 125)
                 print(f"Co2 Runtime: {co2_runtime}")
             except KeyError:
-                print("No Dosing Data From The Server to Load".center(100))
-            print("=" * 100)
+                print("No Dosing Data From The Server to Load".center(125))
+            print("=" * 125)
             print(new_data)
-            print("=" * 100)
+            print("=" * 125)
         except UnboundLocalError:
-            print("Couldn't Load Data".center(100))
-            print("=" * 100)
+            print("Couldn't Load Data".center(125))
+            print("=" * 125)
 
     def co2_dose_times_a_day(self):
         x = float(self.conversion_data["Co2 Ratio"]["Co2 Dosage"])
@@ -407,8 +407,8 @@ class App(object):
                 btn.setStyleSheet("background-color: blue")
 
     def set_temp_alert(self):
-        ht = float(self.temperature_data["Temperature Alert"]["High Temp"])
-        lt = float(self.temperature_data["Temperature Alert"]["Low Temp"])
+        ht = self.form.ht_alert_edit.value()
+        lt = self.form.lt_alert_edit.value()
         print(f"Sending Alert Changes to Network")
         print(f"High Temperature: {ht}")
         print(f"Low Temperature: {lt}")
