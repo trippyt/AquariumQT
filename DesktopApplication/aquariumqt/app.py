@@ -90,6 +90,10 @@ class App(object):
             "Temperature Alert": {},
         }
 
+        self.dosage_data ={
+            "Co2 Dosage": {},
+        }
+
         self.app = QtWidgets.QApplication(sys.argv)
         self.central = QtWidgets.QWidget()
         self.window = QtWidgets.QMainWindow()
@@ -233,6 +237,7 @@ class App(object):
             self.calibration_data = new_data["Calibration Data"]
             self.temperature_data = new_data["Temperature Data"]
             self.conversion_data = new_data["Conversion Data"]
+            self.dosage_data = new_data["Dosage Data"]
             # self.schedule_data = new_data["Schedule Data"]
             # self.light_hour_data = new_data["Light Hour Data"]
 
@@ -323,9 +328,20 @@ class App(object):
             self.form.ht_alert_edit.blockSignals(False)
             self.form.lt_alert_edit.blockSignals(False)
             print("=" * 10)
+
+            try:
+                co2_runtime = float(self.dosage_data["Co2 Data"]["Runtime"])
+                self.form.co2_seconds_display.display(co2_runtime)
+                print("Loaded Dosing Data From The Server to Load")
+                print("=" * 10)
+                print(f"Co2 Runtime: {co2_runtime}")
+            except KeyError:
+                print("No Dosing Data From The Server to Load")
+            print("=" * 10)
             print(new_data)
         except UnboundLocalError:
             print("Couldn't Load Data")
+            print("=" * 10)
 
     def co2_dosing_displays(self):
         co2secper10ml = self.calibration_data["Co2 Calibration Data"]["Time per 10mL"]

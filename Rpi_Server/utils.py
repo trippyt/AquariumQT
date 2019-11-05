@@ -212,7 +212,7 @@ def set_co2_runtime():
         print("Defaulting Co2 Dosage")
         dose = 1
 
-    runtime = time_per_ml*dose
+    runtime = round(time_per_ml*dose, 2)
     dosage_data["Co2 Data"].update(
         {
             "Runtime": runtime,
