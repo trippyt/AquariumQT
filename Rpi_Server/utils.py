@@ -236,7 +236,7 @@ def alert_data(ht: int, lt: int):
 async def do_pump(pump_type: str):
     global dosage_data
     print(f"Starting Dose: {pump_type}")
-    if pump_type == 'co2':
+    if pump_type == 'Co2':
         try:
             c_runtime = int(dosage_data["Co2 Data"]["Runtime"])
             if c_runtime == 1:
@@ -245,9 +245,9 @@ async def do_pump(pump_type: str):
                 print(f"Running Co2 for: {c_runtime}")
                 GPIO.output(Co2_pump, 1)
                 await asyncio.sleep(c_runtime)
-
         except KeyError:
             print("Error Running Dosage")
+
     elif pump_type == 'conditioner':
         return
     elif pump_type == 'fertilizer':
