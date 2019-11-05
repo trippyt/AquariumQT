@@ -234,7 +234,7 @@ def alert_data(ht: int, lt: int):
     save()
 
 async def do_pump(pump_type: str):
-    if pump_type == 'co2_pump':
+    if pump_type == 'co2':
         try:
             seconds = int(dosage_data["Co2 Data"]["Runtime"])
             if seconds == 1:

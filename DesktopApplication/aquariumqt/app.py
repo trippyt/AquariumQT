@@ -146,7 +146,7 @@ class App(object):
 
         self.form.feed_pushButton.clicked.connect(self.feed_test)
         self.form.C02CalibrationButton.clicked.connect(lambda: self.enter_calibration_mode("co2"))
-        self.form.c02_pushButton.clicked.connect(lambda: self.co2_manual_dose("co2_pump"))
+        self.form.c02_pushButton.clicked.connect(lambda: self.co2_manual_dose("Co2"))
         self.form.FertzCalibrationButton.clicked.connect(self.fertz_calibration)
         self.form.TapSafeCalibrationButton.clicked.connect(self.conditioner_calibration)
 
@@ -560,7 +560,7 @@ class App(object):
     def co2_manual_dose(self, pump_type):
         url = f"http://192.168.1.35:5000/startManualDose?pump={pump_type}"
         co2_runtime = round(self.dosage_data["Co2 Data"]["Runtime"], 2)
-        print("Requesting Manual Co2 Dose")
+        print(f"Requesting Manual {pump_type} Dose")
         request = QtNetwork.QNetworkRequest(QUrl(url))
         loop = QEventLoop()
         resp = self.nam.get(request)
@@ -568,7 +568,7 @@ class App(object):
         print("Waiting For Server Response")
         loop.exec_()
         print(f"Co2 Dosing Running For: {co2_runtime}")
-        data = resp.readAll()
+
 
     def feed_test(self):
         GPIO.output(27, 1)

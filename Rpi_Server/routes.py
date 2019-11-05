@@ -31,7 +31,7 @@ async def set_conversions_ratios():
 
 @app.route('/startManualDose', methods=['GET', 'POST'])
 async def start_manual_dose():
-    pump_type = request.args.get('pump_type')
+    pump_type = request.args.get('pump')
     print("Received Manual Dosing Request")
     print(f"{pump_type} Requested")
     utils.do_pump(pump_type)
