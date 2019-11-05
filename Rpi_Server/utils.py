@@ -81,8 +81,15 @@ def load():
         with open('data.txt', 'r') as json_file:
             data = json.loads(json_file.read())
             print(data)
+            temperature_data = data["Temperature Data"]
+            #conversion_values
+            conversion_data = data["Conversion Data"]
+            #schedule_data
+            calibration_data = data["Calibration Data"]
+            #light_hour_data
+            dosage_data = data["Dosage Data"]
             return data
-
+load()
 def save():
     global temperature_data
     global calibration_data
