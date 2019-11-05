@@ -243,7 +243,7 @@ async def do_pump(pump_type: str):
             else:
                 print(f"Running Co2 for: {c_runtime}")
                 GPIO.output(Co2_pump, 1)
-                await asyncio.sleep(c_runtime)
+                asyncio.sleep(c_runtime)
 
         except KeyError:
             print("Error Running Dosage")
