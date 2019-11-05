@@ -29,6 +29,13 @@ async def set_conversions_ratios():
     utils.conversions(tank, co2_ml, co2_water, co2_split_dose, fertz_ml, fertz_water, conditioner_ml, conditioner_water)
     return f"Update Completed"
 
+@app.route('/startManualDose', methods=['GET', 'POST'])
+async def start_manual_dose():
+    pump_type = request.args.get('pump_type')
+    print("Received Manual Dosing Request")
+    print(f"{pump_type} Requested")
+    utils.do_pump(pump_type)
+
 @app.route('/getConversionTankSize', methods=['GET', 'POST'])
 async def get_conversions_tanksize():
     print(f"Sending Tank Size")

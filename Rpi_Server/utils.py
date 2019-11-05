@@ -233,10 +233,17 @@ def alert_data(ht: int, lt: int):
     )
     save()
 
-async def do_pump(pump_type: str, seconds: int):
-    if pump_type == 'co2':
-        print("Running co2")
-        GPIO.output(Co2_pump, 1)
+async def do_pump(pump_type: str):
+    if pump_type == 'co2_pump':
+        try:
+            seconds = int(dosage_data["Co2 Data"]["Runtime"])
+            if seconds == 1:
+                print(f"Runtime Too Short: {seconds}")
+            else:
+                print(f"Running Co2 for: {seconds}")
+                GPIO.output(Co2_pump, 1)
+        except KeyError:
+            print("Error Running Dosage")
     elif pump_type == 'conditioner':
         return
     elif pump_type == 'fertilizer':
