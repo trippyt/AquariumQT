@@ -146,7 +146,7 @@ class App(object):
 
         self.form.feed_pushButton.clicked.connect(self.feed_test)
         self.form.C02CalibrationButton.clicked.connect(lambda: self.enter_calibration_mode("co2"))
-        self.form.c02_pushButton.clicked.connect(lambda: self.co2_manual_dose("co2_pump"))
+        self.form.c02_pushButton.clicked.connect(lambda: self.co2_manual_dose("Co2"))
         self.form.FertzCalibrationButton.clicked.connect(self.fertz_calibration)
         self.form.TapSafeCalibrationButton.clicked.connect(self.conditioner_calibration)
 

@@ -242,6 +242,7 @@ async def do_pump(pump_type: str):
             else:
                 print(f"Running Co2 for: {c_runtime}")
                 GPIO.output(Co2_pump, 1)
+                await asyncio.sleep(c_runtime)
         except KeyError:
             print("Error Running Dosage")
     elif pump_type == 'conditioner':
@@ -249,7 +250,7 @@ async def do_pump(pump_type: str):
     elif pump_type == 'fertilizer':
         print("Running fertz")
         GPIO.output(Fertilizer_pump, 1)
-    await asyncio.sleep(c_runtime)
+
     GPIO.output(Co2_pump, 0)
     GPIO.output(Fertilizer_pump, 0)
     print("Dosing Completed")
