@@ -82,6 +82,10 @@ def load():
             data = json.loads(json_file.read())
             print("Loading Saved Data")
             print(data)
+            global temperature_data
+            global conversion_data
+            global calibration_data
+            global dosage_data
             temperature_data = data["Temperature Data"]
             #conversion_values
             conversion_data = data["Conversion Data"]
@@ -341,6 +345,17 @@ def start_calibration(pump_type: str):
     except ThreadKilled:
         print('calibration was cancelled!')
         stop_cal()
+
+async def run_counter(pump_type):
+    if pump_type == 'Co2':
+        dosed_counter["Co2"].update(
+            {
+                "Dosing Completed": +1,
+                "Dosing Unfinished": +1,
+
+            }
+        )
+
 
 async def temp():
     temp_c, temp_f = t_sensor.read_temp()
