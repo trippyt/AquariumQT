@@ -9,15 +9,6 @@ from PyQt5 import QtCore, QtNetwork
 from PyQt5.QtCore import QTime, QUrl, QEventLoop
 from aquariumqt.form import Ui_Form
 
-from . import dummyGPIO as GPIO
-GPIO.setmode(GPIO.BCM)
-GPIO.setwarnings(False)
-GPIO.setup(17,GPIO.OUT)
-GPIO.setup(27,GPIO.OUT)
-
-# all of that is going server side
-# plus it gave me import errors when i ran it lol
-
 class InfoHandler(logging.Handler):  # inherit from Handler class
     def __init__(self, textBrowser):
         super().__init__()
@@ -26,9 +17,7 @@ class InfoHandler(logging.Handler):  # inherit from Handler class
     def emit(self, record):  # override Handler's `emit` method
         self.textBrowser.append(self.format(record))
 
-
 class App(object):
-
     def __init__(self):
         self.fluid_conversions = None
         self.dosing = None
@@ -135,13 +124,6 @@ class App(object):
         self.form.night_hour_wheel.valueChanged.connect(self.night_hour_wheel_changed)
         self.form.off_hour_wheel.valueChanged.connect(self.log_off_hour_wheel)
 
-        #self.form.TankSize_DoubleSpinBox.valueChanged.connect(self.set_tanksize_conversion)
-        #self.form.C02_DoubleSpinBox.valueChanged.connect(self.set_co2_conversion)
-        #self.form.C02toWater_DoubleSpinBox.valueChanged.connect(self.set_co2_conversion)
-        #self.form.Fertz_DoubleSpinBox.valueChanged.connect(self.set_fertz_conversion)
-        #self.form.FertztoWater_DoubleSpinBox.valueChanged.connect(self.set_fertz_conversion)
-        #self.form.TapSafe_DoubleSpinBox.valueChanged.connect(self.set_conditioner_conversion)
-        #self.form.TapSafetoWater_DoubleSpinBox.valueChanged.connect(self.set_conditioner_conversion)
         self.form.saveDoses_pushButton.clicked.connect(self.save_doses)
 
         self.form.feed_pushButton.clicked.connect(self.feed_test)
@@ -222,16 +204,16 @@ class App(object):
         loop = QEventLoop()
         resp = self.nam.get(request)
         resp.finished.connect(loop.quit)
-        print("="*10)
-        print('Loading Data From the Server')
+        print("="*100)
+        print('Loading Data From the Server'.center(100))
         loop.exec_()
         data = resp.readAll()
         byte_array = data
         try:
             new_data = json.loads(byte_array.data())
-            print("JSON Data Loaded")
+            print("JSON Data Loaded".center(100))
         except json.decoder.JSONDecodeError:
-            print("Couldn't Load JSON From Server")
+            print("Couldn't Load JSON From Server".center(100))
         #print(new_data)
         try:
             self.calibration_data = new_data["Calibration Data"]
@@ -241,7 +223,7 @@ class App(object):
             # self.schedule_data = new_data["Schedule Data"]
             # self.light_hour_data = new_data["Light Hour Data"]
 
-            print("=" * 10)
+            print("=" * 100)
             self.form.TankSize_DoubleSpinBox.blockSignals(True)
             self.form.C02_DoubleSpinBox.blockSignals(True)
             self.form.C02toWater_DoubleSpinBox.blockSignals(True)
@@ -274,14 +256,14 @@ class App(object):
                 conditionerdosagelcd = float(self.conversion_data["Water Conditioner Ratio"]["Conditioner Dosage"])
                 self.form.conditioner_outLcd.setProperty('value', conditionerdosagelcd)
 
-                print("Loaded Ratio Data From The Server")
-                print("=" * 10)
+                print("Loaded Ratio Data From The Server".center(100))
+                print("=" * 100)
                 print(f"Tank Size :{tanklcd}")
                 print(f"Co2 Amount :{co2amountlcd}    Co2 to Water :{co2waterlcd}    Co2 Dosage :{co2dosagelcd}")
                 print(f"Fertz Amount :{fertzamountlcd}    Fertz to Water :{fertzwaterlcd}    Fertz Dosage :{fertzdosagelcd}")
                 print(f"Conditioner Amount :{conditioneramountlcd}    Conditioner to Water :{conditionerwaterlcd}    Conditioner Dosage :{conditionerdosagelcd}")
             except KeyError:
-                print("No Ratio Data From The Server to Load")
+                print("No Ratio Data From The Server to Load".center(100))
 
             self.form.TankSize_DoubleSpinBox.blockSignals(False)
             self.form.C02_DoubleSpinBox.blockSignals(False)
@@ -290,70 +272,52 @@ class App(object):
             self.form.FertztoWater_DoubleSpinBox.blockSignals(False)
             self.form.TapSafe_DoubleSpinBox.blockSignals(False)
             self.form.TapSafetoWater_DoubleSpinBox.blockSignals(False)
-            print("=" * 10)
+            print("=" * 100)
 
             try:
-                #self.co2_dosing_displays()
                 co2secper10ml = self.calibration_data["Co2 Calibration Data"]["Time per 10mL"]
                 self.form.co2_dosing_lcd.display(co2secper10ml)
                 co2secper1ml = self.calibration_data["Co2 Calibration Data"]["Time per 1mL"]
                 self.form.co2_calibration_perml_display.display(co2secper1ml)
                 co2_dose = float(self.conversion_data["Co2 Ratio"]["Co2 Dosage"])
                 self.form.c02_ml_outLcd.display(co2_dose)
-                #co2_runtime = co2_dose * co2secper1ml
-                #self.form.co2_seconds_display.display(co2_runtime)
-                #self.form.fertz_dosing_lcd.display(self.calibration_data["Fertilizer Calibration Data"]["Time per 10mL"])
-                #self.form.conditioner_dosing_lcd.display(self.calibration_data["Water Conditioner Calibration Data"]["Time"])
-                #co2runtime = round(self.calibration_data["Co2 Calibration Data"]["Dosing Runtime"], 2)
-                #self.form.co2_seconds_display.display(co2runtime)
-                print("Loaded Calibration Data From The Server")
-                print("=" * 10)
+                print("Loaded Calibration Data From The Server".center(100))
+                print("=" * 100)
                 print(f"Co2 Ran for:{co2secper10ml}secs to Reach 10mL")
                 print(f"Co2 Run for :{co2secper1ml}secs per 1mL Required")
             except KeyError:
-                print("No Calibration Data From The Server to Load")
-            print("=" * 10)
+                print("No Calibration Data From The Server to Load".center(100))
+            print("=" * 100)
 
             self.form.ht_alert_edit.blockSignals(True)
             self.form.lt_alert_edit.blockSignals(True)
             try:
                 high_ta = self.form.ht_alert_edit.setValue(float(self.temperature_data["Temperature Alert"]["High Temp"])),
                 low_ta = self.form.lt_alert_edit.setValue(float(self.temperature_data["Temperature Alert"]["Low Temp"])),
-                print("Loaded Temperature Alert Data From The Server")
-                print("=" * 10)
+                print("Loaded Temperature Alert Data From The Server".center(100))
+                print("=" * 100)
                 print(f"High Temperature Alert Set to: {high_ta}")
                 print(f"Low Temperature Alert Set to: {low_ta}")
             except KeyError:
-                print("No Temperature Alert Data From The Server to Load")
+                print("No Temperature Alert Data From The Server to Load".center(100))
             self.form.ht_alert_edit.blockSignals(False)
             self.form.lt_alert_edit.blockSignals(False)
-            print("=" * 10)
+            print("=" * 100)
 
             try:
                 co2_runtime = float(self.dosage_data["Co2 Data"]["Runtime"])
                 self.form.co2_seconds_display.display(co2_runtime)
-                print("Loaded Dosing Data From The Server to Load")
-                print("=" * 10)
+                print("Loaded Dosing Data From The Server to Load".center(100))
+                print("=" * 100)
                 print(f"Co2 Runtime: {co2_runtime}")
             except KeyError:
-                print("No Dosing Data From The Server to Load")
-            print("=" * 10)
+                print("No Dosing Data From The Server to Load".center(100))
+            print("=" * 100)
             print(new_data)
+            print("=" * 100)
         except UnboundLocalError:
-            print("Couldn't Load Data")
-            print("=" * 10)
-
-    def co2_dosing_displays(self):
-        co2secper10ml = self.calibration_data["Co2 Calibration Data"]["Time per 10mL"]
-        self.form.co2_dosing_lcd.display(co2secper10ml)
-        co2secper1ml = co2secper10ml / 10
-        self.form.co2_calibration_perml_display.display(co2secper1ml)
-        co2_dose = float(self.conversion_data["Co2 Ratio"]["Co2 Dosage"])
-        co2_runtime = co2_dose*co2secper1ml
-        self.form.co2_seconds_display.display(co2_runtime)
-        #self.co2_dose_times_a_day()
-
-
+            print("Couldn't Load Data".center(100))
+            print("=" * 100)
 
     def co2_dose_times_a_day(self):
         x = float(self.conversion_data["Co2 Ratio"]["Co2 Dosage"])
@@ -441,8 +405,8 @@ class App(object):
                 btn.setStyleSheet("background-color: blue")
 
     def set_temp_alert(self):
-        ht = self.form.ht_alert_edit.value()
-        lt = self.form.lt_alert_edit.value()
+        ht = float(self.temperature_data["Temperature Alert"]["High Temp"])
+        lt = float(self.temperature_data["Temperature Alert"]["Low Temp"])
         print(f"Sending Alert Changes to Network")
         print(f"High Temperature: {ht}")
         print(f"Low Temperature: {lt}")
@@ -651,15 +615,6 @@ class App(object):
                 }
             )
             self.save()
-
-    def set_conversion(self):
-        #self.conversion_values["tank_size"] = self.form.TankSize_DoubleSpinBox.value()
-        self.conversion_values["co2_amount"] = self.form.C02_DoubleSpinBox.value()
-        self.conversion_values["co2_to_water"] = self.form.C02toWater_DoubleSpinBox.value()
-        self.conversion_values["fertz_amount"] = self.form.Fertz_DoubleSpinBox.value()
-        self.conversion_values["fertz_to_water"] = self.form.FertztoWater_DoubleSpinBox.value()
-        self.conversion_values["conditioner_amount"] = self.form.TapSafe_DoubleSpinBox.value()
-        self.conversion_values["conditioner_to_water"] = self.form.TapSafetoWater_DoubleSpinBox.value()
 
     def set_light_hour(self):
         self.light_hour_data["Light Hours"].update(
